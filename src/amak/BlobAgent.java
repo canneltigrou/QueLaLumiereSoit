@@ -1,10 +1,6 @@
 package amak;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-
-import application.BlobForm;
 import business.Blob;
 import business.Critere;
 import fr.irit.smac.amak.Agent;

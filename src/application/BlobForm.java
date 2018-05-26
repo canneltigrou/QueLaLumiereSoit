@@ -17,8 +17,6 @@ public class BlobForm extends Parent{
 	private Blob blob;
 	Circle fond_blob;
 	ArrayList<Circle> globules;
-
-	//private Map<Blob, GlobuleForm> blobList;
 	
 	public BlobForm(Blob b){
 		//blobList = new HashMap<Blob, BlobForm>();
@@ -26,7 +24,7 @@ public class BlobForm extends Parent{
 		Rectangle fond_Tideal = new Rectangle();
 		fond_Tideal.setWidth(16);
 		fond_Tideal.setHeight(16);
-		fond_Tideal.setFill(Color.BLACK);
+		fond_Tideal.setFill(Color.TRANSPARENT);
 
 		this.setTranslateX(b.getCoordonnee()[0]);// on positionne le groupe plutôt que le rectangle
 		this.setTranslateY(b.getCoordonnee()[1]);
@@ -40,9 +38,7 @@ public class BlobForm extends Parent{
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
 	        globules.add(fond_blob);
-	        this.getChildren().add(fond_blob);//ajout du rectangle de fond
-			System.out.println("" + positionGlobule.get(i)[0] + " " + positionGlobule.get(i)[1]);
-			
+	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
 		}
 		
 
@@ -64,9 +60,7 @@ public class BlobForm extends Parent{
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
 	        
-	        this.getChildren().add(fond_blob);//ajout du rectangle de fond
-			System.out.println("" + positionGlobule.get(i)[0] + " " + positionGlobule.get(i)[1]);
-			
+	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
 		}
 	}
 	

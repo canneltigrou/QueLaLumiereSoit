@@ -35,26 +35,15 @@ public class Blob {
 	}
 	
 
-	
-
-	
 
 	public ArrayList<double[]> getGlobules_position() {
 		return globules_position;
 	}
 
 
-
-
-
-
 	public void setGlobules_position(ArrayList<double[]> globules_position) {
 		this.globules_position = globules_position;
 	}
-
-
-
-
 
 
 	public int getPulsation() {
@@ -71,6 +60,13 @@ public class Blob {
 
 	public void setForme(Forme forme) {
 		this.forme = forme;
+		// TODO à voir avec Maria : comment changer les couleurs lors d'un changement de forme ?
+		globules_position = forme.creerPosition(forme);
+		for (int i = 0; i < globules_position.size(); i++){
+			Couleur couleur = globules_couleurs.get(0);
+			globules_couleurs.clear();
+			globules_couleurs.add(couleur);
+		}
 	}
 
 	public double[] getCoordonnee() {
@@ -139,19 +135,9 @@ public class Blob {
 		
 	}
 
-
-
-
-
-
 	public ArrayList<Couleur> getGlobules_couleurs() {
 		return globules_couleurs;
 	}
-
-
-
-
-
 
 	public void setGlobules_couleurs(ArrayList<Couleur> globules_couleurs) {
 		this.globules_couleurs = globules_couleurs;

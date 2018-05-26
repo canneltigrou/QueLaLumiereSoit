@@ -23,11 +23,11 @@ public class Main extends Application {
      
 			
 			Controller runnerActivityController = loader.getController();
-			//AmasThread tAmas = new AmasThread(runnerActivityController);
+			AmasThread tAmas = new AmasThread(runnerActivityController);
 			//tAmas.start();
 			
-			//PositionThread tPosition = new PositionThread(runnerActivityController, tAmas);
-			//tPosition.start();
+			PositionThread tPosition = new PositionThread(runnerActivityController, tAmas);
+			tPosition.start();
 
 			
 			primaryStage.setScene(scene);
