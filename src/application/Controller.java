@@ -68,23 +68,6 @@ public class Controller implements Initializable{
 		treel = new TerrainForm();
 		panelTreel.getChildren().add(treel);
 		
-		Blob b1 = new Blob(50,20, Couleur.BLUE, 10, Forme.simple, true);
-		Blob b2 = new Blob(128, 50, Couleur.RED, 10, Forme.carre, true);
-		Blob b3 = new Blob(250,100, Couleur.YELLOW, 10, Forme.simple, true);
-		Blob b4 = new Blob(60,100, Couleur.BLUE, 10, Forme.carre, false);
-
-		add_blobAgent(b1);
-		add_blobAgent(b2);
-		add_blobAgent(b3);
-		
-		double[] coo = new double[2];
-		coo[0] =  250;
-		coo[1] = 250;
-		
-		b3.setCoordonnee(coo);
-		move_blobAgent(b3);
-		
-		add_blobAgent(b4);
 		
 	}
 	
