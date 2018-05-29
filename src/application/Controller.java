@@ -48,19 +48,31 @@ public class Controller implements Initializable{
     
     private TerrainForm tideal;
     
-    private TerrainForm treel;
+    private TerrainForm treel; 
+    
+    DoubleProperty diso = new SimpleDoubleProperty(0);
+    DoubleProperty hetero = new SimpleDoubleProperty(0);
+    DoubleProperty stabPos = new SimpleDoubleProperty(0);
+    DoubleProperty stabEtat = new SimpleDoubleProperty(0);
+
 
 	@FXML
     void clic(MouseEvent event) {
     	
-    	System.out.println(" Valeur Degrès d'isolement : " + Diso.get() + "\n");
-    	
+    	System.out.println(" Valeur Degrès d'isolement : " + diso.get() + "\n");
+    	System.out.println(" Valeur Degrès d'heterogénéité : " + hetero.get() + "\n");
+    	System.out.println(" Valeur de la stabilité de la position du voisinage : " + stabPos.get() + "\n");
+    	System.out.println(" Valeur de la stabilité de l'etat du voisinage : " + stabEtat.get() + "\n");
     	
     }
+
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Diso.bind(Sdiso.valueProperty());
+		hetero.bind(sHeterogeneite.valueProperty());
+		stabPos.bind(sStabilitéPosition.valueProperty());
+		stabEtat.bind(sStabilitéEtat.valueProperty());
 		
 		tideal = new TerrainForm();
 		panelTideal.getChildren().add(tideal);
