@@ -52,7 +52,7 @@
                                             <items>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                                                    <children>
-                                                      <Slider fx:id="sStabilitéEtat" layoutX="29.0" layoutY="44.0" orientation="VERTICAL" prefHeight="227.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.5" AnchorPane.topAnchor="0.0" />
+                                                      <Slider fx:id="sStabilitéEtat" layoutX="29.0" layoutY="44.0" onMouseClicked="#clic" orientation="VERTICAL" prefHeight="227.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.5" AnchorPane.topAnchor="0.0" />
                                                    </children>
                                                 </AnchorPane>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -61,12 +61,12 @@
                                                         <items>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                                                                <children>
-                                                                  <Slider fx:id="sStabilitéPosition" layoutX="35.0" layoutY="57.0" orientation="VERTICAL" prefHeight="226.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="0.0" />
+                                                                  <Slider fx:id="sStabilitéPosition" layoutX="35.0" layoutY="57.0" onMouseClicked="#clic" orientation="VERTICAL" prefHeight="226.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                                                                <children>
-                                                                  <Slider fx:id="sHeterogeneite" layoutX="35.0" layoutY="49.0" orientation="VERTICAL" prefHeight="226.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="0.0" />
+                                                                  <Slider fx:id="sHeterogeneite" layoutX="35.0" layoutY="49.0" onMouseClicked="#clic" orientation="VERTICAL" prefHeight="226.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                         </items>
