@@ -80,26 +80,23 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		currentAction = Action.SE_SUICIDER;
 		getAmas().getEnvironment().removeAgent(this);
 		destroy();
-		System.out.println("Je me suicide");
 	}
 
 	protected void action_creer(){
-		System.out.println("je décide de procréer");
 		currentAction = Action.CREER;
 		Blob newBlob = blob.copy_blob();
-		double[] coo = newBlob.getCoordonnee();
+		/*double[] coo = newBlob.getCoordonnee();
 		coo[0] += 16;
-		coo[1] += 16;
-		newBlob.setCoordonnee(coo);
+		coo[1] += 16;*/
+		newBlob.setCoordonnee(blob.nouvellesCoordonnees());
 		newFils = new Immaginaire(getAmas(), newBlob, controller);
 		
-		getAmas().getEnvironment().addAgent(newFils);
-		System.out.println("j'ai fini de procréer");
-		
+		getAmas().getEnvironment().addAgent(newFils);		
 		
 	}
 	
 	protected void action_se_deplacer(){
+		blob.setCoordonnee(blob.nouvellesCoordonnees());
 		currentAction = Action.SE_DEPLACER;	
 	}
 	
@@ -159,16 +156,13 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 
 	
     protected double computeCriticalityInTideal() {
-		System.out.println("début calcul de criticité");
-		criticite[Critere.Heterogeneite.getValue()]= getAmas().getEnvironment().getIsolement() - voisins.size();
-		System.out.println("1ere partie calculée");
-		criticite[Critere.Isolement.getValue()] = 0;
+		criticite[Critere.Isolement.getValue()]= getAmas().getEnvironment().getIsolement() - voisins.size();
+		criticite[Critere.Heterogeneite.getValue()] = 0;
 		criticite[Critere.Stabilite_etat.getValue()] = 0;
 		criticite[Critere.Stabilite_position.getValue()] = 0;
 		
 		criticite_globale = criticite[Critere.Heterogeneite.getValue()] + criticite[Critere.Isolement.getValue()] + criticite[Critere.Stabilite_etat.getValue()] + criticite[Critere.Stabilite_position.getValue()];
 		
-		System.out.println("fin de calcul de la criticité");
         return blob.getCpt_state();
     }
 

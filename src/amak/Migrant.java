@@ -8,7 +8,9 @@ public class Migrant extends BlobAgent{
 	
 	
 	private boolean isHome;
-
+	private boolean isRiped;
+	private int cpt_hibernation;
+	
 	public Migrant(MyAMAS amas, Blob b, Controller controller) {
 		super(amas, b, controller);
 		setHome(true);
@@ -25,15 +27,18 @@ public class Migrant extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
-		currentAction = Action.RESTER; // to initialise
+		currentAction = Action.SE_DEPLACER; // to initialise
 		BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
 		 Critere most_critic = Most_critical_critere(agentNeedingHelp);
 		 
 		 switch (most_critic){
 		 case Isolement:
 			 // too few neighboors -> criticite.ISOLEMENT > 0 -> I have procreate
-			 if(criticite[Critere.Heterogeneite.getValue()] > 0)
+			 if(criticite[Critere.Isolement.getValue()] > 0)
+			 {
+				 System.out.println("je procrée");
 				 action_creer();
+			 }
 			 break;
 				 
 		 case Stabilite_etat:
@@ -58,6 +63,12 @@ public class Migrant extends BlobAgent{
     	switch(currentAction){
     	case CREER :
     		super.controller.add_blobImmaginaire(newFils);
+    		break;
+    	case SE_DEPLACER :
+    		if(isHome)
+    			super.controller.move_blobHibernant(this);
+    		else
+    			super.controller.move_blobMigrant(this);
     		break;
 		default:
 			break;
@@ -85,6 +96,14 @@ public class Migrant extends BlobAgent{
 		if(!isHome)
 			return(computeCriticalityInTideal());
 		return(0);
+	}
+
+	public boolean isRiped() {
+		return isRiped;
+	}
+
+	public void setRiped(boolean isRiped) {
+		this.isRiped = isRiped;
 	}
 	
 	

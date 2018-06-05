@@ -9,13 +9,14 @@ import fr.irit.smac.amak.Scheduling;
 public class MyEnvironment extends Environment {
 	private ArrayList<BlobAgent> agents;
 	private ArrayList<Migrant> hibernants;
-	private int radius = 5;
+	private int radius = 25; // radius utilisé pour les différents sliders
 	/* possede les valeurs des differents sliders*/
 	private int isolement;
 	private int stabilite_etat;
 	private int stabilite_position;
 	private int heterogeneite;
 	private int distanceRepresentation;
+	private int tauxMurissemnt;
 	
 	/* communication avec l'interface graphique */
 	private Controller controller;
@@ -71,7 +72,7 @@ public class MyEnvironment extends Environment {
 	
 	public void generateNeighbours(BlobAgent subject){
 		subject.clearVoisin();
-		if( (subject instanceof Migrant) || !((Migrant)subject).isHome())
+		if( (subject instanceof Migrant) && ((Migrant)subject).isHome())
 			generateNeighboursToriginel(subject);
 		else
 			generateNeighboursTideal(subject);
