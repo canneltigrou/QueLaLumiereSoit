@@ -1,8 +1,6 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Set;
-
 import business.Blob;
 import business.Couleur;
 import javafx.scene.Parent;

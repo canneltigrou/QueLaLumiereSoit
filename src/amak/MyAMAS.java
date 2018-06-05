@@ -1,53 +1,60 @@
 package amak;
 
-import java.util.ArrayList;
+import java.util.Scanner;
 
 import application.Controller;
+
+//import java.util.ArrayList;
+
 import business.Blob;
+import business.Couleur;
+import business.Forme;
 import fr.irit.smac.amak.Amas;
 import fr.irit.smac.amak.Scheduling;
 import javafx.application.Platform;
 
-public class MyAMAS extends Amas<Tideal>{
+public class MyAMAS extends Amas<MyEnvironment>{
 	
-
-	/* possede les valeurs des differents sliders*/
-	private int isolement;
-	private int stabilite_etat;
-	private int stabilite_position;
-	private int heterogeneite;
-	private int distanceRepresentation;
-	private ArrayList<BlobAgent> agents;
-	
-	/* communication avec l'interface graphique */
 	private Controller controller;
 	
 	@Override
 	protected void onInitialConfiguration() {
-		this.controller = (Controller) params[0];
-		isolement = controller.getIsolement();
-		stabilite_etat = controller.getStabiliteHeterogeneite();
-		stabilite_position = controller.getStabilitePosition();
-		heterogeneite = controller.getHeterogenite();
-		setDistanceRepresentation(controller.getDistanceRepresentation());
 		
+		System.out.println("combien de Blobs sont à créer dans To ?");
+		@SuppressWarnings("resource")
+		int nbBlobs = new Scanner(System.in).nextInt();
+		Migrant migrant;
+		double xcor;
+		double ycor;
+		Couleur[] couleurListe = Couleur.values();
+		int indiceCouleur; 
+		Blob blob;
+		controller = (Controller) params[0];		
+		for(int i = nbBlobs ; i > 0 ; i--){
+			xcor = Math.random() * ( 100 );
+			ycor = Math.random() * ( 100 );
+			indiceCouleur = (int) (Math.random() * ( couleurListe.length ));
+			blob = new Blob(xcor,ycor, couleurListe[indiceCouleur], 1, Forme.carre, true);
+			migrant = new Migrant(this, blob, controller);
+			getEnvironment().addMigrant(migrant);
+		}
 		super.onInitialConfiguration();
+		System.out.println("fin de l'initilisation de MyAmas");
 	}
 	
-	public MyAMAS(Tideal env, Controller controller) {
-		super(env, Scheduling.DEFAULT);
+	public MyAMAS(MyEnvironment env, Controller controller) {
+		super(env, Scheduling.DEFAULT, controller);
 	}
 
 	
 	@Override
     protected void onInitialAgentsCreation() {
-		agents = new ArrayList<BlobAgent>();
 	}
 	
 	
 	
 	protected void addAgent(Blob b){
-		BlobAgent agent = new BlobAgent(this, b);
+		BlobAgent agent = new BlobAgent(this, b, controller);
 		getEnvironment().addAgent(agent);
 	}
 	
@@ -55,88 +62,23 @@ public class MyAMAS extends Amas<Tideal>{
 		Platform.runLater(new Runnable() {
 			public void run() {
 				agent.setBlob(b);
+				
 				// normalement, prévient donc l'environnement
 			}
 		});
 	}
 	
 	protected void removeAgent(Blob b, BlobAgent agent){
-		// TODO
+		Platform.runLater(new Runnable() {
+			public void run() {
+				getEnvironment().getAgents().remove(agent);
+				//agents.remove(agent);
+				// normalement, prévient donc l'environnement
+			}
+		});
 		
 	}
 	
 	
 	
-	/* **************************************************************
-	 * **		interaction avec l'interface graphique 			 ** *
-	 ***************************************************************** */
-	 
-	public void add_blob_on_draw(Blob b){
-		controller.add_blobAgent(b);
-	}
-	
-	public void move_blob_on_draw(Blob b){
-		controller.move_blobAgent(b);
-	}
-	
-	public void remove_blob_on_drawing(Blob b){
-		controller.remove_blobAgent(b);
-	}
-	
-	
-	
-	
-	/* *****************************************************************************************
-	 * *********************   getter / setter			****************************************
-	 * ************************************************************************************* * */
-	
-	public int getIsolement() {
-		return isolement;
-	}
-
-	public void setIsolement(int isolement) {
-		this.isolement = isolement;
-	}
-
-	public int getStabilite_etat() {
-		return stabilite_etat;
-	}
-
-	public void setStabilite_etat(int stabilite_etat) {
-		this.stabilite_etat = stabilite_etat;
-	}
-
-	public int getStabilite_position() {
-		return stabilite_position;
-	}
-
-	public void setStabilite_position(int stabilite_position) {
-		this.stabilite_position = stabilite_position;
-	}
-
-	public int getHeterogeneite() {
-		return heterogeneite;
-	}
-
-	public void setHeterogeneite(int heterogeneite) {
-		this.heterogeneite = heterogeneite;
-	}
-
-
-	public Controller getController() {
-		return controller;
-	}
-
-
-	public void setController(Controller controller) {
-		this.controller = controller;
-	}
-
-	public int getDistanceRepresentation() {
-		return distanceRepresentation;
-	}
-
-	public void setDistanceRepresentation(int distanceRepresentation) {
-		this.distanceRepresentation = distanceRepresentation;
-	}	
 }

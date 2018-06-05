@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class Blob {
 	//private String id;
 	private int pulsation;
-	private Forme forme; 
+	private Forme forme;
 	private double[] coordonnee;
 	// liste des voisins Reels pour TR, utilisé pour l'apparence du blob, mais à voir le taux de rafraichissement
-	private ArrayList<Blob> voisins; 
+	private ArrayList<Blob> voisins;
 	
 	private int cpt_state;
 	private int cpt_position;
@@ -17,7 +17,11 @@ public class Blob {
 	private ArrayList<Couleur> globules_couleurs;
 	private ArrayList<double[]> globules_position;
 
+	public Blob()
+	{
+		coordonnee = new double[2];
 
+	}
 	
 	public Blob(double xcor, double ycor, Couleur couleur, int pulsation, Forme forme, boolean reel)
 	{
@@ -34,7 +38,13 @@ public class Blob {
 		}
 	}
 	
-
+	
+	public Blob copy_blob(){
+		return(new Blob(coordonnee[0], coordonnee[1], globules_couleurs.get(0), pulsation, forme, real));
+	}
+	
+	
+	
 
 	public ArrayList<double[]> getGlobules_position() {
 		return globules_position;
