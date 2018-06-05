@@ -80,9 +80,11 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		currentAction = Action.SE_SUICIDER;
 		getAmas().getEnvironment().removeAgent(this);
 		destroy();
+		System.out.println("Je me suicide");
 	}
 
 	protected void action_creer(){
+		System.out.println("je décide de procréer");
 		currentAction = Action.CREER;
 		Blob newBlob = blob.copy_blob();
 		double[] coo = newBlob.getCoordonnee();
@@ -92,6 +94,8 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		newFils = new Immaginaire(getAmas(), newBlob, controller);
 		
 		getAmas().getEnvironment().addAgent(newFils);
+		System.out.println("j'ai fini de procréer");
+		
 		
 	}
 	
@@ -115,7 +119,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		 
 		 switch (most_critic){
 		 case Isolement:
-			 // trop de voisins -> criticite.ISOLEMENT<0 -> je me suicide
+			 // too many neighboors -> criticite.ISOLEMENT<0 -> I have to kill myself
 			 if(criticite[Critere.Heterogeneite.getValue()] < 0)
 				 action_se_suicider();
 			 else

@@ -22,6 +22,7 @@ public class Main extends Application {
 			
 			Controller runnerActivityController = loader.getController();
 			AmasThread tAmas = new AmasThread(runnerActivityController);
+			runnerActivityController.settAmas(tAmas);
 			tAmas.start();
 
 			
