@@ -1,13 +1,11 @@
 package positionBluetooth;
-import application.Controller;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import amak.AmasThread;
-import business.Blob;
+import amak.Migrant;
 import business.Couleur;
 import business.Forme;
 
@@ -21,15 +19,16 @@ import business.Forme;
 
 
 public class PositionThread extends Thread{
-	private ArrayList<Blob> blobList;
-	private Controller controller;
+	private ArrayList<Migrant> blobHibernants;
+	private ArrayList<Migrant> blobActifs;
 	private AmasThread tAmas;
 	
-	public PositionThread(Controller controller, AmasThread tAmas){
+	public PositionThread(AmasThread tAmas, ArrayList<Migrant> migrants){
 			super();
-			this.controller = controller;
+			
 			this.tAmas = tAmas;
-			blobList = new ArrayList<Blob>();
+			blobHibernants = migrants;
+			blobActifs = new ArrayList<>();
 	}
 	
 	public void run(){
@@ -38,33 +37,36 @@ public class PositionThread extends Thread{
 		
 	}   
 	
-	public void addBlob(Blob b){
-		controller.add_blobReel(b);
-		tAmas.add_blob(b);
+	public void sortirBlob(Migrant b){
+		tAmas.t0_to_tr(b);
+		blobHibernants.remove(b);
+		blobActifs.add(b);
 	}
 	
-	public void removeBlob(Blob b){
-		controller.remove_blobReel(b);
-		tAmas.remove_blob(b);
+	
+	public void rentrerBlob(Migrant b){
+		tAmas.tr_to_t0(b);
+		blobHibernants.add(b);
+		blobActifs.remove(b);
 	}
 	
-	public void moveBlob(Blob b){
-		controller.move_blobReel(b);
-		tAmas.move_blob(b);
+	public void moveBlob(Migrant b, double[] coo){
+		tAmas.move_blob(b, coo);
 		
 	}
 	
-	private void console_afficher_blobs()
+	private void console_afficher_blobs(ArrayList<Migrant> blobList)
 	{
 		for(int i = 0 ; i < blobList.size(); i++){
 			
-			Couleur couleurG1 = blobList.get(i).getGlobules_couleurs().get(0);
-			Forme forme = blobList.get(i).getForme();
-			double[] pos = blobList.get(i).getCoordonnee();
+			Couleur couleurG1 = blobList.get(i).getBlob().getGlobules_couleurs().get(0);
+			Forme forme = blobList.get(i).getBlob().getForme();
+			double[] pos = blobList.get(i).getBlob().getCoordonnee();
 			System.out.println("" + i + " : " + couleurG1 + " " + forme + " " + pos[0] + " ; " + pos[1]);			
 		}	
 	}
 	
+	/*
 	private void console_afficher_formes_enum()
 	{
 		System.out.println("FORMES POSSIBLES :");
@@ -81,18 +83,35 @@ public class PositionThread extends Thread{
 			System.out.println("" + i + " : " + listeCouleurs[i]);			
 		}	
 	}
+	*/
 	
-	
-	private void console_ajouterBlob(BufferedReader standardInput){
-		
-		Blob blob = new Blob(0,0, Couleur.BLUE, 1, Forme.carre, true);
-		blob = console_formulaireBlob(standardInput, blob);
-		blobList.add(blob);
-		addBlob(blob);
+	private double[] console_coordonneeBlob(BufferedReader standardInput, Migrant migrant){
+		System.out.println("nouveau x :");
+		String tmp;
+		double[] coo = new double[2];
+
+		// position :
+		try {
+			tmp = standardInput.readLine();
+			double newPosX = Double.parseDouble(tmp);
+			System.out.println("nouveau y :");
+			tmp = standardInput.readLine();
+			double newPosY = Double.parseDouble(tmp);
+			coo[0] = newPosX;
+			coo[1] = newPosY;
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return coo;
 		
 	}
+		
 	
-	private Blob console_formulaireBlob(BufferedReader standardInput, Blob blob){
+	/*
+	 private Blob console_formulaireBlob(BufferedReader standardInput, Blob blob){
+	 
 		System.out.println("nouveau x :");
 		String tmp;
 		// position :
@@ -152,35 +171,52 @@ public class PositionThread extends Thread{
 		
 		return(blob);
 	}
+	*/
 	
 	private void console_modifierBlob(BufferedReader standardInput){
-		console_afficher_blobs();
+		console_afficher_blobs(blobActifs);
 		System.out.println("choisissez un blob :");
-		Blob blob;
+		Migrant migrant;
 		try {
 			String option = standardInput.readLine();
 			int num = Integer.parseInt(option);
-			blob = blobList.get(num);
-			blobList.set(num, console_formulaireBlob(standardInput, blob));
-			moveBlob(blobList.get(num));
+			migrant = blobActifs.get(num);
+			//blobList.set(num, console_coordonneeBlob(standardInput, migrant));
+			double[] coo = console_coordonneeBlob(standardInput, migrant);
+			moveBlob(blobActifs.get(num), coo);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void console_suprimerBlob(BufferedReader standardInput){
-		console_afficher_blobs();
+	private void console_rentrerBlob(BufferedReader standardInput){
+		console_afficher_blobs(blobActifs);
 		System.out.println("choisissez un blob :");
-		Blob blob;
+		Migrant migrant;
 		try {
 			String option = standardInput.readLine();
 			int num = Integer.parseInt(option);
-			blob = blobList.get(num);
-			removeBlob(blob);
-			blobList.remove(num);
+			migrant = blobActifs.get(num);
+			rentrerBlob(migrant);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+
+	private void console_sortirBlob(BufferedReader standardInput) {
+		console_afficher_blobs(blobHibernants);
+		System.out.println("choisissez un blob :");
+		Migrant migrant;
+		try {
+			String option = standardInput.readLine();
+			int num = Integer.parseInt(option);
+			migrant = blobHibernants.get(num);
+			sortirBlob(migrant);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
@@ -191,11 +227,6 @@ public class PositionThread extends Thread{
 		Blob b2 = new Blob(128, 50, Couleur.RED, 10, Forme.carre, true);
 		Blob b3 = new Blob(250,100, Couleur.YELLOW, 10, Forme.simple, true);
 		Blob b4 = new Blob(60,100, Couleur.BLUE, 10, Forme.carre, false);
-
-		addBlob(b1);
-		addBlob(b2);
-		addBlob(b3);
-		addBlob(b4);
 		*/
 		
 		
@@ -204,7 +235,7 @@ public class PositionThread extends Thread{
 		String objectif = "";
 		
 		while (true){
-			System.out.print(" 1 - ajouter un Blob \n 2 - modifier un Blob \n 3 - supprimer un Blob :\n");
+			System.out.print(" 1 - sortir un Blob \n 2 - modifier un Blob \n 3 - faire rentrer un Blob :\n");
 			try {
 				objectif = standardInput.readLine();
 				
@@ -215,13 +246,16 @@ public class PositionThread extends Thread{
 				console_modifierBlob(standardInput);
 			else
 				if(objectif.equals("3"))
-					console_suprimerBlob(standardInput);
+					console_rentrerBlob(standardInput);
 				else
-					console_ajouterBlob(standardInput);		
+					console_sortirBlob(standardInput);		
 		}
 		
 		
 	}
+
+	
+
 	    
 }
 

@@ -19,17 +19,17 @@ public class TerrainForm extends Parent {
 		// blobList = new ArrayList<Blob>();
 		blobList = new HashMap<Blob, BlobForm>();
 
-		Rectangle fond_Tideal = new Rectangle();
-		fond_Tideal.setWidth(400);
-		fond_Tideal.setHeight(300);
-		fond_Tideal.setArcWidth(30);
-		fond_Tideal.setArcHeight(30);
-		fond_Tideal.setFill(Color.BLACK);
+		Rectangle fond_Terrain = new Rectangle();
+		fond_Terrain.setWidth(400);
+		fond_Terrain.setHeight(300);
+		fond_Terrain.setArcWidth(30);
+		fond_Terrain.setArcHeight(30);
+		fond_Terrain.setFill(Color.BLACK);
 
 		this.setTranslateX(0);// on positionne le groupe plutôt que le rectangle
 		this.setTranslateY(0);
 
-		this.getChildren().add(fond_Tideal);// on ajoute le rectangle au groupe
+		this.getChildren().add(fond_Terrain);// on ajoute le rectangle au groupe
 
 	}
 

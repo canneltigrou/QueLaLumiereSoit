@@ -4,9 +4,9 @@ package application;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import business.Blob;
-import business.Couleur;
-import business.Forme;
+import amak.BlobAgent;
+import amak.Immaginaire;
+import amak.Migrant;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
@@ -43,12 +43,17 @@ public class Controller implements Initializable{
     @FXML
     private AnchorPane panelTreel;
     
+    @FXML
+    private AnchorPane panelToriginel;
+    
     
     DoubleProperty Diso = new SimpleDoubleProperty(0);
     
     private TerrainForm tideal;
     
     private TerrainForm treel; 
+    
+    private TerrainForm toriginel;
     
     DoubleProperty diso = new SimpleDoubleProperty(0);
     DoubleProperty hetero = new SimpleDoubleProperty(0);
@@ -80,33 +85,52 @@ public class Controller implements Initializable{
 		treel = new TerrainForm();
 		panelTreel.getChildren().add(treel);
 		
+		toriginel = new TerrainForm();
+		panelToriginel.getChildren();
+		
 		
 	}
 	
-	public void add_blobAgent(Blob b){
-		tideal.add_blob(b);
+	public void add_blobImmaginaire(Immaginaire b){
+		tideal.add_blob(b.getBlob());
 	}
 	
-	public void add_blobReel(Blob b){
-		treel.add_blob(b);
+	public void add_blobMigrant(Migrant b){
+		tideal.add_blob(b.getBlob());
+		treel.add_blob(b.getBlob());
+	}
+	
+	public void add_blobHibernant(BlobAgent b){
+		toriginel.add_blob(b.getBlob());
+	}
+	
+	public void remove_blobImmaginaire(Immaginaire b){
+		tideal.remove_blob(b.getBlob());
+	}
+	
+	public void remove_blobMigrant(Migrant b){
+		tideal.remove_blob(b.getBlob());
+		treel.remove_blob(b.getBlob());
 	}
 	
 	
-	public void remove_blobAgent(Blob b){
-		tideal.remove_blob(b);
+	public void remove_blobHibernant(BlobAgent b){
+		toriginel.remove_blob(b.getBlob());
+
 	}
 	
-	public void remove_blobReel(Blob b){
-		treel.remove_blob(b);
+	public void move_blobImmaginaire(Immaginaire b){
+		tideal.move_blob(b.getBlob());
 	}
 	
-	
-	public void move_blobAgent(Blob b){
-		tideal.move_blob(b);
+	public void move_blobMigrant(Migrant b){
+		tideal.move_blob(b.getBlob());
+		treel.move_blob(b.getBlob());
 	}
 	
-	public void move_blobReel(Blob b){
-		treel.move_blob(b);
+	public void move_blobHibernant(BlobAgent b){
+		toriginel.move_blob(b.getBlob());
+
 	}
 	
 	public int getIsolement(){

@@ -4,13 +4,11 @@ import amak.AmasThread;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-import positionBluetooth.PositionThread;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 
 public class Main extends Application {
-	
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -24,18 +22,11 @@ public class Main extends Application {
 			
 			Controller runnerActivityController = loader.getController();
 			AmasThread tAmas = new AmasThread(runnerActivityController);
-			//tAmas.start();
-			
-			PositionThread tPosition = new PositionThread(runnerActivityController, tAmas);
-			tPosition.start();
+			tAmas.start();
 
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			
-		
-
-			
 			
 		} catch(Exception e) {
 			e.printStackTrace();
