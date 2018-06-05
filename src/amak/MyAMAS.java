@@ -37,6 +37,7 @@ public class MyAMAS extends Amas<MyEnvironment>{
 			blob = new Blob(xcor,ycor, couleurListe[indiceCouleur], 1, Forme.carre, true);
 			migrant = new Migrant(this, blob, controller);
 			getEnvironment().addMigrant(migrant);
+			controller.add_blobHibernant(migrant);
 		}
 		super.onInitialConfiguration();
 		System.out.println("fin de l'initilisation de MyAmas");
