@@ -25,12 +25,13 @@ public class Migrant extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
+		currentAction = Action.RESTER; // to initialise
 		BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
 		 Critere most_critic = Most_critical_critere(agentNeedingHelp);
 		 
 		 switch (most_critic){
 		 case Isolement:
-			 // trop de voisins -> criticite.ISOLEMENT<0 -> je me suicide
+			 // too few neighboors -> criticite.ISOLEMENT > 0 -> I have procreate
 			 if(criticite[Critere.Heterogeneite.getValue()] > 0)
 				 action_creer();
 			 break;
@@ -56,7 +57,7 @@ public class Migrant extends BlobAgent{
     protected void onUpdateRender() {
     	switch(currentAction){
     	case CREER :
-    		controller.add_blobImmaginaire(newFils);
+    		super.controller.add_blobImmaginaire(newFils);
     		break;
 		default:
 			break;

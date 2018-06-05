@@ -4,6 +4,7 @@ package application;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import amak.AmasThread;
 import amak.BlobAgent;
 import amak.Immaginaire;
 import amak.Migrant;
@@ -53,6 +54,8 @@ public class Controller implements Initializable{
     
     private TerrainForm toriginel;
     
+    private AmasThread tAmas;
+    
     DoubleProperty diso = new SimpleDoubleProperty(0);
     DoubleProperty hetero = new SimpleDoubleProperty(0);
     DoubleProperty stabPos = new SimpleDoubleProperty(0);
@@ -66,7 +69,10 @@ public class Controller implements Initializable{
     	System.out.println(" Valeur Degrès d'heterogénéité : " + hetero.get() + "\n");
     	System.out.println(" Valeur de la stabilité de la position du voisinage : " + stabPos.get() + "\n");
     	System.out.println(" Valeur de la stabilité de l'etat du voisinage : " + stabEtat.get() + "\n");
-    	
+    	if(tAmas != null){
+    		tAmas.setCaracteristiques(diso.getValue().intValue(), hetero.getValue().intValue(), stabEtat.getValue().intValue(), stabPos.getValue().intValue());
+    		
+    	}
     }
 
 
@@ -85,6 +91,13 @@ public class Controller implements Initializable{
 		
 		toriginel = new TerrainForm();
 		panelToriginel.getChildren().add(toriginel);
+		
+		// J'initialise à 2 chaque sliders.
+		Sdiso.setValue(2);
+		sHeterogeneite.setValue(2);
+		sStabilitéEtat.setValue(2);
+		sStabilitéPosition.setValue(2);
+		
 		
 		
 	}
@@ -150,6 +163,16 @@ public class Controller implements Initializable{
 	public int getDistanceRepresentation(){
 		//TODO
 		return(0);
+	}
+
+
+	public AmasThread gettAmas() {
+		return tAmas;
+	}
+
+
+	public void settAmas(AmasThread tAmas) {
+		this.tAmas = tAmas;
 	}
 	
 

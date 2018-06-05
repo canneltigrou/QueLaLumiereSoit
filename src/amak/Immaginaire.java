@@ -8,7 +8,6 @@ public class Immaginaire extends BlobAgent{
 
 	public Immaginaire(MyAMAS amas, Blob b, Controller controller) {
 		super(amas, b, controller);
-		// TODO Auto-generated constructor stub
 		
 	}
 	
@@ -39,12 +38,13 @@ public class Immaginaire extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
+		 currentAction = Action.RESTER; // to initialise
 	     BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
 		 Critere most_critic = Most_critical_critere(agentNeedingHelp);
 		 
 		 switch (most_critic){
 		 case Isolement:
-			 // trop de voisins -> criticite.ISOLEMENT<0 -> je me suicide
+			 // too many neighboors -> criticite.ISOLEMENT<0 -> I have to kill myself
 			 if(criticite[Critere.Heterogeneite.getValue()] < 0)
 				 action_se_suicider();
 			 else

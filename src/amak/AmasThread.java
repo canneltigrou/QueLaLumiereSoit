@@ -1,5 +1,7 @@
 package amak;
+import application.BlobForm;
 import application.Controller;
+import javafx.application.Platform;
 import positionBluetooth.PositionThread;
 
 public class AmasThread extends Thread{
@@ -43,11 +45,21 @@ public class AmasThread extends Thread{
 	}
 	
 	public void t0_to_tr(Migrant blob){
-		blob.t0_to_tr();
+
+		Platform.runLater(new Runnable() {
+			public void run() {
+				blob.t0_to_tr();
+			}
+		});
+		
 	}
 	
 	public void tr_to_t0(Migrant blob){
-		blob.tr_to_t0();
+		Platform.runLater(new Runnable() {
+			public void run() {
+				blob.tr_to_t0();
+			}
+		});
 	}
 	
 	
@@ -69,6 +81,21 @@ public class AmasThread extends Thread{
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
+	
+	
+	public void setCaracteristiques(int isolement, int heterogeneite, int stabilite_etat, int stabilite_position){
+		Platform.runLater(new Runnable() {
+			public void run() {
+				myAmas.getEnvironment().setIsolement(isolement);
+				myAmas.getEnvironment().setHeterogeneite(heterogeneite);
+				myAmas.getEnvironment().setStabilite_etat(stabilite_etat);
+				myAmas.getEnvironment().setStabilite_position(stabilite_position);
+			}
+		});
+		
+	}
+	
+	
 	
 }
 

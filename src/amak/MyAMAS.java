@@ -27,14 +27,17 @@ public class MyAMAS extends Amas<MyEnvironment>{
 		double xcor;
 		double ycor;
 		Couleur[] couleurListe = Couleur.values();
-		int indiceCouleur; 
+		int indiceCouleur;
+		int indiceForme;
+		Forme[] formeListe = Forme.values();
 		Blob blob;
 		controller = (Controller) params[0];		
 		for(int i = nbBlobs ; i > 0 ; i--){
 			xcor = Math.random() * ( 100 );
 			ycor = Math.random() * ( 100 );
 			indiceCouleur = (int) (Math.random() * ( couleurListe.length ));
-			blob = new Blob(xcor,ycor, couleurListe[indiceCouleur], 1, Forme.carre, true);
+			indiceForme = (int) (Math.random() * (formeListe.length));
+			blob = new Blob(xcor,ycor, couleurListe[indiceCouleur], 1, formeListe[indiceForme], true);
 			migrant = new Migrant(this, blob, controller);
 			getEnvironment().addMigrant(migrant);
 			controller.add_blobHibernant(migrant);
