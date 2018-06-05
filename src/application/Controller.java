@@ -47,8 +47,6 @@ public class Controller implements Initializable{
     private AnchorPane panelToriginel;
     
     
-    DoubleProperty Diso = new SimpleDoubleProperty(0);
-    
     private TerrainForm tideal;
     
     private TerrainForm treel; 
@@ -74,7 +72,7 @@ public class Controller implements Initializable{
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		Diso.bind(Sdiso.valueProperty());
+		diso.bind(Sdiso.valueProperty());
 		hetero.bind(sHeterogeneite.valueProperty());
 		stabPos.bind(sStabilitéPosition.valueProperty());
 		stabEtat.bind(sStabilitéEtat.valueProperty());
@@ -86,7 +84,7 @@ public class Controller implements Initializable{
 		panelTreel.getChildren().add(treel);
 		
 		toriginel = new TerrainForm();
-		panelToriginel.getChildren();
+		panelToriginel.getChildren().add(toriginel);
 		
 		
 	}
