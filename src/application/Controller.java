@@ -47,11 +47,15 @@ public class Controller implements Initializable{
     @FXML
     private AnchorPane panelToriginel;
     
+    @FXML
+    private Slider STauxMurissement;
     
-    private TerrainForm tideal;
+    @FXML
+    private Slider SDistanceRéalité;
     
-    private TerrainForm treel; 
     
+    private TerrainForm tideal;  
+    private TerrainForm treel;    
     private TerrainForm toriginel;
     
     private AmasThread tAmas;
@@ -60,20 +64,56 @@ public class Controller implements Initializable{
     DoubleProperty hetero = new SimpleDoubleProperty(0);
     DoubleProperty stabPos = new SimpleDoubleProperty(0);
     DoubleProperty stabEtat = new SimpleDoubleProperty(0);
+    DoubleProperty tauxMur = new SimpleDoubleProperty(0);
+    DoubleProperty distanceRéalité = new SimpleDoubleProperty(0);
 
 
 	@FXML
-    void clic(MouseEvent event) {
+    void clicIso(MouseEvent event) {
     	
     	System.out.println(" Valeur Degrès d'isolement : " + diso.get() + "\n");
+    	
+    }
+	
+	@FXML
+    void clicHeter(MouseEvent event) {
+    	
     	System.out.println(" Valeur Degrès d'heterogénéité : " + hetero.get() + "\n");
+    	
+    }
+	
+	@FXML
+    void clicStabPos(MouseEvent event) {
+    	
     	System.out.println(" Valeur de la stabilité de la position du voisinage : " + stabPos.get() + "\n");
+    	
+    }
+	
+	@FXML
+    void clicEtatVois(MouseEvent event) {
+    	
     	System.out.println(" Valeur de la stabilité de l'etat du voisinage : " + stabEtat.get() + "\n");
     	if(tAmas != null){
     		tAmas.setCaracteristiques(diso.getValue().intValue(), hetero.getValue().intValue(), stabEtat.getValue().intValue(), stabPos.getValue().intValue());
     		
     	}
     }
+	
+	@FXML
+    void clicTauxMur(MouseEvent event) {
+    	
+    	System.out.println(" Valeur de la stabilité du taux de murriseement : " + tauxMur.get() + "\n");
+    	
+    }
+	
+	@FXML
+    void clicDistRéa(MouseEvent event) {
+    	
+    	System.out.println(" Valeur de la stabilité de la distance à la réalité : " + distanceRéalité.get() + "\n");
+    	
+    }
+	
+	
 
 
 	@Override
@@ -82,6 +122,9 @@ public class Controller implements Initializable{
 		hetero.bind(sHeterogeneite.valueProperty());
 		stabPos.bind(sStabilitéPosition.valueProperty());
 		stabEtat.bind(sStabilitéEtat.valueProperty());
+		tauxMur.bind(STauxMurissement.valueProperty());
+	    distanceRéalité.bind(SDistanceRéalité.valueProperty());
+	    
 		
 		tideal = new TerrainForm();
 		panelTideal.getChildren().add(tideal);
