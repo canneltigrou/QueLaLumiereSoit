@@ -43,7 +43,20 @@
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                                        <children>
-                                          <Slider fx:id="Sdiso" layoutX="32.0" majorTickUnit="10.0" minorTickCount="10" onMouseClicked="#clic" orientation="VERTICAL" prefHeight="228.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="38.5" AnchorPane.topAnchor="0.0" />
+                                          <SplitPane dividerPositions="0.8894348894348895" layoutX="14.0" layoutY="104.0" orientation="VERTICAL" prefHeight="408.0" prefWidth="170.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
+                                                   <children>
+                                                      <Slider fx:id="Sdiso" layoutX="77.0" layoutY="100.0" majorTickUnit="10.0" minorTickCount="10" onMouseClicked="#clicIso" orientation="VERTICAL" prefHeight="332.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="78.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <TextField layoutX="20.0" layoutY="23.0" prefHeight="69.0" prefWidth="170.0" text="D isolement" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
@@ -52,23 +65,59 @@
                                             <items>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                                                    <children>
-                                                      <Slider fx:id="sStabilitéEtat" layoutX="29.0" layoutY="44.0" onMouseClicked="#clic" orientation="VERTICAL" prefHeight="227.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.5" AnchorPane.topAnchor="0.0" />
+                                                      <SplitPane dividerPositions="0.8891625615763546" layoutX="-11.0" layoutY="37.0" orientation="VERTICAL" prefHeight="407.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <items>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
+                                                               <children>
+                                                                  <Slider fx:id="sStabilitéEtat" layoutX="81.0" layoutY="20.0" onMouseClicked="#clicEtatVois" orientation="VERTICAL" prefHeight="358.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                               <children>
+                                                                  <TextField layoutX="60.0" layoutY="-4.0" prefHeight="42.0" prefWidth="160.0" text="stabilité etat " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                        </items>
+                                                      </SplitPane>
                                                    </children>
                                                 </AnchorPane>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                                    <children>
-                                                      <SplitPane dividerPositions="0.5" layoutX="-13.0" layoutY="53.0" prefHeight="227.0" prefWidth="174.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                      <SplitPane dividerPositions="0.5, 0.5" layoutX="-13.0" layoutY="53.0" prefHeight="227.0" prefWidth="174.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                         <items>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                                                                <children>
-                                                                  <Slider fx:id="sStabilitéPosition" layoutX="35.0" layoutY="57.0" onMouseClicked="#clic" orientation="VERTICAL" prefHeight="226.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="0.0" />
+                                                                  <SplitPane dividerPositions="0.8864197530864197" layoutX="-19.0" layoutY="68.0" orientation="VERTICAL" prefHeight="406.0" prefWidth="161.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                    <items>
+                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
+                                                                           <children>
+                                                                              <Slider fx:id="sStabilitéPosition" layoutX="80.0" layoutY="82.0" onMouseClicked="#clicStabPos" orientation="VERTICAL" prefHeight="356.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.5" AnchorPane.topAnchor="0.0" />
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                                           <children>
+                                                                              <TextField layoutX="-13.0" layoutY="-13.0" prefHeight="43.0" prefWidth="161.0" text="stabilité position" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                    </items>
+                                                                  </SplitPane>
                                                                </children>
                                                             </AnchorPane>
-                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
-                                                               <children>
-                                                                  <Slider fx:id="sHeterogeneite" layoutX="35.0" layoutY="49.0" onMouseClicked="#clic" orientation="VERTICAL" prefHeight="226.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="0.0" />
-                                                               </children>
-                                                            </AnchorPane>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" />
+                                                            <SplitPane dividerPositions="0.8814814814814815" orientation="VERTICAL" prefHeight="407.0" prefWidth="160.0">
+                                                               <items>
+                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
+                                                                     <children>
+                                                                        <Slider fx:id="sHeterogeneite" layoutX="70.0" layoutY="23.0" onMouseClicked="#clicHeter" orientation="VERTICAL" prefHeight="354.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="69.0" AnchorPane.topAnchor="0.0" />
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="152.0">
+                                                                     <children>
+                                                                        <TextField layoutX="33.0" layoutY="4.0" prefHeight="45.0" prefWidth="152.0" text="stabilité Hétéro" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                               </items>
+                                                            </SplitPane>
                                                         </items>
                                                       </SplitPane>
                                                    </children>
@@ -83,14 +132,55 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                            <children>
-                              <StackedBarChart layoutX="-81.0" layoutY="-96.0" prefHeight="229.0" prefWidth="367.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <xAxis>
-                                  <CategoryAxis side="BOTTOM" />
-                                </xAxis>
-                                <yAxis>
-                                  <NumberAxis side="LEFT" />
-                                </yAxis>
-                              </StackedBarChart>
+                              <SplitPane dividerPositions="0.2526002971768202" layoutX="227.0" layoutY="88.0" prefHeight="409.0" prefWidth="673.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                                       <children>
+                                          <SplitPane dividerPositions="0.8820638820638821" layoutX="8.0" layoutY="-86.0" orientation="VERTICAL" prefHeight="408.0" prefWidth="197.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
+                                                   <children>
+                                                      <Slider fx:id="SDistanceRéalité" layoutX="76.0" layoutY="-55.0" onMouseClicked="#clicDistRéa" orientation="VERTICAL" prefHeight="356.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="91.5" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <TextField layoutX="50.0" layoutY="8.0" prefHeight="45.0" prefWidth="197.0" text="distance Réalité" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                             </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                                       <children>
+                                          <SplitPane dividerPositions="0.29797979797979796" layoutX="134.0" layoutY="111.0" prefHeight="408.0" prefWidth="468.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                                                   <children>
+                                                      <SplitPane dividerPositions="0.8817733990147784" layoutX="-12.0" layoutY="141.0" orientation="VERTICAL" prefHeight="407.0" prefWidth="135.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <items>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="355.0" prefWidth="155.0" styleClass="background">
+                                                               <children>
+                                                                  <Slider fx:id="STauxMurissement" layoutX="69.0" layoutY="24.0" onMouseClicked="#clicTauxMur" orientation="VERTICAL" prefHeight="355.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.5" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                               <children>
+                                                                  <TextField layoutX="1.0" layoutY="-2.0" prefHeight="45.0" prefWidth="135.0" text="T murissement" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                        </items>
+                                                      </SplitPane>
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" />
+                                            </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
                            </children></AnchorPane>
                     </items>
                   </SplitPane>
