@@ -46,6 +46,8 @@ public class Blob {
 		return(new Blob(coordonnee[0], coordonnee[1], globules_couleurs.get(0), pulsation, forme, real));
 	}
 	
+	
+	/*
 	// fonction qui à partir de coordonnées initiales, propose de nouvelles coordonnées à un certain rayon (le pas).
 	public double[] nouvellesCoordonnees(){
 		double[] res = new double[2];
@@ -60,7 +62,7 @@ public class Blob {
 			sign = -1;
 		res[1] =  coordonnee[1] + (sign * Math.sqrt(pas * pas + (res[0] - coordonnee[0]) * (res[0] - coordonnee[0]) ));
 		return res;
-	}
+	}*/
 	
 	
 	

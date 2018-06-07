@@ -52,7 +52,7 @@ public class Controller implements Initializable{
     
     private TerrainForm treel; 
     
-    private TerrainForm toriginel;
+    private ToForm toriginel;
     
     private AmasThread tAmas;
     
@@ -89,7 +89,7 @@ public class Controller implements Initializable{
 		treel = new TerrainForm();
 		panelTreel.getChildren().add(treel);
 		
-		toriginel = new TerrainForm();
+		toriginel = new ToForm();
 		panelToriginel.getChildren().add(toriginel);
 		
 		// J'initialise à 2 chaque sliders.

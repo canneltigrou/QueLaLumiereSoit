@@ -27,7 +27,9 @@ public class Migrant extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
-		currentAction = Action.SE_DEPLACER; // to initialise
+		currentAction = Action.RESTER; // to initialise
+		if (isHome)
+			action_se_deplacer();
 		BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
 		 Critere most_critic = Most_critical_critere(agentNeedingHelp);
 		 
@@ -35,10 +37,7 @@ public class Migrant extends BlobAgent{
 		 case Isolement:
 			 // too few neighboors -> criticite.ISOLEMENT > 0 -> I have procreate
 			 if(criticite[Critere.Isolement.getValue()] > 0)
-			 {
-				 System.out.println("je procrée");
 				 action_creer();
-			 }
 			 break;
 				 
 		 case Stabilite_etat:
