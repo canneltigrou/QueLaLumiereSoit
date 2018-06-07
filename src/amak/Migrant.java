@@ -9,7 +9,7 @@ public class Migrant extends BlobAgent{
 	
 	private boolean isHome;
 	private boolean isRiped;
-	private int cpt_hibernation;
+	//private int cpt_hibernation;
 	
 	public Migrant(MyAMAS amas, Blob b, Controller controller) {
 		super(amas, b, controller);

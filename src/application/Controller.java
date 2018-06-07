@@ -33,10 +33,10 @@ public class Controller implements Initializable{
     private Label AffichDiso;
 
     @FXML
-    private Slider sStabilitéPosition;
+    private Slider sStabilitePosition;
 
     @FXML
-    private Slider sStabilitéEtat;
+    private Slider sStabiliteEtat;
 
     @FXML
     private AnchorPane panelTideal;
@@ -51,7 +51,7 @@ public class Controller implements Initializable{
     private Slider STauxMurissement;
     
     @FXML
-    private Slider SDistanceRéalité;
+    private Slider SDistanceRealite;
     
     
 
@@ -66,34 +66,34 @@ public class Controller implements Initializable{
     DoubleProperty stabPos = new SimpleDoubleProperty(0);
     DoubleProperty stabEtat = new SimpleDoubleProperty(0);
     DoubleProperty tauxMur = new SimpleDoubleProperty(0);
-    DoubleProperty distanceRéalité = new SimpleDoubleProperty(0);
+    DoubleProperty distanceRealite = new SimpleDoubleProperty(0);
 
 
 	@FXML
     void clicIso(MouseEvent event) {
     	
-    	System.out.println(" Valeur Degrès d'isolement : " + diso.get() + "\n");
-    	
+    	System.out.println(" Valeur Degr�s d'isolement : " + diso.get() + "\n");
+    	tAmas.setIsolement(diso.getValue().intValue());
     }
 	
 	@FXML
     void clicHeter(MouseEvent event) {
     	
-    	System.out.println(" Valeur Degrès d'heterogénéité : " + hetero.get() + "\n");
+    	System.out.println(" Valeur Degr�s d'heterog�n�it� : " + hetero.get() + "\n");
     	
     }
 	
 	@FXML
     void clicStabPos(MouseEvent event) {
     	
-    	System.out.println(" Valeur de la stabilité de la position du voisinage : " + stabPos.get() + "\n");
+    	System.out.println(" Valeur de la stabilit� de la position du voisinage : " + stabPos.get() + "\n");
     	
     }
 	
 	@FXML
     void clicEtatVois(MouseEvent event) {
     	
-    	System.out.println(" Valeur de la stabilité de l'etat du voisinage : " + stabEtat.get() + "\n");
+    	System.out.println(" Valeur de la stabilit� de l'etat du voisinage : " + stabEtat.get() + "\n");
     	if(tAmas != null){
     		tAmas.setCaracteristiques(diso.getValue().intValue(), hetero.getValue().intValue(), stabEtat.getValue().intValue(), stabPos.getValue().intValue());
     		
@@ -108,9 +108,9 @@ public class Controller implements Initializable{
     }
 	
 	@FXML
-    void clicDistRéa(MouseEvent event) {
+    void clicDistRea(MouseEvent event) {
     	
-    	System.out.println(" Valeur de la stabilité de la distance à la réalité : " + distanceRéalité.get() + "\n");
+    	System.out.println(" Valeur de la stabilit� de la distance � la r�alit� : " + distanceRealite.get() + "\n");
     	
     }
 	
@@ -121,10 +121,10 @@ public class Controller implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		diso.bind(Sdiso.valueProperty());
 		hetero.bind(sHeterogeneite.valueProperty());
-		stabPos.bind(sStabilitéPosition.valueProperty());
-		stabEtat.bind(sStabilitéEtat.valueProperty());
+		stabPos.bind(sStabilitePosition.valueProperty());
+		stabEtat.bind(sStabiliteEtat.valueProperty());
 		tauxMur.bind(STauxMurissement.valueProperty());
-	    distanceRéalité.bind(SDistanceRéalité.valueProperty());
+	    distanceRealite.bind(SDistanceRealite.valueProperty());
 	    
 		
 		tideal = new TerrainForm();
@@ -139,8 +139,8 @@ public class Controller implements Initializable{
 		// J'initialise à 2 chaque sliders.
 		Sdiso.setValue(2);
 		sHeterogeneite.setValue(2);
-		sStabilitéEtat.setValue(2);
-		sStabilitéPosition.setValue(2);
+		sStabiliteEtat.setValue(2);
+		sStabilitePosition.setValue(2);
 		
 		
 		
@@ -197,11 +197,11 @@ public class Controller implements Initializable{
 	}
 	
 	public int getStabiliteHeterogeneite(){
-		return(sStabilitéEtat.valueProperty().intValue());
+		return(sStabiliteEtat.valueProperty().intValue());
 	}
 	
 	public int getStabilitePosition(){
-		return(sStabilitéPosition.valueProperty().intValue());
+		return(sStabilitePosition.valueProperty().intValue());
 	}
 	
 	public int getDistanceRepresentation(){

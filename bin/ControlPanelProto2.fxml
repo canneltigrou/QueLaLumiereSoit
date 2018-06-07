@@ -69,12 +69,12 @@
                                                         <items>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
                                                                <children>
-                                                                  <Slider fx:id="sStabilitéEtat" layoutX="81.0" layoutY="20.0" onMouseClicked="#clicEtatVois" orientation="VERTICAL" prefHeight="358.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="0.0" />
+                                                                  <Slider fx:id="sStabiliteEtat" layoutX="81.0" layoutY="20.0" onMouseClicked="#clicEtatVois" orientation="VERTICAL" prefHeight="358.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                                <children>
-                                                                  <TextField layoutX="60.0" layoutY="-4.0" prefHeight="42.0" prefWidth="160.0" text="stabilité etat " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <TextField layoutX="60.0" layoutY="-4.0" prefHeight="42.0" prefWidth="160.0" text="stabilite etat " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                         </items>
@@ -91,12 +91,12 @@
                                                                     <items>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
                                                                            <children>
-                                                                              <Slider fx:id="sStabilitéPosition" layoutX="80.0" layoutY="82.0" onMouseClicked="#clicStabPos" orientation="VERTICAL" prefHeight="356.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.5" AnchorPane.topAnchor="0.0" />
+                                                                              <Slider fx:id="sStabilitePosition" layoutX="80.0" layoutY="82.0" onMouseClicked="#clicStabPos" orientation="VERTICAL" prefHeight="356.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.5" AnchorPane.topAnchor="0.0" />
                                                                            </children>
                                                                         </AnchorPane>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                                            <children>
-                                                                              <TextField layoutX="-13.0" layoutY="-13.0" prefHeight="43.0" prefWidth="161.0" text="stabilité position" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                              <TextField layoutX="-13.0" layoutY="-13.0" prefHeight="43.0" prefWidth="161.0" text="stabilite position" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                            </children>
                                                                         </AnchorPane>
                                                                     </items>
@@ -113,7 +113,7 @@
                                                                   </AnchorPane>
                                                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="152.0">
                                                                      <children>
-                                                                        <TextField layoutX="33.0" layoutY="4.0" prefHeight="45.0" prefWidth="152.0" text="stabilité Hétéro" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                        <TextField layoutX="33.0" layoutY="4.0" prefHeight="45.0" prefWidth="152.0" text="stabilite Hetero" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                      </children>
                                                                   </AnchorPane>
                                                                </items>
@@ -140,12 +140,12 @@
                                              <items>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
                                                    <children>
-                                                      <Slider fx:id="SDistanceRéalité" layoutX="76.0" layoutY="-55.0" onMouseClicked="#clicDistRéa" orientation="VERTICAL" prefHeight="356.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="91.5" AnchorPane.topAnchor="0.0" />
+                                                      <Slider fx:id="SDistanceRealite" layoutX="76.0" layoutY="-55.0" onMouseClicked="#clicDistRea" orientation="VERTICAL" prefHeight="356.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="91.5" AnchorPane.topAnchor="0.0" />
                                                    </children>
                                                 </AnchorPane>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                    <children>
-                                                      <TextField layoutX="50.0" layoutY="8.0" prefHeight="45.0" prefWidth="197.0" text="distance Réalité" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                      <TextField layoutX="50.0" layoutY="8.0" prefHeight="45.0" prefWidth="197.0" text="distance Realite" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                    </children>
                                                 </AnchorPane>
                                              </items>

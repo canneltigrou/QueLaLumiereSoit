@@ -96,7 +96,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 	
 	protected void action_se_deplacer(){
-		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, 1);
+		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, 0.2);
 		blob.setCoordonnee(tmp);
 		currentAction = Action.SE_DEPLACER;	
 	}
