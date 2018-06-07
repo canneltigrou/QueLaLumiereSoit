@@ -16,7 +16,7 @@ public class MyEnvironment extends Environment {
 	private int stabilite_position;
 	private int heterogeneite;
 	private int distanceRepresentation;
-	private int tauxMurissemnt;
+	//private int tauxMurissemnt;
 	public double rayonTerrain = 12.5; // exprimé en metres
 	
 	/* communication avec l'interface graphique */
