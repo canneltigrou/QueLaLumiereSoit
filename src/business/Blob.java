@@ -2,6 +2,8 @@ package business;
 
 import java.util.ArrayList;
 
+import com.sun.org.apache.xml.internal.resolver.readers.XCatalogReader;
+
 public class Blob {
 	//private String id;
 	private int pulsation;
@@ -13,6 +15,7 @@ public class Blob {
 	private int cpt_state;
 	private int cpt_position;
 	private boolean real;
+	private double pas = 10;
 	
 	private ArrayList<Couleur> globules_couleurs;
 	private ArrayList<double[]> globules_position;
@@ -42,6 +45,24 @@ public class Blob {
 	public Blob copy_blob(){
 		return(new Blob(coordonnee[0], coordonnee[1], globules_couleurs.get(0), pulsation, forme, real));
 	}
+	
+	
+	/*
+	// fonction qui à partir de coordonnées initiales, propose de nouvelles coordonnées à un certain rayon (le pas).
+	public double[] nouvellesCoordonnees(){
+		double[] res = new double[2];
+		// coo[0] - pas < res[0] < coo[0] + pas
+		res[0] = (Math.random() * 2 * pas) - pas + coordonnee[0];
+		
+		// j'utilise l'equation d'un cercle de rayon pas.
+		// (res[0] - coo[0])² + (res[1] - coo[1])² = pas²
+		// à partir de res[0], j'ai 2 solutions possible pour res[1]. 1 positive, une négative. choisissons aléatoirement.
+		double sign = 1;
+		if (Math.random() < 0.5)
+			sign = -1;
+		res[1] =  coordonnee[1] + (sign * Math.sqrt(pas * pas + (res[0] - coordonnee[0]) * (res[0] - coordonnee[0]) ));
+		return res;
+	}*/
 	
 	
 	
