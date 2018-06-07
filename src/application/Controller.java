@@ -33,10 +33,10 @@ public class Controller implements Initializable{
     private Label AffichDiso;
 
     @FXML
-    private Slider sStabilitÈPosition;
+    private Slider sStabilit√©Position;
 
     @FXML
-    private Slider sStabilitÈEtat;
+    private Slider sStabilit√©Etat;
 
     @FXML
     private AnchorPane panelTideal;
@@ -47,11 +47,16 @@ public class Controller implements Initializable{
     @FXML
     private AnchorPane panelToriginel;
     
+    @FXML
+    private Slider STauxMurissement;
     
-    private TerrainForm tideal;
+    @FXML
+    private Slider SDistanceR√©alit√©;
     
-    private TerrainForm treel; 
     
+
+    private TerrainForm tideal;  
+    private TerrainForm treel;    
     private ToForm toriginel;
     
     private AmasThread tAmas;
@@ -60,28 +65,67 @@ public class Controller implements Initializable{
     DoubleProperty hetero = new SimpleDoubleProperty(0);
     DoubleProperty stabPos = new SimpleDoubleProperty(0);
     DoubleProperty stabEtat = new SimpleDoubleProperty(0);
+    DoubleProperty tauxMur = new SimpleDoubleProperty(0);
+    DoubleProperty distanceR√©alit√© = new SimpleDoubleProperty(0);
 
 
 	@FXML
-    void clic(MouseEvent event) {
+    void clicIso(MouseEvent event) {
     	
-    	System.out.println(" Valeur DegrËs d'isolement : " + diso.get() + "\n");
-    	System.out.println(" Valeur DegrËs d'heterogÈnÈitÈ : " + hetero.get() + "\n");
-    	System.out.println(" Valeur de la stabilitÈ de la position du voisinage : " + stabPos.get() + "\n");
-    	System.out.println(" Valeur de la stabilitÈ de l'etat du voisinage : " + stabEtat.get() + "\n");
+    	System.out.println(" Valeur Degr√®s d'isolement : " + diso.get() + "\n");
+    	
+    }
+	
+	@FXML
+    void clicHeter(MouseEvent event) {
+    	
+    	System.out.println(" Valeur Degr√®s d'heterog√©n√©it√© : " + hetero.get() + "\n");
+    	
+    }
+	
+	@FXML
+    void clicStabPos(MouseEvent event) {
+    	
+    	System.out.println(" Valeur de la stabilit√© de la position du voisinage : " + stabPos.get() + "\n");
+    	
+    }
+	
+	@FXML
+    void clicEtatVois(MouseEvent event) {
+    	
+    	System.out.println(" Valeur de la stabilit√© de l'etat du voisinage : " + stabEtat.get() + "\n");
     	if(tAmas != null){
     		tAmas.setCaracteristiques(diso.getValue().intValue(), hetero.getValue().intValue(), stabEtat.getValue().intValue(), stabPos.getValue().intValue());
     		
     	}
     }
+	
+	@FXML
+    void clicTauxMur(MouseEvent event) {
+    	
+    	System.out.println(" Valeur de la stabilit√© du taux de murriseement : " + tauxMur.get() + "\n");
+    	
+    }
+	
+	@FXML
+    void clicDistR√©a(MouseEvent event) {
+    	
+    	System.out.println(" Valeur de la stabilit√© de la distance √† la r√©alit√© : " + distanceR√©alit√©.get() + "\n");
+    	
+    }
+	
+	
 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		diso.bind(Sdiso.valueProperty());
 		hetero.bind(sHeterogeneite.valueProperty());
-		stabPos.bind(sStabilitÈPosition.valueProperty());
-		stabEtat.bind(sStabilitÈEtat.valueProperty());
+		stabPos.bind(sStabilit√©Position.valueProperty());
+		stabEtat.bind(sStabilit√©Etat.valueProperty());
+		tauxMur.bind(STauxMurissement.valueProperty());
+	    distanceR√©alit√©.bind(SDistanceR√©alit√©.valueProperty());
+	    
 		
 		tideal = new TerrainForm();
 		panelTideal.getChildren().add(tideal);
@@ -92,11 +136,11 @@ public class Controller implements Initializable{
 		toriginel = new ToForm();
 		panelToriginel.getChildren().add(toriginel);
 		
-		// J'initialise ‡ 2 chaque sliders.
+		// J'initialise √† 2 chaque sliders.
 		Sdiso.setValue(2);
 		sHeterogeneite.setValue(2);
-		sStabilitÈEtat.setValue(2);
-		sStabilitÈPosition.setValue(2);
+		sStabilit√©Etat.setValue(2);
+		sStabilit√©Position.setValue(2);
 		
 		
 		
@@ -153,11 +197,11 @@ public class Controller implements Initializable{
 	}
 	
 	public int getStabiliteHeterogeneite(){
-		return(sStabilitÈEtat.valueProperty().intValue());
+		return(sStabilit√©Etat.valueProperty().intValue());
 	}
 	
 	public int getStabilitePosition(){
-		return(sStabilitÈPosition.valueProperty().intValue());
+		return(sStabilit√©Position.valueProperty().intValue());
 	}
 	
 	public int getDistanceRepresentation(){
@@ -179,7 +223,7 @@ public class Controller implements Initializable{
 }
 
 /*
-il suffit de construire une BufferedImage (format d'image standard de Java) et de la passer ‡ un ImagePlus ou ImageProcessor (format ImageJ).
+il suffit de construire une BufferedImage (format d'image standard de Java) et de la passer √† un ImagePlus ou ImageProcessor (format ImageJ).
 
 BufferedImage monimage = new BufferedImage(width, height, BufferedImage.LeTypeVoulu) ;
 
