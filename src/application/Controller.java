@@ -53,6 +53,9 @@ public class Controller implements Initializable{
     @FXML
     private Slider SDistanceRéalité;
     
+    @FXML
+    private Slider sRadiusVoisins;
+    
     
     private TerrainForm tideal;  
     private TerrainForm treel;    
@@ -66,6 +69,8 @@ public class Controller implements Initializable{
     DoubleProperty stabEtat = new SimpleDoubleProperty(0);
     DoubleProperty tauxMur = new SimpleDoubleProperty(0);
     DoubleProperty distanceRéalité = new SimpleDoubleProperty(0);
+    DoubleProperty radiusVoisins = new SimpleDoubleProperty(0);
+
 
 
 	@FXML
@@ -113,6 +118,15 @@ public class Controller implements Initializable{
     	
     }
 	
+    @FXML
+    void clicRadiusVosins(MouseEvent event) {
+    	
+    	System.out.println(" Valeur du radius des voisins : " + radiusVoisins.get() + "\n");
+
+
+    }
+	
+	
 	
 
 
@@ -124,7 +138,7 @@ public class Controller implements Initializable{
 		stabEtat.bind(sStabilitéEtat.valueProperty());
 		tauxMur.bind(STauxMurissement.valueProperty());
 	    distanceRéalité.bind(SDistanceRéalité.valueProperty());
-	    
+	    radiusVoisins.bind(sRadiusVoisins.valueProperty());
 		
 		tideal = new TerrainForm();
 		panelTideal.getChildren().add(tideal);
