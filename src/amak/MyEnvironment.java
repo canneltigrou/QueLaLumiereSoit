@@ -10,13 +10,13 @@ public class MyEnvironment extends Environment {
 	private ArrayList<BlobAgent> agents;
 	private ArrayList<Migrant> hibernants;
 	private int radius = 4; // radius utilisé pour les différents sliders
-	/* possede les valeurs des differents sliders*/
+	/* possede les valeurs des differents curseurs*/
 	private int isolement;
 	private int stabilite_etat;
 	private int stabilite_position;
 	private int heterogeneite;
-	private int distanceRepresentation;
-	//private int tauxMurissemnt;
+	private int distanceRealite;
+	private int tauxMurissemnt;
 	public double rayonTerrain = 12.5; // exprimé en metres
 	
 	/* communication avec l'interface graphique */
@@ -38,7 +38,7 @@ public class MyEnvironment extends Environment {
 		stabilite_etat = controller.getStabiliteHeterogeneite();
 		stabilite_position = controller.getStabilitePosition();
 		heterogeneite = controller.getHeterogenite();
-		setDistanceRepresentation(controller.getDistanceRepresentation());
+		setDistanceRealite(controller.getDistanceRealite());
 		
 		
 	}
@@ -220,12 +220,22 @@ public class MyEnvironment extends Environment {
 		this.controller = controller;
 	}
 
-	public int getDistanceRepresentation() {
-		return distanceRepresentation;
+	public int getDistanceRealite() {
+		return distanceRealite;
 	}
 
-	public void setDistanceRepresentation(int distanceRepresentation) {
-		this.distanceRepresentation = distanceRepresentation;
+	public void setDistanceRealite(int distanceRealite) {
+		this.distanceRealite = distanceRealite;
+	}
+
+
+	public int getTauxMurissemnt() {
+		return tauxMurissemnt;
+	}
+
+
+	public void setTauxMurissemnt(int tauxMurissemnt) {
+		this.tauxMurissemnt = tauxMurissemnt;
 	}
 
 

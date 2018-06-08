@@ -7,7 +7,6 @@ public class AmasThread extends Thread{
 	Controller controller;
 	MyAMAS myAmas;
 	PositionThread tposition;
-	//HashMap<Blob, BlobAgent> map;
 	
 	public PositionThread getTposition() {
 		return tposition;
@@ -99,6 +98,47 @@ public class AmasThread extends Thread{
 				myAmas.getEnvironment().setIsolement(isolement);
 			}
 		});
+	}
+
+	public void setHeterogeneite(int heterogeneite) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				myAmas.getEnvironment().setHeterogeneite(heterogeneite);
+			}
+		});		
+	}
+
+	public void setStabiliteEtat(int stabilite_etat) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				myAmas.getEnvironment().setStabilite_etat(stabilite_etat);
+			}
+		});			
+	}
+
+	public void setStabilitePosition(int stabilite_position) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				myAmas.getEnvironment().setStabilite_position(stabilite_position);;
+			}
+		});		
+		
+	}
+
+	public void setTauxMurissement(int tauxMurissemnt) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				myAmas.getEnvironment().setTauxMurissemnt(tauxMurissemnt);;;
+			}
+		});		
+	}
+
+	public void setDistanceRealite(int distanceRepresentation) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				myAmas.getEnvironment().setDistanceRealite(distanceRepresentation);
+			}
+		});			
 	}
 	
 	
