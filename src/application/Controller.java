@@ -119,7 +119,7 @@ public class Controller implements Initializable{
     }
 	
     @FXML
-    void clicRadiusVosins(MouseEvent event) {
+    void clicRadiusVoisins(MouseEvent event) {
     	
     	System.out.println(" Valeur du radius des voisins : " + radiusVoisins.get() + "\n");
 
