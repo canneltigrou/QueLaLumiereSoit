@@ -54,6 +54,9 @@ public class Controller implements Initializable{
     @FXML
     private Slider SDistanceRealite;
     
+    @FXML
+    private Slider sRadiusVoisins;
+    
     
 
     private TerrainForm tideal;  
@@ -67,37 +70,33 @@ public class Controller implements Initializable{
     DoubleProperty stabPos = new SimpleDoubleProperty(0);
     DoubleProperty stabEtat = new SimpleDoubleProperty(0);
     DoubleProperty tauxMur = new SimpleDoubleProperty(0);
+
+    DoubleProperty radiusVoisins = new SimpleDoubleProperty(0);
     DoubleProperty distanceRealite = new SimpleDoubleProperty(0);
 
 
 	@FXML
     void clicIso(MouseEvent event) {
     	
-    	System.out.println(" Valeur Degr�s d'isolement : " + diso.get() + "\n");
+    	System.out.println(" Valeur DegrÃ©s d'isolement : " + diso.get() + "\n");
     	tAmas.setIsolement(diso.getValue().intValue());
     }
 	
 	@FXML
     void clicHeter(MouseEvent event) {
-    	
-    	System.out.println(" Valeur Degr�s d'heterog�n�it� : " + hetero.get() + "\n");
-    	//tAmas.setHeterogeneite(hetero.getValue().intValue());
-    	tAmas.setHeterogeneite(stabPos.getValue().intValue());
-
+    	System.out.println(" Valeur Degrés d'heterogénéité : " + hetero.get() + "\n");
+    	tAmas.setHeterogeneite(hetero.getValue().intValue());
     }
 	
 	@FXML
     void clicStabPos(MouseEvent event) {
-    	
-    	System.out.println(" Valeur de la stabilit� de la position du voisinage : " + stabPos.get() + "\n");
+    	System.out.println(" Valeur de la stabilité de la position du voisinage : " + stabPos.get() + "\n");
     	tAmas.setStabilitePosition(stabPos.getValue().intValue());
-
     }
 	
 	@FXML
     void clicEtatVois(MouseEvent event) {
-    	
-    	System.out.println(" Valeur de la stabilit� de l'etat du voisinage : " + stabEtat.get() + "\n");
+    	System.out.println(" Valeur de la stabilité de l'etat du voisinage : " + stabEtat.get() + "\n");
     	tAmas.setStabiliteEtat(stabEtat.getValue().intValue());
     	//if(tAmas != null)
     		//tAmas.setCaracteristiques(diso.getValue().intValue(), hetero.getValue().intValue(), stabEtat.getValue().intValue(), stabPos.getValue().intValue());
@@ -105,17 +104,21 @@ public class Controller implements Initializable{
 	
 	@FXML
     void clicTauxMur(MouseEvent event) {
-    	
-    	System.out.println(" Valeur de la stabilit� du taux de murriseement : " + tauxMur.get() + "\n");
+    	System.out.println(" Valeur de la stabilité du taux de murriseement : " + tauxMur.get() + "\n");
     	tAmas.setTauxMurissement(tauxMur.getValue().intValue());
     }
 	
 	@FXML
     void clicDistRea(MouseEvent event) {
-    	
-    	System.out.println(" Valeur de la distance � la r�alit� : " + distanceRealite.get() + "\n");
+    	System.out.println(" Valeur de la distance à  la réalité : " + distanceRealite.get() + "\n");
     	tAmas.setDistanceRealite(distanceRealite.getValue().intValue());
     }
+	
+    @FXML
+    void clicRadiusVoisins(MouseEvent event) {
+    	System.out.println(" Valeur du radius des voisins : " + radiusVoisins.get() + "\n");
+    }
+	
 	
 	
 
@@ -127,7 +130,8 @@ public class Controller implements Initializable{
 		stabPos.bind(sStabilitePosition.valueProperty());
 		stabEtat.bind(sStabiliteEtat.valueProperty());
 		tauxMur.bind(STauxMurissement.valueProperty());
-	    distanceRealite.bind(SDistanceRealite.valueProperty());
+	  radiusVoisins.bind(sRadiusVoisins.valueProperty());
+	  distanceRealite.bind(SDistanceRealite.valueProperty());
 	    
 		
 		tideal = new TerrainForm();
@@ -139,7 +143,7 @@ public class Controller implements Initializable{
 		toriginel = new ToForm();
 		panelToriginel.getChildren().add(toriginel);
 		
-		// J'initialise à 2 chaque sliders.
+		// J'initialise ÃÂ  2 chaque sliders.
 		Sdiso.setValue(2);
 		sHeterogeneite.setValue(2);
 		sStabiliteEtat.setValue(2);
@@ -225,7 +229,7 @@ public class Controller implements Initializable{
 }
 
 /*
-il suffit de construire une BufferedImage (format d'image standard de Java) et de la passer à un ImagePlus ou ImageProcessor (format ImageJ).
+il suffit de construire une BufferedImage (format d'image standard de Java) et de la passer ÃÂ  un ImagePlus ou ImageProcessor (format ImageJ).
 
 BufferedImage monimage = new BufferedImage(width, height, BufferedImage.LeTypeVoulu) ;
 
