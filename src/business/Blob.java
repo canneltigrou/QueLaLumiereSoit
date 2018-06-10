@@ -2,8 +2,6 @@ package business;
 
 import java.util.ArrayList;
 
-import com.sun.org.apache.xml.internal.resolver.readers.XCatalogReader;
-
 public class Blob {
 	//private String id;
 	private int pulsation;
@@ -15,7 +13,6 @@ public class Blob {
 	private int cpt_state;
 	private int cpt_position;
 	private boolean real;
-	private double pas = 10;
 	
 	private ArrayList<Couleur> globules_couleurs;
 	private ArrayList<double[]> globules_position;
@@ -23,7 +20,6 @@ public class Blob {
 	public Blob()
 	{
 		coordonnee = new double[2];
-
 	}
 	
 	public Blob(double xcor, double ycor, Couleur couleur, int pulsation, Forme forme, boolean reel)
@@ -43,7 +39,9 @@ public class Blob {
 	
 	
 	public Blob copy_blob(){
-		return(new Blob(coordonnee[0], coordonnee[1], globules_couleurs.get(0), pulsation, forme, real));
+		Blob res = new Blob(coordonnee[0], coordonnee[1], globules_couleurs.get(0), pulsation, forme, real);
+		res.setGlobules_couleurs(new ArrayList<Couleur>( this.globules_couleurs));
+		return(res);
 	}
 	
 	
@@ -91,7 +89,6 @@ public class Blob {
 
 	public void setForme(Forme forme) {
 		this.forme = forme;
-		// TODO à voir avec Maria : comment changer les couleurs lors d'un changement de forme ?
 		globules_position = forme.creerPosition(forme);
 		for (int i = 0; i < globules_position.size(); i++){
 			Couleur couleur = globules_couleurs.get(0);
@@ -174,9 +171,17 @@ public class Blob {
 		this.globules_couleurs = globules_couleurs;
 	}
 	
-	
-	
-	
-	
+	// permet de changer de forme en choisissant une forme aléatoire.
+	public void changeForme() {
+		Forme[] formeListe = Forme.values();
+		int indiceForme = (int) (Math.random() * (formeListe.length));
+		this.forme = formeListe[indiceForme];
+		globules_position = forme.creerPosition(forme);
+		for (int i = 0; i < globules_position.size(); i++){
+			Couleur couleur = globules_couleurs.get(0);
+			globules_couleurs.clear();
+			globules_couleurs.add(couleur);
+		}
+	}
 
 }

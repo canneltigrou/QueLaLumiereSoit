@@ -38,6 +38,7 @@ public class Immaginaire extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
+		 majAspectAgent();
 		 currentAction = Action.RESTER; // to initialise
 	     BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
 		 Critere most_critic = Most_critical_critere(agentNeedingHelp);

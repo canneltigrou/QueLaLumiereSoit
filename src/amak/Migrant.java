@@ -30,6 +30,8 @@ public class Migrant extends BlobAgent{
 		currentAction = Action.RESTER; // to initialise
 		if (isHome)
 			action_se_deplacer();
+		else
+			majAspectAgent();
 		BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
 		 Critere most_critic = Most_critical_critere(agentNeedingHelp);
 		 
@@ -63,14 +65,13 @@ public class Migrant extends BlobAgent{
     	case CREER :
     		super.controller.add_blobImmaginaire(newFils);
     		break;
-    	case SE_DEPLACER :
-    		if(isHome)
+    		
+		default:
+			if(isHome)
     			super.controller.move_blobHibernant(this);
     		else
     			super.controller.move_blobMigrant(this);
     		break;
-		default:
-			break;
     	}
 
     }
