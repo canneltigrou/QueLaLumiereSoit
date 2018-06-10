@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import amak.AmasThread;
 import amak.Migrant;
+import business.Blob;
 import business.Couleur;
 import business.Forme;
 
@@ -38,9 +39,23 @@ public class PositionThread extends Thread{
 	}   
 	
 	public void sortirBlob(Migrant b){
+		Blob tmp = b.getBlob();
+		double[] coo = new double[2];
+		coo[0] = Math.random() * 25;
+		boolean isOk = false;
+		while(!isOk){
+			coo[1] = Math.random() * 25;
+			if ((coo[0] - 12.5)*(coo[0] - 12.5) + (coo[1] - 12.5) * (coo[1] - 12.5) <= 12.5 * 12.5)
+				isOk = true;
+		}
+		
+		tmp.setCoordonnee(coo);
+		b.setBlob(tmp);
 		tAmas.t0_to_tr(b);
 		blobHibernants.remove(b);
 		blobActifs.add(b);
+		
+		
 	}
 	
 	

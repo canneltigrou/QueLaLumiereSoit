@@ -45,7 +45,7 @@ public class Immaginaire extends BlobAgent{
 		 switch (most_critic){
 		 case Isolement:
 			 // too many neighboors -> criticite.ISOLEMENT<0 -> I have to kill myself
-			 if(criticite[Critere.Heterogeneite.getValue()] < 0)
+			 if(criticite[Critere.Isolement.getValue()] < 0)
 				 action_se_suicider();
 			 else
 				 action_creer();

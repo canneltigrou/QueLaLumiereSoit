@@ -1,5 +1,4 @@
 package amak;
-import application.BlobForm;
 import application.Controller;
 import javafx.application.Platform;
 import positionBluetooth.PositionThread;
@@ -92,7 +91,14 @@ public class AmasThread extends Thread{
 				myAmas.getEnvironment().setStabilite_position(stabilite_position);
 			}
 		});
-		
+	}
+	
+	public void setIsolement(int isolement){
+		Platform.runLater(new Runnable() {
+			public void run() {
+				myAmas.getEnvironment().setIsolement(isolement);
+			}
+		});
 	}
 	
 	
