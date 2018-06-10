@@ -81,7 +81,9 @@ public class Controller implements Initializable{
     void clicHeter(MouseEvent event) {
     	
     	System.out.println(" Valeur Degrés d'heterogénéité : " + hetero.get() + "\n");
-    	tAmas.setHeterogeneite(hetero.getValue().intValue());
+    	//tAmas.setHeterogeneite(hetero.getValue().intValue());
+    	tAmas.setHeterogeneite(stabPos.getValue().intValue());
+
     }
 	
 	@FXML

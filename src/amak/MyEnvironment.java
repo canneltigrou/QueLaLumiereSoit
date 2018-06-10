@@ -184,6 +184,7 @@ public class MyEnvironment extends Environment {
 
 	public void setIsolement(int isolement) {
 		this.isolement = isolement;
+		System.out.println("la nouvelle valeur d'isolement a été prise en compte");
 	}
 
 	public int getStabilite_etat() {
@@ -192,6 +193,7 @@ public class MyEnvironment extends Environment {
 
 	public void setStabilite_etat(int stabilite_etat) {
 		this.stabilite_etat = stabilite_etat;
+		System.out.println("la nouvelle valeur de la stabilité d'état a été prise en compte");
 	}
 
 	public int getStabilite_position() {
@@ -200,6 +202,7 @@ public class MyEnvironment extends Environment {
 
 	public void setStabilite_position(int stabilite_position) {
 		this.stabilite_position = stabilite_position;
+		System.out.println("la nouvelle valeur de stabilité de la position a été prise en compte");
 	}
 
 	public int getHeterogeneite() {
@@ -208,6 +211,7 @@ public class MyEnvironment extends Environment {
 
 	public void setHeterogeneite(int heterogeneite) {
 		this.heterogeneite = heterogeneite;
+		System.out.println("la nouvelle valeur " + heterogeneite + " d'hétérogénéité a été prise en compte");
 	}
 
 

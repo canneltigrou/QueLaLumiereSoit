@@ -33,7 +33,7 @@ public class Migrant extends BlobAgent{
 		else
 			majAspectAgent();
 		BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
-		 Critere most_critic = Most_critical_critere(agentNeedingHelp);
+		Critere most_critic = Most_critical_critere(agentNeedingHelp);
 		 
 		 switch (most_critic){
 		 case Isolement:
@@ -49,6 +49,13 @@ public class Migrant extends BlobAgent{
 			 break;
 			 
 		 case Heterogeneite:
+			 // if >0 then it's too homogeneous. --> I change the color in a random one.
+			 // else it's too heterogeneous.  -> I change my color to the most present color
+			 if(criticite[Critere.Heterogeneite.getValue()] > 0)
+				 action_changerCouleur();
+			 else
+				 action_changerCouleur(couleurEnvironnante);
+
 			 break;
 		 
 		 default:

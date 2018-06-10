@@ -21,6 +21,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	protected Action currentAction;
 	protected Immaginaire newFils;
+	protected Couleur couleurEnvironnante;
 	//private Blob agentNeedingHelp;
 	protected Action actionPassive;
 	
@@ -64,7 +65,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		listeCouleurs.set(0, voisin.blob.getGlobules_couleurs().get(0));
 		blob.setGlobules_couleurs(listeCouleurs);
 	}
-	
+		
 	// Le changement de forme se fait en choisissant une forme aléatoire.
 	protected void changer_de_forme(){
 		blob.changeForme();
@@ -88,9 +89,8 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			}
 		}
 		
-		
 		// ITERATION
-		if (actionPassive == Action.CHANGER_COULEUR || actionPassive == Action.CHANGER_FORME )
+		if (actionPassive == (Action.CHANGER_COULEUR) || actionPassive == (Action.CHANGER_FORME ))
 			nbExperience++;
 		
 		// maj des connaissances:
@@ -101,22 +101,147 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			else 
 				connaissance.put(voisins.get(i), 0);
 		}
-		
-		
-		
 	}
 	
 	
 	@Override
     protected void onPerceive() {
-		getAmas().getEnvironment().generateNeighbours(this);
-		// Nothing goes here as the perception of neighbors criticality is already made
-        // by the framework
-		
+		getAmas().getEnvironment().generateNeighbours(this);		
     }
 	
 	
-	/* renvoie l'agent le plus critique parmi ses voisins, incluant lui-même*/
+	
+	
+	
+	/* **************************************************************** *
+	 * ********** 				ACTION				******************* *
+	 * **************************************************************** */
+	
+	protected void action_se_suicider(){
+		currentAction = Action.SE_SUICIDER;
+		getAmas().getEnvironment().removeAgent(this);
+		destroy();
+	}
+
+	protected void action_creer(){
+		currentAction = Action.CREER;
+		Blob newBlob = blob.copy_blob();
+		newBlob.setCoordonnee(getAmas().getEnvironment().nouvellesCoordonnees(this, 2));
+		newFils = new Immaginaire(getAmas(), newBlob, controller);
+		getAmas().getEnvironment().addAgent(newFils);		
+		
+	}
+	
+	protected void action_se_deplacer(){
+		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, 0.2);
+		blob.setCoordonnee(tmp);
+		currentAction = Action.SE_DEPLACER;	
+	}
+	
+	
+	// CHANGEMENT DE COULEUR .... Pour ne pas perdre les couleurs aquises par expérience, 
+	// je choisis de changer la couleur qui est la plus férquente parmi mes globules.
+	// action de changer de couleur en prenant une couleur aléatoire
+	protected void action_changerCouleur(){
+		// choix d'une nouvelle couleur
+		Couleur[] couleurListe = Couleur.values();
+		int indiceCouleur = (int) (Math.random() * ( couleurListe.length ));
+		Couleur nvlleCouleur = couleurListe[indiceCouleur];
+		
+		
+		Couleur MostPresentCouleur = blob.getCouleurLaPLusPresente();
+		ArrayList<Couleur> listeGlobulesCouleur = blob.getGlobules_couleurs();
+		for (int i = 0; i < listeGlobulesCouleur.size(); i++){
+			if (listeGlobulesCouleur.get(i).equals(MostPresentCouleur))
+				listeGlobulesCouleur.set(i, nvlleCouleur);
+		}
+		
+	}
+	
+	// ection de changer de couleur en prenant celle la plus présente dans l'environnement, 
+	// laquelle est donnée en argument.
+	protected void action_changerCouleur(Couleur couleur){
+				
+				
+				Couleur MostPresentCouleur = blob.getCouleurLaPLusPresente();
+				ArrayList<Couleur> listeGlobulesCouleur = blob.getGlobules_couleurs();
+				for (int i = 0; i < listeGlobulesCouleur.size(); i++){
+					if (listeGlobulesCouleur.get(i).equals(MostPresentCouleur))
+						listeGlobulesCouleur.set(i, couleur);
+				}
+				
+	}
+	
+	
+	/* ************************************************************************ *
+	 * ************** 			CRITICALITY 		*************************** *
+	 * ************************************************************************ */
+	
+	protected double computeCriticalityIsolement(){
+		return(getAmas().getEnvironment().getIsolement() - voisins.size());
+	}
+	
+	protected double computeCriticalityHeterogeneite(){
+		
+		// récupération des couleurs environnantes
+		HashMap<Couleur, Integer> couleurs = new HashMap<>();
+		Couleur couleur;
+		for(int i = 0; i < voisins.size() ; i++){
+			couleur = voisins.get(i).getBlob().getCouleurLaPLusPresente();
+			if (couleurs.containsKey(couleur))
+				couleurs.put(couleur, 1 + couleurs.get(couleur));
+			else
+				couleurs.put(couleur, 1);
+		}
+		
+		// récupération de la couleur la plus presente.
+		Set<Couleur> couleurSet = couleurs.keySet();
+		int maxNbCouleur = 0;
+		int tmp;
+		for (Couleur clr : couleurSet){
+			if (( tmp = couleurs.get(clr)) > maxNbCouleur)
+			{
+				maxNbCouleur = tmp;
+				couleurEnvironnante = clr;
+			}
+		}
+		
+		// calcul de la criticité autour de cette couleur.
+		double nbVoisinsOptimal = ((100 - getAmas().getEnvironment().getHeterogeneite()) / 100) * voisins.size(); 
+		return(maxNbCouleur - nbVoisinsOptimal);	
+		
+	}
+	
+	
+	
+    protected double computeCriticalityInTideal() {
+		criticite[Critere.Isolement.getValue()]= computeCriticalityIsolement();
+		criticite[Critere.Heterogeneite.getValue()] = computeCriticalityHeterogeneite();
+		criticite[Critere.Stabilite_etat.getValue()] = 0;
+		criticite[Critere.Stabilite_position.getValue()] = 0;
+		
+		criticite_globale = criticite[Critere.Heterogeneite.getValue()] + criticite[Critere.Isolement.getValue()] + criticite[Critere.Stabilite_etat.getValue()] + criticite[Critere.Stabilite_position.getValue()];
+		
+        return blob.getCpt_state();
+    }
+
+    
+    
+    
+    // retourne le critere qui a une plus grande criticité
+ 	public Critere Most_critical_critere(BlobAgent agent){
+ 		//return (Collections.max(criticite.entrySet(), Map.Entry.comparingByValue()).getKey());
+ 		double max_valeur = agent.criticite[0];
+ 		int max_critere = 0;
+ 		for (int i = 0; i<criticite.length; i++)
+ 			if(Math.abs(max_valeur) < Math.abs(criticite[i])){
+ 				max_valeur = criticite[i];
+ 				max_critere = i;
+ 			}
+ 		return Critere.valueOf(max_critere);
+ 	}
+ 	
+ 	/* renvoie l'agent le plus critique parmi ses voisins, incluant lui-même*/
 	protected BlobAgent getMoreCriticalAgent(){
 		Iterator<BlobAgent> itr = voisins.iterator();
 		double criticiteMax = criticite_globale;
@@ -130,54 +255,14 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	    }
 	    return (res);
 	}
-	
-	
-	protected void action_se_suicider(){
-		currentAction = Action.SE_SUICIDER;
-		getAmas().getEnvironment().removeAgent(this);
-		destroy();
-	}
 
-	protected void action_creer(){
-		currentAction = Action.CREER;
-		Blob newBlob = blob.copy_blob();
-		newBlob.setCoordonnee(getAmas().getEnvironment().nouvellesCoordonnees(this, 2));
-		newFils = new Immaginaire(getAmas(), newBlob, controller);
-		
-		getAmas().getEnvironment().addAgent(newFils);		
-		
-	}
-	
-	protected void action_se_deplacer(){
-		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, 0.2);
-		blob.setCoordonnee(tmp);
-		currentAction = Action.SE_DEPLACER;	
-	}
-	
-	
-	
-	
-	
-	protected double computeCriticalityIsolement(){
-		return(getAmas().getEnvironment().getIsolement() - voisins.size());
-	}
-	
-	
-	
-	
-    protected double computeCriticalityInTideal() {
-		criticite[Critere.Isolement.getValue()]= computeCriticalityIsolement();
-		criticite[Critere.Heterogeneite.getValue()] = 0;
-		criticite[Critere.Stabilite_etat.getValue()] = 0;
-		criticite[Critere.Stabilite_position.getValue()] = 0;
-		
-		criticite_globale = criticite[Critere.Heterogeneite.getValue()] + criticite[Critere.Isolement.getValue()] + criticite[Critere.Stabilite_etat.getValue()] + criticite[Critere.Stabilite_position.getValue()];
-		
-        return blob.getCpt_state();
-    }
 
-	
-	
+ 	public double[] getCriticite() {
+ 		return criticite;
+ 	}
+	/* ********************************************************************
+	 * ********************************************************************
+	 * ******************************************************************** */
 	
 	
 	public Blob getBlob() {
@@ -221,30 +306,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 	
 	
-	
-	
-	
-	/* ******************************************************
-	 *  **** 		about the criticity					****
-	 ****************************************************** */
-	
-	// retourne le critere qui a une plus grande criticité
-	public Critere Most_critical_critere(BlobAgent agent){
-		//return (Collections.max(criticite.entrySet(), Map.Entry.comparingByValue()).getKey());
-		double max_valeur = agent.criticite[0];
-		int max_critere = 0;
-		for (int i = 0; i<criticite.length; i++)
-			if(max_valeur < criticite[i]){
-				max_valeur = criticite[i];
-				max_critere = i;
-			}
-		return Critere.valueOf(max_critere);
-	}
 
-
-	public double[] getCriticite() {
-		return criticite;
-	}
 
 }
 	
