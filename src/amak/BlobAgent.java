@@ -1,15 +1,18 @@
 package amak;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import application.Controller;
 import business.Blob;
+import business.Couleur;
 import business.Critere;
 import fr.irit.smac.amak.Agent;
 
 
-enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER };
+enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER, CHANGER_COULEUR, CHANGER_FORME };
 
 public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
@@ -19,35 +22,88 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected Action currentAction;
 	protected Immaginaire newFils;
 	//private Blob agentNeedingHelp;
+	protected Action actionPassive;
 	
 	// criticité : par convention : négative si en manque, positive si trop nombreux.
-	protected Integer[] criticite;
+	protected double[] criticite;
 	
-	//private int criticite_isolement;
-	//private int criticite_stabilite_etat;
-	//private int criticite_stabilite_position;
-	//private int criticite_heterogeneite;
-	protected int criticite_globale;
+	protected double criticite_globale;
 	
 	protected Controller controller;
-
+	
+	// lié aux décisions 'passives' : en fonction de l'etat du voisinage
+	private int nbExperience; // le nombre d'expériences coopératives. Agit sur la forme
+	private HashMap<BlobAgent, Integer> connaissance; // répertorie le temps passé avec un agent
+	private int nbExperiencesRequises = 3;
+	private int tpsConnaissanceRequise = 2;
 	
 	@Override
 	protected void onInitialization() {
 		this.blob = (Blob) params[0];
 		blob.setCpt_state(0);
 		blob.setCpt_position(0);
-		criticite = new Integer[Critere.FIN.getValue()];
+		criticite = new double[Critere.FIN.getValue()];
 		for(int i = 0; i < Critere.FIN.getValue(); i++)
 			criticite[i] = 0;
 		controller = (Controller) params[1];
 		voisins = new ArrayList<>();
+		nbExperience = 0;
+		connaissance = new HashMap<>();
 		super.onInitialization();
 	}
 	
 	
 	public BlobAgent(MyAMAS amas, Blob b, Controller controller) {
 		super(amas, b, controller);
+	}
+	
+	
+	// pour le moment prend la couleur du 1er globule présent chez mon voisin
+	protected void changer_de_couleur(BlobAgent voisin){
+		ArrayList<Couleur> listeCouleurs = blob.getGlobules_couleurs();
+		listeCouleurs.set(0, voisin.blob.getGlobules_couleurs().get(0));
+		blob.setGlobules_couleurs(listeCouleurs);
+	}
+	
+	// Le changement de forme se fait en choisissant une forme aléatoire.
+	protected void changer_de_forme(){
+		blob.changeForme();
+		nbExperience = 0;
+	}
+	
+	protected void majAspectAgent(){
+		// La forme s'acquiert à partir d'un nombre d'expérience atteint.
+		if (nbExperience >= nbExperiencesRequises)
+			changer_de_forme();
+		
+		// la pulsation dépend du nombre de voisins alentour
+		blob.setPulsation(voisins.size());
+		
+		// la couleur s'acquiert si un voisin est présent depuis un temps défini.
+		Set<BlobAgent> blobsConnus = (Set<BlobAgent>) connaissance.keySet();
+		for (BlobAgent blobConnu : blobsConnus) {
+			if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
+				changer_de_couleur(blobConnu);
+				connaissance.put(blobConnu, 0);
+			}
+		}
+		
+		
+		// ITERATION
+		if (actionPassive == Action.CHANGER_COULEUR || actionPassive == Action.CHANGER_FORME )
+			nbExperience++;
+		
+		// maj des connaissances:
+		for(int i = 0; i < voisins.size(); i++){
+			if(connaissance.containsKey(voisins.get(i))){
+				connaissance.put(voisins.get(i), connaissance.get(voisins.get(i)) + 1);
+			}
+			else 
+				connaissance.put(voisins.get(i), 0);
+		}
+		
+		
+		
 	}
 	
 	
@@ -63,7 +119,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	/* renvoie l'agent le plus critique parmi ses voisins, incluant lui-même*/
 	protected BlobAgent getMoreCriticalAgent(){
 		Iterator<BlobAgent> itr = voisins.iterator();
-		int criticiteMax = criticite_globale;
+		double criticiteMax = criticite_globale;
 		BlobAgent res = this;
 	    while(itr.hasNext()) {
 	       BlobAgent blobagent = itr.next();
@@ -85,9 +141,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected void action_creer(){
 		currentAction = Action.CREER;
 		Blob newBlob = blob.copy_blob();
-		/*double[] coo = newBlob.getCoordonnee();
-		coo[0] += 16;
-		coo[1] += 16;*/
 		newBlob.setCoordonnee(getAmas().getEnvironment().nouvellesCoordonnees(this, 2));
 		newFils = new Immaginaire(getAmas(), newBlob, controller);
 		
@@ -105,59 +158,15 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	
 	
-	/*
-	@Override
-	protected void onDecideAndAct() {
-	     BlobAgent agentNeedingHelp = getMoreCriticalAgent();
-		 Critere most_critic = Most_critical_critere(agentNeedingHelp);
-		 
-		 if (!isOutside())
-			 action_se_suicider();
-		 else{
-		 
-		 switch (most_critic){
-		 case Isolement:
-			 // too many neighboors -> criticite.ISOLEMENT<0 -> I have to kill myself
-			 if(criticite[Critere.Heterogeneite.getValue()] < 0)
-				 action_se_suicider();
-			 else
-				 action_creer();
-			 break;
-				 
-		 case Stabilite_etat:
-			 break;
-			 
-		 case Stabilite_position:
-			 break;
-			 
-		 case Heterogeneite:
-			 break;
-		 
-		 default:
-			break;		 
-		 }
-		 }
-		super.onDecideAndAct();
+	protected double computeCriticalityIsolement(){
+		return(getAmas().getEnvironment().getIsolement() - voisins.size());
 	}
-	*/
 	
-    /*protected double computeCriticality() {
-		System.out.println("début calcul de criticité");
-		criticite[Critere.Heterogeneite.getValue()]= getAmas().getEnvironment().getIsolement() - voisins.size();
-		System.out.println("1ere partie calculée");
-		criticite[Critere.Isolement.getValue()] = 0;
-		criticite[Critere.Stabilite_etat.getValue()] = 0;
-		criticite[Critere.Stabilite_position.getValue()] = 0;
-		
-		criticite_globale = criticite[Critere.Heterogeneite.getValue()] + criticite[Critere.Isolement.getValue()] + criticite[Critere.Stabilite_etat.getValue()] + criticite[Critere.Stabilite_position.getValue()];
-		
-		System.out.println("fin de calcul de la criticité");
-        return blob.getCpt_state();
-    }*/
-
+	
+	
 	
     protected double computeCriticalityInTideal() {
-		criticite[Critere.Isolement.getValue()]= getAmas().getEnvironment().getIsolement() - voisins.size();
+		criticite[Critere.Isolement.getValue()]= computeCriticalityIsolement();
 		criticite[Critere.Heterogeneite.getValue()] = 0;
 		criticite[Critere.Stabilite_etat.getValue()] = 0;
 		criticite[Critere.Stabilite_position.getValue()] = 0;
@@ -202,7 +211,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 
 
-	public int getCriticite_globale() {
+	public double getCriticite_globale() {
 		return criticite_globale;
 	}
 
@@ -222,7 +231,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	// retourne le critere qui a une plus grande criticité
 	public Critere Most_critical_critere(BlobAgent agent){
 		//return (Collections.max(criticite.entrySet(), Map.Entry.comparingByValue()).getKey());
-		int max_valeur = agent.criticite[0];
+		double max_valeur = agent.criticite[0];
 		int max_critere = 0;
 		for (int i = 0; i<criticite.length; i++)
 			if(max_valeur < criticite[i]){
@@ -233,7 +242,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 
 
-	public Integer[] getCriticite() {
+	public double[] getCriticite() {
 		return criticite;
 	}
 
