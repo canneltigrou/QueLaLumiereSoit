@@ -24,7 +24,10 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected Couleur couleurEnvironnante;
 	//private Blob agentNeedingHelp;
 	protected Action actionPassive;
+	protected double[] pastDirection;
 	
+	
+
 	// criticité : par convention : négative si en manque, positive si trop nombreux.
 	protected double[] criticite;
 	
@@ -133,7 +136,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 	
 	protected void action_se_deplacer(){
-		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, 0.2);
+		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, Math.random() * 1.2, pastDirection);
 		blob.setCoordonnee(tmp);
 		currentAction = Action.SE_DEPLACER;	
 	}
@@ -260,9 +263,12 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
  	public double[] getCriticite() {
  		return criticite;
  	}
-	/* ********************************************************************
-	 * ********************************************************************
-	 * ******************************************************************** */
+ 	
+ 	
+ 	
+	/* ******************************************	**************************
+	 * ***********			GETTER / SETTER			**************************
+	 * *********************************************************************** */
 	
 	
 	public Blob getBlob() {
@@ -305,7 +311,15 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		this.criticite_globale = criticite_globale;
 	}
 	
-	
+	public double[] getPastDirection() {
+		return pastDirection;
+	}
+
+
+	public void setPastDirection(double[] pastDirection) {
+		this.pastDirection = pastDirection;
+	}
+
 
 
 }

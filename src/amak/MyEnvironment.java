@@ -171,6 +171,46 @@ public class MyEnvironment extends Environment {
 			}	
 			return res;
 		}
+		
+		public double[] nouvellesCoordonnees(BlobAgent agent, double pas, double[] pastDirection){
+			double[] res = new double[2];
+			double[] coordonnee = agent.getBlob().getCoordonnee();
+			boolean isOK = false;
+			// Je dois prendre en compte les bordures. Je décide de ne pas compliquer les calculs : 
+			// Je mets le tout dans une boucle, et je relance l'aléatoire si je suis en dehors du terrain.
+			
+			
+			
+			if ( pastDirection != null && Math.random()*100 < 75)
+			{
+				// je maintiens ma direction précédente, dont j'ai stocké le vecteur dans pastDirection
+				res[0] = coordonnee[0] + pastDirection[0];
+				res[1] = coordonnee[1] + pastDirection[1];
+				
+				if( (agent instanceof Migrant) && ((Migrant)agent).isHome())
+					isOK = isValideInTo(res);
+				else
+					isOK = isValideInTi(res);
+			}
+			
+			
+			if(!isOK) // l'ancienne direction ne me dirige pas comme il se doit.
+				res = nouvellesCoordonnees(agent, pas);
+			
+			// cette fonction est appelée pour bouger et on pour créer.
+			// Je remets donc à jour la variable pastDirection du blob en question.
+			if(pastDirection == null)
+				pastDirection = new double[2];
+			pastDirection[0] = res[0] - coordonnee[0];
+			pastDirection[1] = res[1] - coordonnee[1];
+			
+			//double[] nvlleDirection = new double[2];
+			
+			agent.setPastDirection(pastDirection);
+			
+			
+			return res;
+		}
 	
 
 	
