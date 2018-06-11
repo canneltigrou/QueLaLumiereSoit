@@ -81,7 +81,7 @@ public class AmasThread extends Thread{
 	}
 	
 	
-	public void setCaracteristiques(int isolement, int heterogeneite, int stabilite_etat, int stabilite_position){
+	/*public void setCaracteristiques(int isolement, int heterogeneite, int stabilite_etat, int stabilite_position){
 		Platform.runLater(new Runnable() {
 			public void run() {
 				myAmas.getEnvironment().setIsolement(isolement);
@@ -90,7 +90,7 @@ public class AmasThread extends Thread{
 				myAmas.getEnvironment().setStabilite_position(stabilite_position);
 			}
 		});
-	}
+	}*/
 	
 	public void setIsolement(int isolement){
 		Platform.runLater(new Runnable() {

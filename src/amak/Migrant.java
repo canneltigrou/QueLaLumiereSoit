@@ -9,11 +9,14 @@ public class Migrant extends BlobAgent{
 	
 	private boolean isHome;
 	private boolean isRiped;
+	private int cptRiped;
 	//private int cpt_hibernation;
 	
 	public Migrant(MyAMAS amas, Blob b, Controller controller) {
 		super(amas, b, controller);
-		setHome(true);
+		isHome = true;
+		isRiped = false;
+		cptRiped = 1;
 	}
 
 	public boolean isHome() {
@@ -25,11 +28,32 @@ public class Migrant extends BlobAgent{
 	}
 	
 	
+	// boolean renvoyant true avec une probabilité de 'tauxMurissement' géré dans l'IHM.
+	private boolean mustRipe(){
+		return( Math.random() * 100 < getAmas().getEnvironment().getTauxMurissemnt());
+	}
+	
+	private void action_murir(){
+		isRiped = true;
+		cptRiped = 20;
+	}
+	
 	@Override
 	protected void onDecideAndAct() {
 		currentAction = Action.RESTER; // to initialise
-		if (isHome)
+		if (isHome){
+			if(isRiped){
+				if(cptRiped <= 0)
+					isRiped = false;
+				else
+					cptRiped--;
+			}
+			else
+				if(mustRipe())
+					action_murir(); //isRiped = true;
+			
 			action_se_deplacer();
+		}			
 		else
 			majAspectAgent();
 		BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();

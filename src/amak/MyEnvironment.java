@@ -16,7 +16,7 @@ public class MyEnvironment extends Environment {
 	private int stabilite_position;
 	private int heterogeneite;
 	private int distanceRealite;
-	private int tauxMurissemnt;
+	private double tauxMurissemnt;
 	public double rayonTerrain = 12.5; // exprimé en metres
 	
 	/* communication avec l'interface graphique */
@@ -38,8 +38,8 @@ public class MyEnvironment extends Environment {
 		stabilite_etat = controller.getStabiliteHeterogeneite();
 		stabilite_position = controller.getStabilitePosition();
 		heterogeneite = controller.getHeterogenite();
-		setDistanceRealite(controller.getDistanceRealite());
-		
+		distanceRealite = controller.getDistanceRealite();
+		tauxMurissemnt = controller.getTauxMurissement();
 		
 	}
 
@@ -273,12 +273,12 @@ public class MyEnvironment extends Environment {
 	}
 
 
-	public int getTauxMurissemnt() {
+	public double getTauxMurissemnt() {
 		return tauxMurissemnt;
 	}
 
 
-	public void setTauxMurissemnt(int tauxMurissemnt) {
+	public void setTauxMurissemnt(double tauxMurissemnt) {
 		this.tauxMurissemnt = tauxMurissemnt;
 	}
 

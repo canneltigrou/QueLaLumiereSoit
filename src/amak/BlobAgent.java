@@ -12,7 +12,7 @@ import business.Critere;
 import fr.irit.smac.amak.Agent;
 
 
-enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER, CHANGER_COULEUR, CHANGER_FORME };
+enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER, CHANGER_COULEUR, CHANGER_FORME, MURIR };
 
 public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
