@@ -83,7 +83,7 @@
                                                 </AnchorPane>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                                    <children>
-                                                      <SplitPane dividerPositions="0.5, 0.5" layoutX="-13.0" layoutY="53.0" prefHeight="227.0" prefWidth="174.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                      <SplitPane dividerPositions="0.5167173252279635" layoutX="-13.0" layoutY="53.0" prefHeight="227.0" prefWidth="174.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                         <items>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                                                                <children>
@@ -103,7 +103,6 @@
                                                                   </SplitPane>
                                                                </children>
                                                             </AnchorPane>
-                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" />
                                                             <SplitPane dividerPositions="0.8814814814814815" orientation="VERTICAL" prefHeight="407.0" prefWidth="160.0">
                                                                <items>
                                                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
@@ -113,7 +112,7 @@
                                                                   </AnchorPane>
                                                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="152.0">
                                                                      <children>
-                                                                        <TextField layoutX="33.0" layoutY="4.0" prefHeight="45.0" prefWidth="152.0" text="stabilite Hetero" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                        <TextField layoutX="33.0" layoutY="4.0" prefHeight="45.0" prefWidth="152.0" text="Hétérogénéité" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                      </children>
                                                                   </AnchorPane>
                                                                </items>
@@ -180,16 +179,25 @@
                                                         <items>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                                                <children>
-                                                                  <SplitPane dividerPositions="0.8814814814814815" layoutX="-45.0" orientation="VERTICAL" prefHeight="406.0" prefWidth="129.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                  <SplitPane layoutX="-45.0" orientation="VERTICAL" prefHeight="406.0" prefWidth="129.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                     <items>
-                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
-                                                                           <children>
-                                                                              <Slider fx:id="sRadiusVoisins" layoutX="58.0" layoutY="47.0" onMouseClicked="#clicRadiusVoisins" orientation="VERTICAL" prefHeight="354.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="57.5" AnchorPane.topAnchor="0.0" />
-                                                                           </children>
-                                                                        </AnchorPane>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                                            <children>
-                                                                              <Label layoutX="76.0" layoutY="14.0" prefHeight="45.0" prefWidth="129.0" text="Radius Voisins" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                              <Label layoutX="14.0" layoutY="12.0" prefHeight="45.0" prefWidth="129.0" text="Radius Voisin" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                              <SplitPane dividerPositions="0.8836633663366337" layoutX="-8.0" layoutY="159.0" orientation="VERTICAL" prefHeight="405.0" prefWidth="129.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                                <items>
+                                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
+                                                                                       <children>
+                                                                                          <Slider fx:id="sRadiusVoisins" layoutX="79.0" layoutY="-84.0" onDragDone="#clicRadiusVoisins" onMouseClicked="#clicRadiusVoisins" orientation="VERTICAL" prefHeight="354.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="57.5" AnchorPane.topAnchor="0.0" />
+                                                                                       </children>
+                                                                                    </AnchorPane>
+                                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                                                       <children>
+                                                                                          <TextField layoutX="2.0" layoutY="2.0" prefHeight="44.0" prefWidth="129.0" text="Radius Voisin" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                                       </children>
+                                                                                    </AnchorPane>
+                                                                                </items>
+                                                                              </SplitPane>
                                                                            </children>
                                                                         </AnchorPane>
                                                                     </items>
