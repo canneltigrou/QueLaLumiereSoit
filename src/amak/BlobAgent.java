@@ -127,7 +127,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		Set<BlobAgent> blobsConnus = (Set<BlobAgent>) connaissance.keySet();
 		for (BlobAgent blobConnu : blobsConnus) {
 			if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
-				changer_de_couleur(blobConnu);
+				changer_de_couleur_passif(blobConnu);
 				connaissance.put(blobConnu, 0);
 			}
 		}
