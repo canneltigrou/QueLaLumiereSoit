@@ -28,16 +28,16 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	
 
-	// criticité : par convention : négative si en manque, positive si trop nombreux.
+	// criticitï¿½ : par convention : nï¿½gative si en manque, positive si trop nombreux.
 	protected double[] criticite;
 	
 	protected double criticite_globale;
 	
 	protected Controller controller;
 	
-	// lié aux décisions 'passives' : en fonction de l'etat du voisinage
-	private int nbExperience; // le nombre d'expériences coopératives. Agit sur la forme
-	private HashMap<BlobAgent, Integer> connaissance; // répertorie le temps passé avec un agent
+	// liï¿½ aux dï¿½cisions 'passives' : en fonction de l'etat du voisinage
+	private int nbExperience; // le nombre d'expï¿½riences coopï¿½ratives. Agit sur la forme
+	private HashMap<BlobAgent, Integer> connaissance; // rï¿½pertorie le temps passï¿½ avec un agent
 	private int nbExperiencesRequises = 3;
 	private int tpsConnaissanceRequise = 2;
 	
@@ -61,29 +61,69 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		super(amas, b, controller);
 	}
 	
+	// renvoie la moyenne des positions (dim2)
+	private double[] calcule_moyenne(ArrayList<double[]> maListe){
+		double[] res = new double[2];
+		res[0] = 0;
+		res[1] = 0;
+		int i;
+		for(i = 0; i < maListe.size(); i++){
+			res[0] += maListe.get(i)[0];
+			res[1] += maListe.get(i)[1];
+		}
+		res[0] = res[0] / i;
+		res[1] = res[1] / i;
+		return res;
+	}
 	
-	// pour le moment prend la couleur du 1er globule présent chez mon voisin
-	protected void changer_de_couleur(BlobAgent voisin){
-		ArrayList<Couleur> listeCouleurs = blob.getGlobules_couleurs();
-		listeCouleurs.set(0, voisin.blob.getGlobules_couleurs().get(0));
-		blob.setGlobules_couleurs(listeCouleurs);
+	
+	// pour le moment prend la couleur du 1er globule prï¿½sent chez mon voisin
+	protected void changer_de_couleur_passif(BlobAgent voisin){
+		ArrayList<Couleur> listeMesCouleurs = blob.getGlobules_couleurs();
+		double[] centreVoisin = voisin.getBlob().getCoordonnee().clone();
+		// problï¿½me la coordonnï¿½e du voisin pointe en haut ï¿½ droite. Il faut la centrer.
+		double[] tmp = calcule_moyenne(voisin.getBlob().getGlobules_position());
+		centreVoisin[0] += tmp[0];
+		centreVoisin[1] += tmp[1];
+		
+		// trouvons quel est le globule le plus proche du voisin.
+		ArrayList<double[]> listePosGlob = blob.getGlobules_position();
+		// les position des globules sont relative ï¿½ la position du blob.
+		// on va donc enlever la position du blob ï¿½ celle du voisin, pour ne pas calculer la position exacte des globules ï¿½ chaque fois.
+		centreVoisin[0] -= blob.getCoordonnee()[0];
+		centreVoisin[1] -= blob.getCoordonnee()[1];
+		double distance;
+		int indiceMin =  0;
+		double distanceMin = Math.sqrt((centreVoisin[0] - listePosGlob.get(0)[0]) * (centreVoisin[0] - listePosGlob.get(0)[0]) + ((centreVoisin[1] - listePosGlob.get(0)[1]) * (centreVoisin[1] - listePosGlob.get(0)[1])));
+		for (int i = 1; i<listePosGlob.size(); i++)
+		{
+			distance = Math.sqrt((centreVoisin[0] - listePosGlob.get(i)[0]) * (centreVoisin[0] - listePosGlob.get(i)[0]) + ((centreVoisin[1] - listePosGlob.get(i)[1]) * (centreVoisin[1] - listePosGlob.get(i)[1])));
+			if (distance < distanceMin){
+				distanceMin = distance;
+				indiceMin = i;
+			}
+		}
+
+		// on modifie la couleur de ce globule en la couleur la plus prï¿½sente de notre voisin
+		listeMesCouleurs.set(indiceMin, voisin.blob.getCouleurLaPLusPresente());
+		blob.setGlobules_couleurs(listeMesCouleurs);
 	}
 		
-	// Le changement de forme se fait en choisissant une forme aléatoire.
+	// Le changement de forme se fait en choisissant une forme alï¿½atoire.
 	protected void changer_de_forme(){
 		blob.changeForme();
 		nbExperience = 0;
 	}
 	
 	protected void majAspectAgent(){
-		// La forme s'acquiert à partir d'un nombre d'expérience atteint.
+		// La forme s'acquiert ï¿½ partir d'un nombre d'expï¿½rience atteint.
 		if (nbExperience >= nbExperiencesRequises)
 			changer_de_forme();
 		
-		// la pulsation dépend du nombre de voisins alentour
+		// la pulsation dï¿½pend du nombre de voisins alentour
 		blob.setPulsation(voisins.size());
 		
-		// la couleur s'acquiert si un voisin est présent depuis un temps défini.
+		// la couleur s'acquiert si un voisin est prï¿½sent depuis un temps dï¿½fini.
 		Set<BlobAgent> blobsConnus = (Set<BlobAgent>) connaissance.keySet();
 		for (BlobAgent blobConnu : blobsConnus) {
 			if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
@@ -142,9 +182,9 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 	
 	
-	// CHANGEMENT DE COULEUR .... Pour ne pas perdre les couleurs aquises par expérience, 
-	// je choisis de changer la couleur qui est la plus férquente parmi mes globules.
-	// action de changer de couleur en prenant une couleur aléatoire
+	// CHANGEMENT DE COULEUR .... Pour ne pas perdre les couleurs aquises par expï¿½rience, 
+	// je choisis de changer la couleur qui est la plus fï¿½rquente parmi mes globules.
+	// action de changer de couleur en prenant une couleur alï¿½atoire
 	protected void action_changerCouleur(){
 		// choix d'une nouvelle couleur
 		Couleur[] couleurListe = Couleur.values();
@@ -161,8 +201,8 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		
 	}
 	
-	// ection de changer de couleur en prenant celle la plus présente dans l'environnement, 
-	// laquelle est donnée en argument.
+	// ection de changer de couleur en prenant celle la plus prï¿½sente dans l'environnement, 
+	// laquelle est donnï¿½e en argument.
 	protected void action_changerCouleur(Couleur couleur){
 				
 				
@@ -186,7 +226,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	protected double computeCriticalityHeterogeneite(){
 		
-		// récupération des couleurs environnantes
+		// rï¿½cupï¿½ration des couleurs environnantes
 		HashMap<Couleur, Integer> couleurs = new HashMap<>();
 		Couleur couleur;
 		for(int i = 0; i < voisins.size() ; i++){
@@ -197,7 +237,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 				couleurs.put(couleur, 1);
 		}
 		
-		// récupération de la couleur la plus presente.
+		// rï¿½cupï¿½ration de la couleur la plus presente.
 		Set<Couleur> couleurSet = couleurs.keySet();
 		int maxNbCouleur = 0;
 		int tmp;
@@ -209,7 +249,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			}
 		}
 		
-		// calcul de la criticité autour de cette couleur.
+		// calcul de la criticitï¿½ autour de cette couleur.
 		double nbVoisinsOptimal = ((100 - getAmas().getEnvironment().getHeterogeneite()) / 100) * voisins.size(); 
 		return(maxNbCouleur - nbVoisinsOptimal);	
 		
@@ -231,7 +271,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
     
     
     
-    // retourne le critere qui a une plus grande criticité
+    // retourne le critere qui a une plus grande criticitï¿½
  	public Critere Most_critical_critere(BlobAgent agent){
  		//return (Collections.max(criticite.entrySet(), Map.Entry.comparingByValue()).getKey());
  		double max_valeur = agent.criticite[0];
@@ -244,7 +284,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
  		return Critere.valueOf(max_critere);
  	}
  	
- 	/* renvoie l'agent le plus critique parmi ses voisins, incluant lui-même*/
+ 	/* renvoie l'agent le plus critique parmi ses voisins, incluant lui-mï¿½me*/
 	protected BlobAgent getMoreCriticalAgent(){
 		Iterator<BlobAgent> itr = voisins.iterator();
 		double criticiteMax = criticite_globale;
