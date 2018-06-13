@@ -98,8 +98,6 @@ public class Controller implements Initializable{
     void clicEtatVois(MouseEvent event) {
     	System.out.println(" Valeur de la stabilité de l'etat du voisinage : " + stabEtat.get() + "\n");
     	tAmas.setStabiliteEtat(stabEtat.getValue().intValue());
-    	//if(tAmas != null)
-    		//tAmas.setCaracteristiques(diso.getValue().intValue(), hetero.getValue().intValue(), stabEtat.getValue().intValue(), stabPos.getValue().intValue());
     }
 	
 	@FXML

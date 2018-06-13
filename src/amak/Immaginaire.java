@@ -38,10 +38,12 @@ public class Immaginaire extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
-		 majAspectAgent();
+		 majAspectAgent();		 
 		 currentAction = Action.RESTER; // to initialise
 	     BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
-		 Critere most_critic = Most_critical_critere(agentNeedingHelp);
+		 Critere most_critic = Most_critical_critere(agentNeedingHelp.getCriticite());
+		 //System.out.println("criticite de stabilité de position = " + criticite[Critere.Stabilite_position.getValue()]);
+		 System.out.println("le plus critique est : " + most_critic.toString());
 		 
 		 switch (most_critic){
 		 case Isolement:
@@ -56,9 +58,17 @@ public class Immaginaire extends BlobAgent{
 			 break;
 			 
 		 case Stabilite_position:
+			 action_se_deplacer();
 			 break;
 			 
 		 case Heterogeneite:
+			 //System.out.println(" \t avec : " + criticite[Critere.Heterogeneite.getValue()]);
+			// if >0 then it's too homogeneous. --> I change the color in a random one.
+			 // else it's too heterogeneous.  -> I change my color to the most present color
+			 if(criticite[Critere.Heterogeneite.getValue()] > 0)
+				 action_changerCouleur();
+			 else
+				 action_changerCouleur(couleurEnvironnante);
 			 break;
 		 
 		 default:

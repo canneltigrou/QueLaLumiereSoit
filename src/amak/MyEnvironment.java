@@ -12,10 +12,10 @@ public class MyEnvironment extends Environment {
 	private int radius = 4; // radius utilisé pour les différents sliders
 	/* possede les valeurs des differents curseurs*/
 	private int isolement;
-	private int stabilite_etat;
-	private int stabilite_position;
-	private int heterogeneite;
-	private int distanceRealite;
+	private double stabilite_etat;
+	private double stabilite_position;
+	private double heterogeneite;
+	private double distanceRealite;
 	private double tauxMurissemnt;
 	public double rayonTerrain = 12.5; // exprimé en metres
 	
@@ -227,7 +227,7 @@ public class MyEnvironment extends Environment {
 		System.out.println("la nouvelle valeur d'isolement a été prise en compte");
 	}
 
-	public int getStabilite_etat() {
+	public double getStabilite_etat() {
 		return stabilite_etat;
 	}
 
@@ -236,7 +236,7 @@ public class MyEnvironment extends Environment {
 		System.out.println("la nouvelle valeur de la stabilité d'état a été prise en compte");
 	}
 
-	public int getStabilite_position() {
+	public double getStabilite_position() {
 		return stabilite_position;
 	}
 
@@ -245,7 +245,7 @@ public class MyEnvironment extends Environment {
 		System.out.println("la nouvelle valeur de stabilité de la position a été prise en compte");
 	}
 
-	public int getHeterogeneite() {
+	public double getHeterogeneite() {
 		return heterogeneite;
 	}
 
@@ -264,7 +264,7 @@ public class MyEnvironment extends Environment {
 		this.controller = controller;
 	}
 
-	public int getDistanceRealite() {
+	public double getDistanceRealite() {
 		return distanceRealite;
 	}
 

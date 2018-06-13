@@ -57,8 +57,16 @@ public class Migrant extends BlobAgent{
 		else
 			majAspectAgent();
 		BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
-		Critere most_critic = Most_critical_critere(agentNeedingHelp);
-		 
+		Critere most_critic = Most_critical_critere(agentNeedingHelp.getCriticite());
+		
+		// Si je suis sans TR/TI ne peux pas me mouvoir. Je ne peux donc pas gérer la criticité de position
+		// Je vais aider le plus critique sur une autre de ses criticités.
+		if (!isHome && most_critic == Critere.Stabilite_position){
+			double[] tmp = agentNeedingHelp.getCriticite();
+			tmp[Critere.Heterogeneite.getValue()] = 0;
+			most_critic = Most_critical_critere(tmp);
+		}
+		
 		 switch (most_critic){
 		 case Isolement:
 			 // too few neighboors -> criticite.ISOLEMENT > 0 -> I have procreate

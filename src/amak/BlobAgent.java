@@ -22,20 +22,22 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected Action currentAction;
 	protected Immaginaire newFils;
 	protected Couleur couleurEnvironnante;
-	//private Blob agentNeedingHelp;
 	protected Action actionPassive;
 	protected double[] pastDirection;
 	
 	
 
-	// criticitï¿½ : par convention : nï¿½gative si en manque, positive si trop nombreux.
+	// criticite : par convention : negative si en manque, positive si trop nombreux.
 	protected double[] criticite;
 	
 	protected double criticite_globale;
+	protected double[] directGeneral;
+	protected double epsilon = 0.05;
+	
 	
 	protected Controller controller;
 	
-	// liï¿½ aux dï¿½cisions 'passives' : en fonction de l'etat du voisinage
+	// lie aux decisions 'passives' : en fonction de l'etat du voisinage
 	private int nbExperience; // le nombre d'expï¿½riences coopï¿½ratives. Agit sur la forme
 	private HashMap<BlobAgent, Integer> connaissance; // rï¿½pertorie le temps passï¿½ avec un agent
 	private int nbExperiencesRequises = 3;
@@ -53,6 +55,9 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		voisins = new ArrayList<>();
 		nbExperience = 0;
 		connaissance = new HashMap<>();
+		directGeneral = new double[2];
+		directGeneral[0] = 0;
+		directGeneral[1] = 0;
 		super.onInitialization();
 	}
 	
@@ -81,15 +86,15 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected void changer_de_couleur_passif(BlobAgent voisin){
 		ArrayList<Couleur> listeMesCouleurs = blob.getGlobules_couleurs();
 		double[] centreVoisin = voisin.getBlob().getCoordonnee().clone();
-		// problï¿½me la coordonnï¿½e du voisin pointe en haut ï¿½ droite. Il faut la centrer.
+		// probleme la coordonnee du voisin pointe en haut a droite. Il faut la centrer.
 		double[] tmp = calcule_moyenne(voisin.getBlob().getGlobules_position());
 		centreVoisin[0] += tmp[0];
 		centreVoisin[1] += tmp[1];
 		
 		// trouvons quel est le globule le plus proche du voisin.
 		ArrayList<double[]> listePosGlob = blob.getGlobules_position();
-		// les position des globules sont relative ï¿½ la position du blob.
-		// on va donc enlever la position du blob ï¿½ celle du voisin, pour ne pas calculer la position exacte des globules ï¿½ chaque fois.
+		// les position des globules sont relative a la position du blob.
+		// on va donc enlever la position du blob a celle du voisin, pour ne pas calculer la position exacte des globules ï¿½ chaque fois.
 		centreVoisin[0] -= blob.getCoordonnee()[0];
 		centreVoisin[1] -= blob.getCoordonnee()[1];
 		double distance;
@@ -109,21 +114,21 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		blob.setGlobules_couleurs(listeMesCouleurs);
 	}
 		
-	// Le changement de forme se fait en choisissant une forme alï¿½atoire.
+	// Le changement de forme se fait en choisissant une forme aleatoire.
 	protected void changer_de_forme(){
 		blob.changeForme();
 		nbExperience = 0;
 	}
 	
 	protected void majAspectAgent(){
-		// La forme s'acquiert ï¿½ partir d'un nombre d'expï¿½rience atteint.
+		// La forme s'acquiert a partir d'un nombre d'expï¿½rience atteint.
 		if (nbExperience >= nbExperiencesRequises)
 			changer_de_forme();
 		
-		// la pulsation dï¿½pend du nombre de voisins alentour
+		// la pulsation depend du nombre de voisins alentour
 		blob.setPulsation(voisins.size());
 		
-		// la couleur s'acquiert si un voisin est prï¿½sent depuis un temps dï¿½fini.
+		// la couleur s'acquiert si un voisin est prï¿½sent depuis un temps defini.
 		Set<BlobAgent> blobsConnus = (Set<BlobAgent>) connaissance.keySet();
 		for (BlobAgent blobConnu : blobsConnus) {
 			if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
@@ -178,7 +183,10 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected void action_se_deplacer(){
 		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, Math.random() * 1.2, pastDirection);
 		blob.setCoordonnee(tmp);
-		currentAction = Action.SE_DEPLACER;	
+		currentAction = Action.SE_DEPLACER;
+		
+		directGeneral[0] = 0.6 * pastDirection[0] + 0.4 * directGeneral[0];
+		directGeneral[1] = 0.6 * pastDirection[1] + 0.4 * directGeneral[1];
 	}
 	
 	
@@ -201,8 +209,8 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		
 	}
 	
-	// ection de changer de couleur en prenant celle la plus prï¿½sente dans l'environnement, 
-	// laquelle est donnï¿½e en argument.
+	// action de changer de couleur en prenant celle la plus presente dans l'environnement, 
+	// laquelle est donnee en argument.
 	protected void action_changerCouleur(Couleur couleur){
 				
 				
@@ -226,7 +234,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	protected double computeCriticalityHeterogeneite(){
 		
-		// rï¿½cupï¿½ration des couleurs environnantes
+		// recuperation des couleurs environnantes
 		HashMap<Couleur, Integer> couleurs = new HashMap<>();
 		Couleur couleur;
 		for(int i = 0; i < voisins.size() ; i++){
@@ -237,7 +245,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 				couleurs.put(couleur, 1);
 		}
 		
-		// rï¿½cupï¿½ration de la couleur la plus presente.
+		// recuperation de la couleur la plus presente.
 		Set<Couleur> couleurSet = couleurs.keySet();
 		int maxNbCouleur = 0;
 		int tmp;
@@ -249,10 +257,28 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			}
 		}
 		
-		// calcul de la criticitï¿½ autour de cette couleur.
+		// calcul de la criticite autour de cette couleur.
 		double nbVoisinsOptimal = ((100 - getAmas().getEnvironment().getHeterogeneite()) / 100) * voisins.size(); 
-		return(maxNbCouleur - nbVoisinsOptimal);	
+		return(maxNbCouleur - nbVoisinsOptimal - 1);	
+	}
+	
+	protected double computeCriticalityStabilitePosition(){
+		// calcul du nombre de voisins qui "bougent".
+		// chaque voisin bouge ssi DirectGeneral > (eps,eps)
+		double nbBougent = 0;
+		for(int i = 0; i<voisins.size(); i++){
+			if (voisins.get(i).getDirectGeneral()[0] + voisins.get(i).getDirectGeneral()[1] > epsilon)
+				nbBougent ++;
+		}
 		
+		// nb de voisins optimal qui devraient bouger, selon le curseur.
+		double nbOptimal = (getAmas().getEnvironment().getStabilite_position() / 100) * voisins.size();
+
+		if(nbBougent < nbOptimal)
+			return(nbOptimal - nbBougent); 
+
+		// le problème, si trop de blobs bougent autour, je ne veux pas lever la criticité, afin d'espérer agir pour une autre criticité.
+		return(0);
 	}
 	
 	
@@ -261,7 +287,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		criticite[Critere.Isolement.getValue()]= computeCriticalityIsolement();
 		criticite[Critere.Heterogeneite.getValue()] = computeCriticalityHeterogeneite();
 		criticite[Critere.Stabilite_etat.getValue()] = 0;
-		criticite[Critere.Stabilite_position.getValue()] = 0;
+		criticite[Critere.Stabilite_position.getValue()] = computeCriticalityStabilitePosition();
 		
 		criticite_globale = criticite[Critere.Heterogeneite.getValue()] + criticite[Critere.Isolement.getValue()] + criticite[Critere.Stabilite_etat.getValue()] + criticite[Critere.Stabilite_position.getValue()];
 		
@@ -269,22 +295,20 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
     }
 
     
-    
-    
-    // retourne le critere qui a une plus grande criticitï¿½
- 	public Critere Most_critical_critere(BlobAgent agent){
+    // retourne le critere qui a une plus grande criticite
+ 	public Critere Most_critical_critere(double[] subjectCriticity){
  		//return (Collections.max(criticite.entrySet(), Map.Entry.comparingByValue()).getKey());
- 		double max_valeur = agent.criticite[0];
+ 		double max_valeur = subjectCriticity[0];
  		int max_critere = 0;
- 		for (int i = 0; i<criticite.length; i++)
- 			if(Math.abs(max_valeur) < Math.abs(criticite[i])){
- 				max_valeur = criticite[i];
+ 		for (int i = 0; i<subjectCriticity.length; i++)
+ 			if(Math.abs(max_valeur) < Math.abs(subjectCriticity[i])){
+ 				max_valeur = subjectCriticity[i];
  				max_critere = i;
  			}
  		return Critere.valueOf(max_critere);
  	}
  	
- 	/* renvoie l'agent le plus critique parmi ses voisins, incluant lui-mï¿½me*/
+ 	/* renvoie l'agent le plus critique parmi ses voisins, incluant lui-meme*/
 	protected BlobAgent getMoreCriticalAgent(){
 		Iterator<BlobAgent> itr = voisins.iterator();
 		double criticiteMax = criticite_globale;
@@ -320,12 +344,10 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 
 	public void addVoisin(BlobAgent blobToAdd){
 		this.voisins.add(blobToAdd);
-		//this.blob.addVoisin(blobToAdd.blob);
 	}
 	
 	public void clearVoisin(){
 		this.voisins.clear();
-		//this.blob.clearVoisin();
 	}
 	
 	public ArrayList<BlobAgent> getVoisins() {
@@ -358,6 +380,16 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 
 	public void setPastDirection(double[] pastDirection) {
 		this.pastDirection = pastDirection;
+	}
+
+
+	public double[] getDirectGeneral() {
+		return directGeneral;
+	}
+
+
+	public void setDirectGeneral(double[] directGeneral) {
+		this.directGeneral = directGeneral;
 	}
 
 
