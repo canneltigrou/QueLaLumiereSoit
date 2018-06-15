@@ -139,6 +139,24 @@ public class Controller implements Initializable{
 	
     @FXML
     void onClicButtonSortirBlob(MouseEvent event) {
+    	// va sortir un Blob mur, pris au hasard dans To
+    	if (blobHibernants != null)
+    	{
+    		// trouvons un blob mur :
+    		boolean found = false;
+    		Migrant migrant = blobHibernants.get(0);
+    		int i = 0;
+    		while(! found && i < blobHibernants.size()){
+    			if (blobHibernants.get(i).isRiped()){
+    				found = true;
+    				migrant = blobHibernants.get(i);
+    			}
+    			i++;
+    		}
+    		
+    		if(found)
+    			sortirBlob(migrant);
+    	}
     }
 	
     @FXML
@@ -181,13 +199,14 @@ public class Controller implements Initializable{
 		toriginel = new ToForm();
 		panelToriginel.getChildren().add(toriginel);
 		
-		// J'initialise à 2 chaque sliders.
-		Sdiso.setValue(2);
+		// J'initialise chaque sliders.
+		Sdiso.setValue(10);
 		sHeterogeneite.setValue(2);
 		sStabiliteEtat.setValue(2);
 		sStabilitePosition.setValue(2);
 		STauxMurissement.setValue(3);
 		
+		blobActifs = new ArrayList<>();
 		
 	}
 	
@@ -299,6 +318,14 @@ public class Controller implements Initializable{
 	
 	public void moveBlob(Migrant b, double[] coo){
 		tAmas.move_blob(b, coo);	
+	}
+
+	public ArrayList<Migrant> getBlobHibernants() {
+		return blobHibernants;
+	}
+
+	public void setBlobHibernants(ArrayList<Migrant> blobHibernants) {
+		this.blobHibernants = blobHibernants;
 	}
 	
 	

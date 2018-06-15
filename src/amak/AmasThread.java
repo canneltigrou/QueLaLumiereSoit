@@ -68,6 +68,8 @@ public class AmasThread extends Thread{
 
 		MyEnvironment env = new MyEnvironment(controller);
         myAmas = new MyAMAS(env, controller, nbBlobs);
+        controller.setBlobHibernants(env.getHibernants());
+        
         
         /*
         PositionThread tPosition = new PositionThread(this, env.getHibernants());
