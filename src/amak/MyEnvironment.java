@@ -3,6 +3,7 @@ package amak;
 import java.util.ArrayList;
 
 import application.Controller;
+import business.CriticalityFunction;
 import fr.irit.smac.amak.Environment;
 import fr.irit.smac.amak.Scheduling;
 
@@ -11,13 +12,14 @@ public class MyEnvironment extends Environment {
 	private ArrayList<Migrant> hibernants;
 	private int radius = 4; // radius utilisé pour les différents sliders
 	/* possede les valeurs des differents curseurs*/
-	private int isolement;
-	private int stabilite_etat;
-	private int stabilite_position;
-	private int heterogeneite;
-	private int distanceRealite;
-	private int tauxMurissemnt;
+	private double isolement;
+	private double stabilite_etat;
+	private double stabilite_position;
+	private double heterogeneite;
+	private double distanceRealite;
+	private double tauxMurissemnt;
 	public double rayonTerrain = 12.5; // exprimé en metres
+	private CriticalityFunction fctCriticalityStabiliteEtat;
 	
 	/* communication avec l'interface graphique */
 	private Controller controller;
@@ -38,13 +40,20 @@ public class MyEnvironment extends Environment {
 		stabilite_etat = controller.getStabiliteHeterogeneite();
 		stabilite_position = controller.getStabilitePosition();
 		heterogeneite = controller.getHeterogenite();
-		setDistanceRealite(controller.getDistanceRealite());
-		
-		
+		distanceRealite = controller.getDistanceRealite();
+		tauxMurissemnt = controller.getTauxMurissement();
+		fctCriticalityStabiliteEtat = new CriticalityFunction(-1.2, 1.2, -0.05, 0.05);
+		//fctCriticalityStabiliteEtat = new CriticalityFunction(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
 	}
 
 	
-
+	// j'ai considéré que cette criticité prend en compte l'isolement et le curseur stabilite états.
+	// j'appelle donc cette méthode en cas de changement de chacun des 2 curseurs.
+	private void majFctCriticalityStabiliteEtat(){
+		//fctCriticalityStabiliteEtat.setParameters(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
+	}
+		
+	
 	public ArrayList<BlobAgent> getAgents() {
 		return agents;
 	}
@@ -65,7 +74,7 @@ public class MyEnvironment extends Environment {
 	private void generateNeighboursToriginel(BlobAgent subject){
 		for (int j = 0; j < hibernants.size(); j++ )
 		{
-			if(subject.getBlob().isVoisin(hibernants.get(j).getBlob(), radius))
+			if(subject.getBlob().isVoisin(hibernants.get(j).getBlob(), 2*radius))
 				subject.addVoisin(hibernants.get(j));
 		}
 	}
@@ -171,6 +180,46 @@ public class MyEnvironment extends Environment {
 			}	
 			return res;
 		}
+		
+		public double[] nouvellesCoordonnees(BlobAgent agent, double pas, double[] pastDirection){
+			double[] res = new double[2];
+			double[] coordonnee = agent.getBlob().getCoordonnee();
+			boolean isOK = false;
+			// Je dois prendre en compte les bordures. Je décide de ne pas compliquer les calculs : 
+			// Je mets le tout dans une boucle, et je relance l'aléatoire si je suis en dehors du terrain.
+			
+			
+			
+			if ( pastDirection != null && Math.random()*100 < 90)
+			{
+				// je maintiens ma direction précédente, dont j'ai stocké le vecteur dans pastDirection
+				res[0] = coordonnee[0] + pastDirection[0];
+				res[1] = coordonnee[1] + pastDirection[1];
+				
+				if( (agent instanceof Migrant) && ((Migrant)agent).isHome())
+					isOK = isValideInTo(res);
+				else
+					isOK = isValideInTi(res);
+			}
+			
+			
+			if(!isOK) // l'ancienne direction ne me dirige pas comme il se doit.
+				res = nouvellesCoordonnees(agent, pas);
+			
+			// cette fonction est appelée pour bouger et on pour créer.
+			// Je remets donc à jour la variable pastDirection du blob en question.
+			if(pastDirection == null)
+				pastDirection = new double[2];
+			pastDirection[0] = res[0] - coordonnee[0];
+			pastDirection[1] = res[1] - coordonnee[1];
+			
+			//double[] nvlleDirection = new double[2];
+			
+			agent.setPastDirection(pastDirection);
+			
+			
+			return res;
+		}
 	
 
 	
@@ -178,36 +227,42 @@ public class MyEnvironment extends Environment {
 	 * *********************   getter / setter			****************************************
 	 * ************************************************************************************* * */
 	
-	public int getIsolement() {
+	public double getIsolement() {
 		return isolement;
 	}
 
 	public void setIsolement(int isolement) {
 		this.isolement = isolement;
+		System.out.println("la nouvelle valeur d'isolement a été prise en compte");
+		//majFctCriticalityStabiliteEtat();
 	}
 
-	public int getStabilite_etat() {
+	public double getStabilite_etat() {
 		return stabilite_etat;
 	}
 
 	public void setStabilite_etat(int stabilite_etat) {
 		this.stabilite_etat = stabilite_etat;
+		System.out.println("la nouvelle valeur de la stabilité d'état a été prise en compte");
+		majFctCriticalityStabiliteEtat();
 	}
 
-	public int getStabilite_position() {
+	public double getStabilite_position() {
 		return stabilite_position;
 	}
 
 	public void setStabilite_position(int stabilite_position) {
 		this.stabilite_position = stabilite_position;
+		System.out.println("la nouvelle valeur de stabilité de la position a été prise en compte");
 	}
 
-	public int getHeterogeneite() {
+	public double getHeterogeneite() {
 		return heterogeneite;
 	}
 
 	public void setHeterogeneite(int heterogeneite) {
 		this.heterogeneite = heterogeneite;
+		System.out.println("la nouvelle valeur " + heterogeneite + " d'hétérogénéité a été prise en compte");
 	}
 
 
@@ -220,7 +275,7 @@ public class MyEnvironment extends Environment {
 		this.controller = controller;
 	}
 
-	public int getDistanceRealite() {
+	public double getDistanceRealite() {
 		return distanceRealite;
 	}
 
@@ -229,12 +284,12 @@ public class MyEnvironment extends Environment {
 	}
 
 
-	public int getTauxMurissemnt() {
+	public double getTauxMurissemnt() {
 		return tauxMurissemnt;
 	}
 
 
-	public void setTauxMurissemnt(int tauxMurissemnt) {
+	public void setTauxMurissemnt(double tauxMurissemnt) {
 		this.tauxMurissemnt = tauxMurissemnt;
 	}
 

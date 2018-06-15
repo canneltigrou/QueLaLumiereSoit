@@ -46,11 +46,16 @@ public class ToForm extends Parent{
 	
 	
 
-	public void add_blob(Blob b) {
+	public void add_blob(Blob b, boolean isRiped) {
 
 		Platform.runLater(new Runnable() {
 			public void run() {
-				BlobForm bf = new BlobForm(b, percentToRepresentation(b.getCoordonnee()));
+				BlobForm bf;
+				if (isRiped)
+					bf = new BlobForm(b, percentToRepresentation(b.getCoordonnee()));
+				else
+					bf = new BlobForm(b, percentToRepresentation(b.getCoordonnee()), Color.WHITE);
+
 				blobList.put(b, bf);
 				getChildren().add(bf);
 				
@@ -70,11 +75,15 @@ public class ToForm extends Parent{
 
 	}
 
-	public void move_blob(Blob b) {
+	public void move_blob(Blob b, boolean isRiped) {
 		Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bf = blobList.get(b);
-				bf.changeBlob(b, percentToRepresentation(b.getCoordonnee()));
+				if (isRiped)
+					bf.changeBlob(b, percentToRepresentation(b.getCoordonnee()));
+				else
+					bf.changeBlob(b, percentToRepresentation(b.getCoordonnee()), Color.WHITE);
+
 			}
 		});
 	}

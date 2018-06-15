@@ -9,11 +9,17 @@ public class Migrant extends BlobAgent{
 	
 	private boolean isHome;
 	private boolean isRiped;
+	private int cptRiped;
 	//private int cpt_hibernation;
+	private int nbRipedIdeal = 1;
+	
+	
 	
 	public Migrant(MyAMAS amas, Blob b, Controller controller) {
 		super(amas, b, controller);
-		setHome(true);
+		isHome = true;
+		isRiped = false;
+		cptRiped = 1;
 	}
 
 	public boolean isHome() {
@@ -25,16 +31,59 @@ public class Migrant extends BlobAgent{
 	}
 	
 	
+	// boolean renvoyant true avec une probabilité de 'tauxMurissement' géré dans l'IHM.
+	private boolean mustRipe(){
+		return( Math.random() * 100 < getAmas().getEnvironment().getTauxMurissemnt());
+	}
+	
+	
+	
+	private double computeCriticalityMurissement(){
+		// je compte le nombre de voisins murs autour de moi.
+		double cpt = 0;
+		for (int i = 0; i< voisins.size(); i++){
+			if( ( (Migrant)(voisins.get(i))).isRiped)
+				cpt++;
+		}
+		return(nbRipedIdeal - cpt);
+	}
+	
+	
+	private void action_murir(){
+		isRiped = true;
+		cptRiped = 20;
+	}
+	
 	@Override
 	protected void onDecideAndAct() {
+		nbChangements = 0;
 		currentAction = Action.RESTER; // to initialise
-		if (isHome)
+		if (isHome){
+			if(isRiped){
+				if(cptRiped <= 0)
+					isRiped = false;
+				else
+					cptRiped--;
+			}
+			else
+				if(mustRipe())
+					action_murir(); //isRiped = true;
+			
 			action_se_deplacer();
+		}			
 		else
 			majAspectAgent();
 		BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
-		 Critere most_critic = Most_critical_critere(agentNeedingHelp);
-		 
+		Critere most_critic = Most_critical_critere(agentNeedingHelp.getCriticite());
+		
+		// Si je suis sans TR/TI ne peux pas me mouvoir. Je ne peux donc pas gérer la criticité de position
+		// Je vais aider le plus critique sur une autre de ses criticités.
+		if (!isHome && most_critic == Critere.Stabilite_position){
+			double[] tmp = agentNeedingHelp.getCriticite();
+			tmp[Critere.Heterogeneite.getValue()] = 0;
+			most_critic = Most_critical_critere(tmp);
+		}
+		
 		 switch (most_critic){
 		 case Isolement:
 			 // too few neighboors -> criticite.ISOLEMENT > 0 -> I have procreate
@@ -49,6 +98,13 @@ public class Migrant extends BlobAgent{
 			 break;
 			 
 		 case Heterogeneite:
+			 // if >0 then it's too homogeneous. --> I change the color in a random one.
+			 // else it's too heterogeneous.  -> I change my color to the most present color
+			 if(criticite[Critere.Heterogeneite.getValue()] > 0)
+				 action_changerCouleur();
+			 else
+				 action_changerCouleur(couleurEnvironnante);
+
 			 break;
 		 
 		 default:
@@ -90,6 +146,12 @@ public class Migrant extends BlobAgent{
 		controller.remove_blobMigrant(this);
 	}
 	
+	
+	private double computeCriticalityInTo(){
+		criticite[Critere.Murissement.getValue()] =	computeCriticalityMurissement();
+
+		return criticite[Critere.Murissement.getValue()]; // TODO
+	}
 	
 	@Override
     protected double computeCriticality() {

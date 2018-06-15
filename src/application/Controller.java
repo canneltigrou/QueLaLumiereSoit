@@ -78,39 +78,37 @@ public class Controller implements Initializable{
 	@FXML
     void clicIso(MouseEvent event) {
     	
-    	System.out.println(" Valeur DegrÃƒÂ©s d'isolement : " + diso.get() + "\n");
+    	System.out.println(" Valeur Degrés d'isolement : " + diso.get() + "\n");
     	tAmas.setIsolement(diso.getValue().intValue());
     }
 	
 	@FXML
     void clicHeter(MouseEvent event) {
-    	System.out.println(" Valeur DegrÃ©s d'heterogÃ©nÃ©itÃ© : " + hetero.get() + "\n");
+    	System.out.println(" Valeur Degrés d'heterogénéité : " + hetero.get() + "\n");
     	tAmas.setHeterogeneite(hetero.getValue().intValue());
     }
 	
 	@FXML
     void clicStabPos(MouseEvent event) {
-    	System.out.println(" Valeur de la stabilitÃ© de la position du voisinage : " + stabPos.get() + "\n");
+    	System.out.println(" Valeur de la stabilité de la position du voisinage : " + stabPos.get() + "\n");
     	tAmas.setStabilitePosition(stabPos.getValue().intValue());
     }
 	
 	@FXML
     void clicEtatVois(MouseEvent event) {
-    	System.out.println(" Valeur de la stabilitÃ© de l'etat du voisinage : " + stabEtat.get() + "\n");
+    	System.out.println(" Valeur de la stabilité de l'etat du voisinage : " + stabEtat.get() + "\n");
     	tAmas.setStabiliteEtat(stabEtat.getValue().intValue());
-    	//if(tAmas != null)
-    		//tAmas.setCaracteristiques(diso.getValue().intValue(), hetero.getValue().intValue(), stabEtat.getValue().intValue(), stabPos.getValue().intValue());
     }
 	
 	@FXML
     void clicTauxMur(MouseEvent event) {
-    	System.out.println(" Valeur de la stabilitÃ© du taux de murriseement : " + tauxMur.get() + "\n");
+    	System.out.println(" Valeur de la stabilité du taux de murriseement : " + tauxMur.get() + "\n");
     	tAmas.setTauxMurissement(tauxMur.getValue().intValue());
     }
 	
 	@FXML
     void clicDistRea(MouseEvent event) {
-    	System.out.println(" Valeur de la distance Ã Â  la rÃ©alitÃ© : " + distanceRealite.get() + "\n");
+    	System.out.println(" Valeur de la distance à  la réalité : " + distanceRealite.get() + "\n");
     	tAmas.setDistanceRealite(distanceRealite.getValue().intValue());
     }
 	
@@ -130,8 +128,8 @@ public class Controller implements Initializable{
 		stabPos.bind(sStabilitePosition.valueProperty());
 		stabEtat.bind(sStabiliteEtat.valueProperty());
 		tauxMur.bind(STauxMurissement.valueProperty());
-	  radiusVoisins.bind(sRadiusVoisins.valueProperty());
-	  distanceRealite.bind(SDistanceRealite.valueProperty());
+		radiusVoisins.bind(sRadiusVoisins.valueProperty());
+		distanceRealite.bind(SDistanceRealite.valueProperty());
 	    
 		
 		tideal = new TerrainForm();
@@ -143,7 +141,7 @@ public class Controller implements Initializable{
 		toriginel = new ToForm();
 		panelToriginel.getChildren().add(toriginel);
 		
-		// J'initialise ÃƒÂƒÃ‚Â  2 chaque sliders.
+		// J'initialise à 2 chaque sliders.
 		Sdiso.setValue(2);
 		sHeterogeneite.setValue(2);
 		sStabiliteEtat.setValue(2);
@@ -162,8 +160,8 @@ public class Controller implements Initializable{
 		treel.add_blob(b.getBlob());
 	}
 	
-	public void add_blobHibernant(BlobAgent b){
-		toriginel.add_blob(b.getBlob());
+	public void add_blobHibernant(Migrant b){
+		toriginel.add_blob(b.getBlob(), false);
 	}
 	
 	public void remove_blobImmaginaire(Immaginaire b){
@@ -190,9 +188,8 @@ public class Controller implements Initializable{
 		treel.move_blob(b.getBlob());
 	}
 	
-	public void move_blobHibernant(BlobAgent b){
-		toriginel.move_blob(b.getBlob());
-
+	public void move_blobHibernant(Migrant b){
+		toriginel.move_blob(b.getBlob(), b.isRiped());
 	}
 	
 	public int getIsolement(){
@@ -213,6 +210,10 @@ public class Controller implements Initializable{
 	
 	public int getDistanceRealite(){
 		return( distanceRealite.getValue().intValue());
+	}
+	
+	public double getTauxMurissement(){
+		return(tauxMur.getValue());
 	}
 
 

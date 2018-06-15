@@ -81,7 +81,7 @@ public class AmasThread extends Thread{
 	}
 	
 	
-	public void setCaracteristiques(int isolement, int heterogeneite, int stabilite_etat, int stabilite_position){
+	/*public void setCaracteristiques(int isolement, int heterogeneite, int stabilite_etat, int stabilite_position){
 		Platform.runLater(new Runnable() {
 			public void run() {
 				myAmas.getEnvironment().setIsolement(isolement);
@@ -90,12 +90,13 @@ public class AmasThread extends Thread{
 				myAmas.getEnvironment().setStabilite_position(stabilite_position);
 			}
 		});
-	}
+	}*/
 	
 	public void setIsolement(int isolement){
 		Platform.runLater(new Runnable() {
 			public void run() {
 				myAmas.getEnvironment().setIsolement(isolement);
+				System.out.println("tAmas : changement Taux d'isolement à " + isolement);
 			}
 		});
 	}
@@ -104,6 +105,7 @@ public class AmasThread extends Thread{
 		Platform.runLater(new Runnable() {
 			public void run() {
 				myAmas.getEnvironment().setHeterogeneite(heterogeneite);
+				System.out.println("tAmas : changement Taux d'hétérogénéité " + heterogeneite);
 			}
 		});		
 	}
@@ -112,6 +114,7 @@ public class AmasThread extends Thread{
 		Platform.runLater(new Runnable() {
 			public void run() {
 				myAmas.getEnvironment().setStabilite_etat(stabilite_etat);
+				System.out.println("tAmas : changement de la stabilité des etats à " + stabilite_etat);
 			}
 		});			
 	}
@@ -119,7 +122,8 @@ public class AmasThread extends Thread{
 	public void setStabilitePosition(int stabilite_position) {
 		Platform.runLater(new Runnable() {
 			public void run() {
-				myAmas.getEnvironment().setStabilite_position(stabilite_position);;
+				myAmas.getEnvironment().setStabilite_position(stabilite_position);
+				System.out.println("tAmas : changement de la Stabilité des positions à " + stabilite_position);
 			}
 		});		
 		
@@ -128,7 +132,8 @@ public class AmasThread extends Thread{
 	public void setTauxMurissement(int tauxMurissemnt) {
 		Platform.runLater(new Runnable() {
 			public void run() {
-				myAmas.getEnvironment().setTauxMurissemnt(tauxMurissemnt);;;
+				myAmas.getEnvironment().setTauxMurissemnt(tauxMurissemnt);
+				System.out.println("tAmas : changement Taux Murissement à " + tauxMurissemnt);
 			}
 		});		
 	}
@@ -137,6 +142,7 @@ public class AmasThread extends Thread{
 		Platform.runLater(new Runnable() {
 			public void run() {
 				myAmas.getEnvironment().setDistanceRealite(distanceRepresentation);
+				System.out.println("tAmas : changement diastance à la réalitét à " + distanceRepresentation);
 			}
 		});			
 	}

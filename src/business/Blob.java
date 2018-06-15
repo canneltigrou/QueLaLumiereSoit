@@ -10,8 +10,6 @@ public class Blob {
 	// liste des voisins Reels pour TR, utilisé pour l'apparence du blob, mais à voir le taux de rafraichissement
 	private ArrayList<Blob> voisins;
 	
-	private int cpt_state;
-	private int cpt_position;
 	private boolean real;
 	
 	private ArrayList<Couleur> globules_couleurs;
@@ -121,21 +119,6 @@ public class Blob {
 		this.voisins.clear();
 	}
 
-	public int getCpt_state() {
-		return cpt_state;
-	}
-
-	public void setCpt_state(int cpt_state) {
-		this.cpt_state = cpt_state;
-	}
-
-	public int getCpt_position() {
-		return cpt_position;
-	}
-
-	public void setCpt_position(int cpt_position) {
-		this.cpt_position = cpt_position;
-	}
 
 	public boolean isReal() {
 		return real;
@@ -160,7 +143,6 @@ public class Blob {
 		if (calculeDistance(b.coordonnee, this.coordonnee) < radius)
 			return true;
 		return false;
-		
 	}
 
 	public ArrayList<Couleur> getGlobules_couleurs() {
@@ -183,5 +165,23 @@ public class Blob {
 			globules_couleurs.add(couleur);
 		}
 	}
-
+	
+	public Couleur getCouleurLaPLusPresente(){
+		int indice = 0;
+		int nbMax = 0;
+		int cpt;
+		for (int i = 0; i < globules_couleurs.size(); i++ )
+		{
+			cpt = 0;
+			for ( int j = i + 1; j < globules_couleurs.size(); j++)
+				if(globules_couleurs.get(i) == globules_couleurs.get(j))
+					cpt++;
+			if(cpt > nbMax)
+			{
+				indice = i;
+				nbMax = cpt;
+			}
+		}
+		return(globules_couleurs.get(indice));
+	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import business.Blob;
 import business.Couleur;
 import javafx.scene.Parent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 // https://openclassrooms.com/courses/les-applications-web-avec-javafx/les-noeuds-graphiques
@@ -50,10 +51,21 @@ public class BlobForm extends Parent{
 	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
 		}
-		
-
     }
 	
+	public BlobForm(Blob b, double[] coo, Color couleur){
+		globules = new ArrayList<Circle>();
+		this.setTranslateX(coo[0]);// on positionne le groupe 
+		this.setTranslateY(coo[1]);
+		ArrayList<double[]> positionGlobule = b.getGlobules_position();
+		globules.clear();
+		for(int i = 0 ; i < positionGlobule.size(); i++)
+		{
+			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleur ); 
+	        globules.add(fond_blob);
+	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
+		}
+    }
 	
 	
 	public void changeBlob(Blob b){
@@ -88,6 +100,26 @@ public class BlobForm extends Parent{
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
+	        
+	        this.getChildren().add(fond_blob);//ajout du globule	
+		}
+	}
+	
+	// cette fonction est appelée si le globule n'est pas mûr et doit être repésenté blanc.
+	// la couleur blanche est donc donnée en paramètre.
+	public void changeBlob(Blob b, double[] coo, Color couleur){
+		this.blob = b;
+		this.setTranslateX(coo[0]);//positionnement du blob
+        this.setTranslateY(coo[1]);
+		for(int i = 0 ; i < globules.size(); i++){
+			this.getChildren().remove(globules.get(i));
+		}
+        
+        ArrayList<double[]> positionGlobule = b.getGlobules_position();
+		globules.clear();
+		for(int i = 0 ; i < positionGlobule.size(); i++)
+		{
+			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleur ); 
 	        
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
