@@ -117,8 +117,14 @@ public class Controller implements Initializable{
     	System.out.println(" Valeur du radius des voisins : " + radiusVoisins.get() + "\n");
     }
 	
+    @FXML
+    void onClicButtonSortirBlob(MouseEvent event) {
+    }
 	
-	
+    @FXML
+    void onClicButtonModifierBlob(MouseEvent event) {
+    	
+    }
 
 
 	@Override
