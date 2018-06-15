@@ -3,6 +3,7 @@ package amak;
 import java.util.ArrayList;
 
 import application.Controller;
+import business.CriticalityFunction;
 import fr.irit.smac.amak.Environment;
 import fr.irit.smac.amak.Scheduling;
 
@@ -11,13 +12,14 @@ public class MyEnvironment extends Environment {
 	private ArrayList<Migrant> hibernants;
 	private int radius = 4; // radius utilisé pour les différents sliders
 	/* possede les valeurs des differents curseurs*/
-	private int isolement;
+	private double isolement;
 	private double stabilite_etat;
 	private double stabilite_position;
 	private double heterogeneite;
 	private double distanceRealite;
 	private double tauxMurissemnt;
 	public double rayonTerrain = 12.5; // exprimé en metres
+	private CriticalityFunction fctCriticalityStabiliteEtat;
 	
 	/* communication avec l'interface graphique */
 	private Controller controller;
@@ -40,11 +42,18 @@ public class MyEnvironment extends Environment {
 		heterogeneite = controller.getHeterogenite();
 		distanceRealite = controller.getDistanceRealite();
 		tauxMurissemnt = controller.getTauxMurissement();
-		
+		fctCriticalityStabiliteEtat = new CriticalityFunction(-1.2, 1.2, -0.05, 0.05);
+		//fctCriticalityStabiliteEtat = new CriticalityFunction(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
 	}
 
 	
-
+	// j'ai considéré que cette criticité prend en compte l'isolement et le curseur stabilite états.
+	// j'appelle donc cette méthode en cas de changement de chacun des 2 curseurs.
+	private void majFctCriticalityStabiliteEtat(){
+		//fctCriticalityStabiliteEtat.setParameters(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
+	}
+		
+	
 	public ArrayList<BlobAgent> getAgents() {
 		return agents;
 	}
@@ -65,7 +74,7 @@ public class MyEnvironment extends Environment {
 	private void generateNeighboursToriginel(BlobAgent subject){
 		for (int j = 0; j < hibernants.size(); j++ )
 		{
-			if(subject.getBlob().isVoisin(hibernants.get(j).getBlob(), radius))
+			if(subject.getBlob().isVoisin(hibernants.get(j).getBlob(), 2*radius))
 				subject.addVoisin(hibernants.get(j));
 		}
 	}
@@ -181,7 +190,7 @@ public class MyEnvironment extends Environment {
 			
 			
 			
-			if ( pastDirection != null && Math.random()*100 < 75)
+			if ( pastDirection != null && Math.random()*100 < 90)
 			{
 				// je maintiens ma direction précédente, dont j'ai stocké le vecteur dans pastDirection
 				res[0] = coordonnee[0] + pastDirection[0];
@@ -218,13 +227,14 @@ public class MyEnvironment extends Environment {
 	 * *********************   getter / setter			****************************************
 	 * ************************************************************************************* * */
 	
-	public int getIsolement() {
+	public double getIsolement() {
 		return isolement;
 	}
 
 	public void setIsolement(int isolement) {
 		this.isolement = isolement;
 		System.out.println("la nouvelle valeur d'isolement a été prise en compte");
+		//majFctCriticalityStabiliteEtat();
 	}
 
 	public double getStabilite_etat() {
@@ -234,6 +244,7 @@ public class MyEnvironment extends Environment {
 	public void setStabilite_etat(int stabilite_etat) {
 		this.stabilite_etat = stabilite_etat;
 		System.out.println("la nouvelle valeur de la stabilité d'état a été prise en compte");
+		majFctCriticalityStabiliteEtat();
 	}
 
 	public double getStabilite_position() {

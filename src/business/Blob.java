@@ -10,8 +10,6 @@ public class Blob {
 	// liste des voisins Reels pour TR, utilisé pour l'apparence du blob, mais à voir le taux de rafraichissement
 	private ArrayList<Blob> voisins;
 	
-	private int cpt_state;
-	private int cpt_position;
 	private boolean real;
 	
 	private ArrayList<Couleur> globules_couleurs;
@@ -121,21 +119,6 @@ public class Blob {
 		this.voisins.clear();
 	}
 
-	public int getCpt_state() {
-		return cpt_state;
-	}
-
-	public void setCpt_state(int cpt_state) {
-		this.cpt_state = cpt_state;
-	}
-
-	public int getCpt_position() {
-		return cpt_position;
-	}
-
-	public void setCpt_position(int cpt_position) {
-		this.cpt_position = cpt_position;
-	}
 
 	public boolean isReal() {
 		return real;

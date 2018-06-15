@@ -9,6 +9,7 @@ import application.Controller;
 import business.Blob;
 import business.Couleur;
 import business.Critere;
+import business.CriticalityFunction;
 import fr.irit.smac.amak.Agent;
 
 
@@ -17,7 +18,7 @@ enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER, CHANGER_COULEUR, CHANGER_
 public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	protected Blob blob;
-	private ArrayList<BlobAgent> voisins; 
+	protected ArrayList<BlobAgent> voisins; 
 	
 	protected Action currentAction;
 	protected Immaginaire newFils;
@@ -26,15 +27,18 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected double[] pastDirection;
 	
 	
-
 	// criticite : par convention : negative si en manque, positive si trop nombreux.
 	protected double[] criticite;
 	
 	protected double criticite_globale;
 	protected double[] directGeneral;
 	protected double epsilon = 0.05;
+	protected double degreChangement;
+	protected double nbChangements;
+	protected double moyenneChangements;
 	
-	
+	static private CriticalityFunction fctCriticalityStabiliteEtat = new CriticalityFunction(new Double(-10), new Double(10), new Double(2), new Double(2));
+
 	protected Controller controller;
 	
 	// lie aux decisions 'passives' : en fonction de l'etat du voisinage
@@ -46,8 +50,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	@Override
 	protected void onInitialization() {
 		this.blob = (Blob) params[0];
-		blob.setCpt_state(0);
-		blob.setCpt_position(0);
 		criticite = new double[Critere.FIN.getValue()];
 		for(int i = 0; i < Critere.FIN.getValue(); i++)
 			criticite[i] = 0;
@@ -58,6 +60,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		directGeneral = new double[2];
 		directGeneral[0] = 0;
 		directGeneral[1] = 0;
+		degreChangement = 0;
 		super.onInitialization();
 	}
 	
@@ -82,7 +85,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 	
 	
-	// pour le moment prend la couleur du 1er globule prï¿½sent chez mon voisin
 	protected void changer_de_couleur_passif(BlobAgent voisin){
 		ArrayList<Couleur> listeMesCouleurs = blob.getGlobules_couleurs();
 		double[] centreVoisin = voisin.getBlob().getCoordonnee().clone();
@@ -112,6 +114,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		// on modifie la couleur de ce globule en la couleur la plus prï¿½sente de notre voisin
 		listeMesCouleurs.set(indiceMin, voisin.blob.getCouleurLaPLusPresente());
 		blob.setGlobules_couleurs(listeMesCouleurs);
+		nbChangements++;
 	}
 		
 	// Le changement de forme se fait en choisissant une forme aleatoire.
@@ -128,7 +131,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		// la pulsation depend du nombre de voisins alentour
 		blob.setPulsation(voisins.size());
 		
-		// la couleur s'acquiert si un voisin est prï¿½sent depuis un temps defini.
+		// la couleur s'acquiert si un voisin est present depuis un temps defini.
 		Set<BlobAgent> blobsConnus = (Set<BlobAgent>) connaissance.keySet();
 		for (BlobAgent blobConnu : blobsConnus) {
 			if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
@@ -190,9 +193,9 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 	
 	
-	// CHANGEMENT DE COULEUR .... Pour ne pas perdre les couleurs aquises par expï¿½rience, 
-	// je choisis de changer la couleur qui est la plus fï¿½rquente parmi mes globules.
-	// action de changer de couleur en prenant une couleur alï¿½atoire
+	// CHANGEMENT DE COULEUR .... Pour ne pas perdre les couleurs aquises par experience, 
+	// je choisis de changer la couleur qui est la plus frequente parmi mes globules.
+	// action de changer de couleur en prenant une couleur aleatoire
 	protected void action_changerCouleur(){
 		// choix d'une nouvelle couleur
 		Couleur[] couleurListe = Couleur.values();
@@ -206,7 +209,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			if (listeGlobulesCouleur.get(i).equals(MostPresentCouleur))
 				listeGlobulesCouleur.set(i, nvlleCouleur);
 		}
-		
+		nbChangements++;
 	}
 	
 	// action de changer de couleur en prenant celle la plus presente dans l'environnement, 
@@ -220,7 +223,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 					if (listeGlobulesCouleur.get(i).equals(MostPresentCouleur))
 						listeGlobulesCouleur.set(i, couleur);
 				}
-				
+				nbChangements++;
 	}
 	
 	
@@ -259,7 +262,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		
 		// calcul de la criticite autour de cette couleur.
 		double nbVoisinsOptimal = ((100 - getAmas().getEnvironment().getHeterogeneite()) / 100) * voisins.size(); 
-		return(maxNbCouleur - nbVoisinsOptimal - 1);	
+		return(maxNbCouleur - nbVoisinsOptimal);	
 	}
 	
 	protected double computeCriticalityStabilitePosition(){
@@ -281,7 +284,19 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		return(0);
 	}
 	
-	
+	protected double computeCriticalityStabiliteEtat(){
+		// calcule de la moyenne des changements effectués alentour:
+		double moyenne = 0;
+		for (int i = 0; i< voisins.size(); i++){
+			moyenne += voisins.get(i).getNbChangements();
+		}
+		moyenne /= voisins.size();
+		
+		double res = fctCriticalityStabiliteEtat.compute(moyenneChangements - moyenne);
+		moyenneChangements = moyenne;
+		return(res);
+			
+	}
 	
     protected double computeCriticalityInTideal() {
 		criticite[Critere.Isolement.getValue()]= computeCriticalityIsolement();
@@ -291,7 +306,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		
 		criticite_globale = criticite[Critere.Heterogeneite.getValue()] + criticite[Critere.Isolement.getValue()] + criticite[Critere.Stabilite_etat.getValue()] + criticite[Critere.Stabilite_position.getValue()];
 		
-        return blob.getCpt_state();
+        return criticite_globale;
     }
 
     
@@ -390,6 +405,11 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 
 	public void setDirectGeneral(double[] directGeneral) {
 		this.directGeneral = directGeneral;
+	}
+
+
+	public double getNbChangements() {
+		return nbChangements;
 	}
 
 

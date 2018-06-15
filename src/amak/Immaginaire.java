@@ -38,6 +38,7 @@ public class Immaginaire extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
+		 nbChangements = 0;
 		 majAspectAgent();		 
 		 currentAction = Action.RESTER; // to initialise
 	     BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
@@ -55,6 +56,9 @@ public class Immaginaire extends BlobAgent{
 			 break;
 				 
 		 case Stabilite_etat:
+			 
+			 
+			 
 			 break;
 			 
 		 case Stabilite_position:

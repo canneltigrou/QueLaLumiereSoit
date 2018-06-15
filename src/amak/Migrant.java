@@ -11,6 +11,9 @@ public class Migrant extends BlobAgent{
 	private boolean isRiped;
 	private int cptRiped;
 	//private int cpt_hibernation;
+	private int nbRipedIdeal = 1;
+	
+	
 	
 	public Migrant(MyAMAS amas, Blob b, Controller controller) {
 		super(amas, b, controller);
@@ -33,6 +36,19 @@ public class Migrant extends BlobAgent{
 		return( Math.random() * 100 < getAmas().getEnvironment().getTauxMurissemnt());
 	}
 	
+	
+	
+	private double computeCriticalityMurissement(){
+		// je compte le nombre de voisins murs autour de moi.
+		double cpt = 0;
+		for (int i = 0; i< voisins.size(); i++){
+			if( ( (Migrant)(voisins.get(i))).isRiped)
+				cpt++;
+		}
+		return(nbRipedIdeal - cpt);
+	}
+	
+	
 	private void action_murir(){
 		isRiped = true;
 		cptRiped = 20;
@@ -40,6 +56,7 @@ public class Migrant extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
+		nbChangements = 0;
 		currentAction = Action.RESTER; // to initialise
 		if (isHome){
 			if(isRiped){
@@ -129,6 +146,12 @@ public class Migrant extends BlobAgent{
 		controller.remove_blobMigrant(this);
 	}
 	
+	
+	private double computeCriticalityInTo(){
+		criticite[Critere.Murissement.getValue()] =	computeCriticalityMurissement();
+
+		return criticite[Critere.Murissement.getValue()]; // TODO
+	}
 	
 	@Override
     protected double computeCriticality() {
