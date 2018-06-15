@@ -53,9 +53,7 @@ public class PositionThread extends Thread{
 		b.setBlob(tmp);
 		tAmas.t0_to_tr(b);
 		blobHibernants.remove(b);
-		blobActifs.add(b);
-		
-		
+		blobActifs.add(b);	
 	}
 	
 	
@@ -66,8 +64,7 @@ public class PositionThread extends Thread{
 	}
 	
 	public void moveBlob(Migrant b, double[] coo){
-		tAmas.move_blob(b, coo);
-		
+		tAmas.move_blob(b, coo);	
 	}
 	
 	private void console_afficher_blobs(ArrayList<Migrant> blobList)

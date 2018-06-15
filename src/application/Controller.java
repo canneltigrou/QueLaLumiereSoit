@@ -2,24 +2,31 @@ package application;
 
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import amak.AmasThread;
 import amak.BlobAgent;
 import amak.Immaginaire;
 import amak.Migrant;
-import javafx.application.Platform;
+import business.Blob;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.Initializable;
 
 public class Controller implements Initializable{
+	
+	private ArrayList<Migrant> blobHibernants;
+	private ArrayList<Migrant> blobActifs;
+	
 	
     @FXML
     private TableView<?> testtableview;
@@ -56,6 +63,19 @@ public class Controller implements Initializable{
     
     @FXML
     private Slider sRadiusVoisins;
+    
+    @FXML
+    private Button buttonSortirBlob;
+    
+    @FXML
+    private Button buttonChangerBlob;
+    
+    @FXML
+    private Button buttonOKNbBlobs;
+    
+    @FXML
+    private TextField textFieldNbBlobs;
+    
     
     
 
@@ -126,6 +146,20 @@ public class Controller implements Initializable{
     	
     }
 
+    @FXML
+    void onClicButtonOKnbBlobs(MouseEvent event) {
+		System.out.println(textFieldNbBlobs.textProperty().getValue());
+		int nbBlobs = Integer.parseInt(textFieldNbBlobs.textProperty().getValue());
+		
+		
+    	tAmas = new AmasThread(this, nbBlobs);
+		tAmas.start();
+		 
+		buttonOKNbBlobs.setDisable(true);
+    }
+    
+    
+    
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -152,7 +186,7 @@ public class Controller implements Initializable{
 		sHeterogeneite.setValue(2);
 		sStabiliteEtat.setValue(2);
 		sStabilitePosition.setValue(2);
-		
+		STauxMurissement.setValue(3);
 		
 		
 	}
@@ -231,6 +265,48 @@ public class Controller implements Initializable{
 	public void settAmas(AmasThread tAmas) {
 		this.tAmas = tAmas;
 	}
+	
+	
+	
+	/* ***************************************************************************** *
+	 *  ******** 		METHODES DE POSITION_THREAD			************************ *
+	 *	**************************************************************************** */
+	
+	public void sortirBlob(Migrant b){
+		Blob tmp = b.getBlob();
+		double[] coo = new double[2];
+		coo[0] = Math.random() * 25;
+		boolean isOk = false;
+		while(!isOk){
+			coo[1] = Math.random() * 25;
+			if ((coo[0] - 12.5)*(coo[0] - 12.5) + (coo[1] - 12.5) * (coo[1] - 12.5) <= 12.5 * 12.5)
+				isOk = true;
+		}
+		
+		tmp.setCoordonnee(coo);
+		b.setBlob(tmp);
+		tAmas.t0_to_tr(b);
+		blobHibernants.remove(b);
+		blobActifs.add(b);	
+	}
+	
+	
+	public void rentrerBlob(Migrant b){
+		tAmas.tr_to_t0(b);
+		blobHibernants.add(b);
+		blobActifs.remove(b);
+	}
+	
+	public void moveBlob(Migrant b, double[] coo){
+		tAmas.move_blob(b, coo);	
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

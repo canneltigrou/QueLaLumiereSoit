@@ -1,7 +1,5 @@
 package amak;
 
-import java.util.Scanner;
-
 import application.Controller;
 
 //import java.util.ArrayList;
@@ -19,10 +17,7 @@ public class MyAMAS extends Amas<MyEnvironment>{
 	
 	@Override
 	protected void onInitialConfiguration() {
-		
-		System.out.println("combien de Blobs sont à créer dans To ?");
-		@SuppressWarnings("resource")
-		int nbBlobs = new Scanner(System.in).nextInt();
+		int nbBlobs = (int) params[1];
 		Migrant migrant;
 		double xcor;
 		double ycor;
@@ -46,8 +41,8 @@ public class MyAMAS extends Amas<MyEnvironment>{
 		System.out.println("fin de l'initilisation de MyAmas");
 	}
 	
-	public MyAMAS(MyEnvironment env, Controller controller) {
-		super(env, Scheduling.DEFAULT, controller);
+	public MyAMAS(MyEnvironment env, Controller controller, int nbBlobs) {
+		super(env, Scheduling.DEFAULT, controller, nbBlobs);
 	}
 
 	

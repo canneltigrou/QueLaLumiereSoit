@@ -7,6 +7,7 @@ public class AmasThread extends Thread{
 	Controller controller;
 	MyAMAS myAmas;
 	PositionThread tposition;
+	int nbBlobs;
 	
 	public PositionThread getTposition() {
 		return tposition;
@@ -16,9 +17,10 @@ public class AmasThread extends Thread{
 		this.tposition = tposition;
 	}
 
-	public AmasThread(Controller controller){
+	public AmasThread(Controller controller, int nbBlobs){
 			super();
 			this.controller = controller;
+			this.nbBlobs = nbBlobs;
 	}
 	
 	// le thread PositionBluetooth transmet le mouvement d'un blob reel, lequel est associé ici à un blob agent
@@ -65,11 +67,12 @@ public class AmasThread extends Thread{
 	public void run(){
 
 		MyEnvironment env = new MyEnvironment(controller);
-        myAmas = new MyAMAS(env, controller);
+        myAmas = new MyAMAS(env, controller, nbBlobs);
         
+        /*
         PositionThread tPosition = new PositionThread(this, env.getHibernants());
 		tPosition.start();
-        
+        */
 	}
 
 	public Controller getController() {

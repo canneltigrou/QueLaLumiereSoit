@@ -19,11 +19,13 @@ public class Main extends Application {
 			
 			Scene scene = new Scene(root,1300,700);
      
-			
+			/*
 			Controller runnerActivityController = loader.getController();
-			AmasThread tAmas = new AmasThread(runnerActivityController);
-			runnerActivityController.settAmas(tAmas);
-			tAmas.start();
+			 AmasThread tAmas = new AmasThread(runnerActivityController);
+			 runnerActivityController.settAmas(tAmas);
+			 tAmas.start();
+			 */
+			
 
 			
 			primaryStage.setScene(scene);
