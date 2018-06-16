@@ -20,6 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.Initializable;
@@ -157,7 +159,40 @@ public class Controller implements Initializable{
     
     
     @FXML
-    void onKeyPressed(KeyboardEventImpl event) {
+    void onKeyPressed(KeyEvent event) {
+    	KeyCode kcode = event.getCode();
+    	//System.out.println("je viens d'appuyer sur une touche !");
+    	
+    	if(blobToMove == null)
+    		return;
+    	if(!blobActifs.contains(blobToMove))
+    		return;
+    	
+    	if(kcode.isArrowKey())
+    	{
+    		double[] coo = blobToMove.getBlob().getCoordonnee().clone();
+    	
+    		if (kcode.equals(KeyCode.UP))
+    			coo[1] -= 1;
+    		else if (kcode.equals(KeyCode.DOWN))
+    			coo[1] += 1;
+    		else if (kcode.equals(KeyCode.RIGHT))
+    			coo[0] += 1;
+    		else
+    			coo[0] -= 1;
+    		
+    		moveBlob(blobToMove, coo);
+    	}
+    	else if (kcode.isLetterKey())
+    	{
+    		rentrerBlob(blobToMove);
+    	}
+    	else if (kcode.equals(KeyCode.ESCAPE))
+    		deleteSelection();
+    	
+    	
+    	
+    	
     	
     }
     
@@ -175,6 +210,8 @@ public class Controller implements Initializable{
     @FXML
     void onClicTr(MouseEvent event) {
     	
+    	if (blobToMove != null)
+    		deleteSelection();
     	
     	
     	// Trouvons les coordonnes du clic au niveau de Tr
@@ -341,6 +378,7 @@ public class Controller implements Initializable{
 	
 	private void deleteSelection(){
 		treel.deleteSelection(blobToMove.getBlob());
+		blobToMove = null;
 	}
 	
 	
@@ -384,16 +422,6 @@ public class Controller implements Initializable{
 	public void setBlobHibernants(ArrayList<Migrant> blobHibernants) {
 		this.blobHibernants = blobHibernants;
 	}
-	
-	public void selectionBlob(){
-		
-	
-	}
-	
-	
-	
-	
-	
 	
 	
 
