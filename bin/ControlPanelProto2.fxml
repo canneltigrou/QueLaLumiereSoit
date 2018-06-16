@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" styleClass="background" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#onKeyPressed" prefHeight="700.0" prefWidth="1300.0" styleClass="background" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
       <MeshView />
       <SplitPane dividerPositions="0.5" layoutX="292.0" layoutY="53.0" orientation="VERTICAL" prefHeight="467.0" prefWidth="743.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -23,27 +24,30 @@
                       <AnchorPane fx:id="panelToriginel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="500.0">
                            <children>
                               <Button fx:id="buttonSortirBlob" defaultButton="true" layoutX="357.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#onClicButtonSortirBlob" text="Sortir un Blob" textFill="#0d09f8" wrapText="true" />
+                              <TextField fx:id="textFieldNbBlobs" layoutX="364.0" layoutY="125.0" prefHeight="37.0" prefWidth="124.0" />
+                              <Label layoutX="364.0" layoutY="104.0" prefHeight="21.0" prefWidth="124.0" text="Nombre de Blobs :" textFill="#000000" underline="true" />
+                              <Button id="buttonOkNbBlobs" fx:id="buttonOKNbBlobs" defaultButton="true" layoutX="413.0" layoutY="160.0" mnemonicParsing="false" onMouseClicked="#onClicButtonOKnbBlobs" prefHeight="33.0" prefWidth="73.0" text="OK" textFill="#4e08ff" />
                            </children></AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
                               <SplitPane dividerPositions="0.500990099009901" layoutX="11.0" layoutY="35.0" prefHeight="229.0" prefWidth="516.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <items>
-                                  <AnchorPane fx:id="panelTreel" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="450.0">
+                                  <AnchorPane fx:id="panelTreel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyPressed" onMouseClicked="#onClicTr" prefHeight="352.0" prefWidth="400.0">
                                        <children>
-                                          <Button id="buttonModifierBlob" fx:id="buttonModifierBlob" defaultButton="true" layoutX="287.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#onClicButtonModifierBlob" text="Modifier un Blob" textFill="#1155f5">
+                                          <Button id="buttonModifierBlob" fx:id="buttonModifierBlob" defaultButton="true" layoutX="287.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#onClicButtonModifierBlob" text="?" textFill="#1155f5">
                                              <contextMenu>
                                                 <ContextMenu>
                                                   <items>
-                                                    <MenuItem disable="true" mnemonicParsing="false" text="diriger&#10;" />
-                                                      <MenuItem mnemonicParsing="false" text="rentrer" />
+                                                    <MenuItem fx:id="menuItemDiriger" disable="true" mnemonicParsing="false" text="diriger&#10;" />
+                                                      <MenuItem fx:id="menuItemRentrer" mnemonicParsing="false" text="rentrer" />
                                                   </items>
                                                 </ContextMenu>
                                              </contextMenu></Button>
-                                          <TextFlow id="zoneTexteCommande" fx:id="zoneTexteIndications" layoutX="51.0" layoutY="283.0" opacity="0.66" prefHeight="53.0" prefWidth="291.0">
-                                             <cursor>
-                                                <Cursor fx:constant="TEXT" />
-                                             </cursor>
-                                          </TextFlow>
+                                          <Label fx:id="labelAide" disable="true" layoutX="103.0" layoutY="80.0" lineSpacing="1.0" prefHeight="192.0" prefWidth="170.0" styleClass="background" text="déplacer : &#10;     flèches directionnelles&#10;sélectionner :&#10;     par clic&#10;déselectionner : &#10;      touche échap&#10;retour en To (Home) : &#10;      touche h&#10;" visible="false" wrapText="true">
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
                                        </children></AnchorPane>
                                   <AnchorPane fx:id="panelTideal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="352.0" />
                                 </items>
@@ -68,7 +72,8 @@
                                             <items>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
                                                    <children>
-                                                      <Slider fx:id="Sdiso" layoutX="77.0" layoutY="100.0" majorTickUnit="10.0" minorTickCount="10" onMouseClicked="#clicIso" orientation="VERTICAL" prefHeight="332.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="78.0" AnchorPane.topAnchor="0.0" />
+                                                      <Slider fx:id="Sdiso" layoutX="77.0" layoutY="20.0" majorTickUnit="10.0" minorTickCount="10" onMouseClicked="#clicIso" orientation="VERTICAL" prefHeight="279.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="78.0" AnchorPane.topAnchor="20.0" />
+                                                      <Label layoutX="102.0" layoutY="2.0" prefHeight="37.0" prefWidth="73.0" text="Nombre&#10;de Blobs" />
                                                    </children>
                                                 </AnchorPane>
                                               <AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="160.0">
@@ -90,12 +95,13 @@
                                                         <items>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
                                                                <children>
-                                                                  <Slider fx:id="sStabiliteEtat" layoutX="81.0" layoutY="20.0" onMouseClicked="#clicEtatVois" orientation="VERTICAL" prefHeight="358.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="0.0" />
+                                                                  <Slider fx:id="sRadiusVoisins" blockIncrement="1.0" layoutX="81.0" layoutY="19.0" majorTickUnit="2.0" max="25.0" minorTickCount="1" onMouseClicked="#clicRadiusVoisins" orientation="VERTICAL" prefHeight="279.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="19.0" />
+                                                                  <Label layoutX="100.0" layoutY="4.0" text="Mètres" />
                                                                </children>
                                                             </AnchorPane>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                                <children>
-                                                                  <TextField layoutX="60.0" layoutY="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="160.0" text="stabilite etat " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <TextField layoutX="60.0" layoutY="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="160.0" text="Radius Voisin" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                         </items>
@@ -112,7 +118,8 @@
                                                                     <items>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
                                                                            <children>
-                                                                              <Slider fx:id="sStabilitePosition" layoutX="80.0" layoutY="82.0" onMouseClicked="#clicStabPos" orientation="VERTICAL" prefHeight="356.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.5" AnchorPane.topAnchor="0.0" />
+                                                                              <Slider fx:id="sStabilitePosition" layoutX="74.0" layoutY="18.0" onMouseClicked="#clicStabPos" orientation="VERTICAL" prefHeight="279.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="74.0" AnchorPane.topAnchor="18.0" />
+                                                                              <Label layoutX="104.0" layoutY="4.0" text="\%" />
                                                                            </children>
                                                                         </AnchorPane>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -128,7 +135,8 @@
                                                                <items>
                                                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
                                                                      <children>
-                                                                        <Slider fx:id="sHeterogeneite" layoutX="70.0" layoutY="23.0" onMouseClicked="#clicHeter" orientation="VERTICAL" prefHeight="354.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="69.0" AnchorPane.topAnchor="0.0" />
+                                                                        <Slider fx:id="sHeterogeneite" layoutX="70.0" layoutY="16.0" onMouseClicked="#clicHeter" orientation="VERTICAL" prefHeight="279.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="69.0" AnchorPane.topAnchor="16.0" />
+                                                                        <Label layoutX="99.0" layoutY="6.0" text="\%" />
                                                                      </children>
                                                                   </AnchorPane>
                                                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="152.0">
@@ -150,91 +158,17 @@
                               </SplitPane>
                            </children>
                         </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <SplitPane dividerPositions="0.2526002971768202" layoutX="227.0" layoutY="88.0" prefHeight="409.0" prefWidth="673.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <items>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
-                                       <children>
-                                          <SplitPane dividerPositions="0.8820638820638821" layoutX="8.0" layoutY="-86.0" orientation="VERTICAL" prefHeight="408.0" prefWidth="197.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <items>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
-                                                   <children>
-                                                      <Slider fx:id="SDistanceRealite" layoutX="76.0" layoutY="-55.0" onMouseClicked="#clicDistRea" orientation="VERTICAL" prefHeight="356.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="91.5" AnchorPane.topAnchor="0.0" />
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                   <children>
-                                                      <TextField layoutX="50.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="160.0" text="distance Realite" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                   </children>
-                                                </AnchorPane>
-                                             </items>
-                                          </SplitPane>
-                                       </children>
-                                    </AnchorPane>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
-                                       <children>
-                                          <SplitPane dividerPositions="0.29797979797979796" layoutX="134.0" layoutY="111.0" prefHeight="408.0" prefWidth="468.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <items>
-                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
-                                                   <children>
-                                                      <SplitPane dividerPositions="0.8817733990147784" layoutX="-12.0" layoutY="141.0" orientation="VERTICAL" prefHeight="407.0" prefWidth="135.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                        <items>
-                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="355.0" prefWidth="155.0" styleClass="background">
-                                                               <children>
-                                                                  <Slider fx:id="STauxMurissement" layoutX="69.0" layoutY="24.0" onMouseClicked="#clicTauxMur" orientation="VERTICAL" prefHeight="355.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.5" AnchorPane.topAnchor="0.0" />
-                                                               </children>
-                                                            </AnchorPane>
-                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                               <children>
-                                                                  <TextField layoutX="1.0" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="160.0" text="T murissement" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                               </children>
-                                                            </AnchorPane>
-                                                        </items>
-                                                      </SplitPane>
-                                                   </children>
-                                                </AnchorPane>
-                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
-                                                   <children>
-                                                      <SplitPane dividerPositions="0.38439306358381503" layoutX="27.0" layoutY="124.0" prefHeight="407.0" prefWidth="346.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                        <items>
-                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                               <children>
-                                                                  <SplitPane layoutX="-45.0" orientation="VERTICAL" prefHeight="406.0" prefWidth="129.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                    <items>
-                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                                           <children>
-                                                                              <Label layoutX="14.0" layoutY="12.0" prefHeight="45.0" prefWidth="129.0" text="Radius Voisin" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                                              <SplitPane dividerPositions="0.8836633663366337" layoutX="-8.0" layoutY="159.0" orientation="VERTICAL" prefHeight="405.0" prefWidth="129.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                                <items>
-                                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="background">
-                                                                                       <children>
-                                                                                          <Slider fx:id="sRadiusVoisins" layoutX="79.0" layoutY="-84.0" onDragDone="#clicRadiusVoisins" onMouseClicked="#clicRadiusVoisins" orientation="VERTICAL" prefHeight="354.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="57.5" AnchorPane.topAnchor="0.0" />
-                                                                                       </children>
-                                                                                    </AnchorPane>
-                                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                                                       <children>
-                                                                                          <TextField layoutX="2.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="160.0" text="Radius Voisin" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                                                       </children>
-                                                                                    </AnchorPane>
-                                                                                </items>
-                                                                              </SplitPane>
-                                                                           </children>
-                                                                        </AnchorPane>
-                                                                    </items>
-                                                                  </SplitPane>
-                                                               </children>
-                                                            </AnchorPane>
-                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                                                        </items>
-                                                      </SplitPane>
-                                                   </children></AnchorPane>
-                                            </items>
-                                          </SplitPane>
-                                       </children>
-                                    </AnchorPane>
-                                </items>
-                              </SplitPane>
+                              <TabPane blendMode="SOFT_LIGHT" layoutX="2.0" layoutY="-6.0" pickOnBounds="false" prefHeight="350.0" prefWidth="638.0" tabClosingPolicy="UNAVAILABLE">
+                                <tabs>
+                                  <Tab text="apperçu du BLob">
+                                    <content>
+                                      <AnchorPane fx:id="panelBlobSelectione" minHeight="0.0" minWidth="0.0" prefHeight="237.0" prefWidth="476.0" />
+                                    </content>
+                                  </Tab>
+                                </tabs>
+                              </TabPane>
                            </children></AnchorPane>
                     </items>
                   </SplitPane>

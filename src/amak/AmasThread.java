@@ -7,6 +7,7 @@ public class AmasThread extends Thread{
 	Controller controller;
 	MyAMAS myAmas;
 	PositionThread tposition;
+	int nbBlobs;
 	
 	public PositionThread getTposition() {
 		return tposition;
@@ -16,9 +17,10 @@ public class AmasThread extends Thread{
 		this.tposition = tposition;
 	}
 
-	public AmasThread(Controller controller){
+	public AmasThread(Controller controller, int nbBlobs){
 			super();
 			this.controller = controller;
+			this.nbBlobs = nbBlobs;
 	}
 	
 	// le thread PositionBluetooth transmet le mouvement d'un blob reel, lequel est associé ici à un blob agent
@@ -65,11 +67,14 @@ public class AmasThread extends Thread{
 	public void run(){
 
 		MyEnvironment env = new MyEnvironment(controller);
-        myAmas = new MyAMAS(env, controller);
+        myAmas = new MyAMAS(env, controller, nbBlobs);
+        controller.setBlobHibernants(env.getHibernants());
         
+        
+        /*
         PositionThread tPosition = new PositionThread(this, env.getHibernants());
 		tPosition.start();
-        
+        */
 	}
 
 	public Controller getController() {
@@ -110,14 +115,6 @@ public class AmasThread extends Thread{
 		});		
 	}
 
-	public void setStabiliteEtat(int stabilite_etat) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				myAmas.getEnvironment().setStabilite_etat(stabilite_etat);
-				System.out.println("tAmas : changement de la stabilité des etats à " + stabilite_etat);
-			}
-		});			
-	}
 
 	public void setStabilitePosition(int stabilite_position) {
 		Platform.runLater(new Runnable() {
@@ -136,18 +133,6 @@ public class AmasThread extends Thread{
 				System.out.println("tAmas : changement Taux Murissement à " + tauxMurissemnt);
 			}
 		});		
-	}
-
-	public void setDistanceRealite(int distanceRepresentation) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				myAmas.getEnvironment().setDistanceRealite(distanceRepresentation);
-				System.out.println("tAmas : changement diastance à la réalitét à " + distanceRepresentation);
-			}
-		});			
-	}
-	
-	
-	
+	}	
 }
 

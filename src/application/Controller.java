@@ -2,24 +2,36 @@ package application;
 
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import com.sun.webkit.dom.KeyboardEventImpl;
 
 import amak.AmasThread;
 import amak.BlobAgent;
 import amak.Immaginaire;
 import amak.Migrant;
-import javafx.application.Platform;
+import business.Blob;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.Initializable;
 
 public class Controller implements Initializable{
+	
+	private ArrayList<Migrant> blobHibernants;
+	private ArrayList<Migrant> blobActifs;
+	private Migrant blobToMove;
+	
 	
     @FXML
     private TableView<?> testtableview;
@@ -36,8 +48,6 @@ public class Controller implements Initializable{
     @FXML
     private Slider sStabilitePosition;
 
-    @FXML
-    private Slider sStabiliteEtat;
 
     @FXML
     private AnchorPane panelTideal;
@@ -49,13 +59,27 @@ public class Controller implements Initializable{
     private AnchorPane panelToriginel;
     
     @FXML
-    private Slider STauxMurissement;
+    private AnchorPane panelBlobSelectione;
     
     @FXML
-    private Slider SDistanceRealite;
+    private Label labelAide;
+    
     
     @FXML
     private Slider sRadiusVoisins;
+    
+    @FXML
+    private Button buttonSortirBlob;
+    
+    @FXML
+    private Button buttonChangerBlob;
+    
+    @FXML
+    private Button buttonOKNbBlobs;
+    
+    @FXML
+    private TextField textFieldNbBlobs;
+    
     
     
 
@@ -68,11 +92,7 @@ public class Controller implements Initializable{
     DoubleProperty diso = new SimpleDoubleProperty(0);
     DoubleProperty hetero = new SimpleDoubleProperty(0);
     DoubleProperty stabPos = new SimpleDoubleProperty(0);
-    DoubleProperty stabEtat = new SimpleDoubleProperty(0);
-    DoubleProperty tauxMur = new SimpleDoubleProperty(0);
-
     DoubleProperty radiusVoisins = new SimpleDoubleProperty(0);
-    DoubleProperty distanceRealite = new SimpleDoubleProperty(0);
 
 
 	@FXML
@@ -94,24 +114,7 @@ public class Controller implements Initializable{
     	tAmas.setStabilitePosition(stabPos.getValue().intValue());
     }
 	
-	@FXML
-    void clicEtatVois(MouseEvent event) {
-    	System.out.println(" Valeur de la stabilité de l'etat du voisinage : " + stabEtat.get() + "\n");
-    	tAmas.setStabiliteEtat(stabEtat.getValue().intValue());
-    }
-	
-	@FXML
-    void clicTauxMur(MouseEvent event) {
-    	System.out.println(" Valeur de la stabilité du taux de murriseement : " + tauxMur.get() + "\n");
-    	tAmas.setTauxMurissement(tauxMur.getValue().intValue());
-    }
-	
-	@FXML
-    void clicDistRea(MouseEvent event) {
-    	System.out.println(" Valeur de la distance à  la réalité : " + distanceRealite.get() + "\n");
-    	tAmas.setDistanceRealite(distanceRealite.getValue().intValue());
-    }
-	
+
     @FXML
     void clicRadiusVoisins(MouseEvent event) {
     	System.out.println(" Valeur du radius des voisins : " + radiusVoisins.get() + "\n");
@@ -119,23 +122,165 @@ public class Controller implements Initializable{
 	
     @FXML
     void onClicButtonSortirBlob(MouseEvent event) {
+    	// va sortir un Blob mur, pris au hasard dans To
+    	if (blobHibernants != null)
+    	{
+    		// trouvons un blob mur :
+    		boolean found = false;
+    		Migrant migrant = blobHibernants.get(0);
+    		int i = 0;
+    		while(! found && i < blobHibernants.size()){
+    			if (blobHibernants.get(i).isRiped()){
+    				found = true;
+    				migrant = blobHibernants.get(i);
+    			}
+    			i++;
+    		}
+    		
+    		if(found)
+    			sortirBlob(migrant);
+    	}
     }
 	
     @FXML
     void onClicButtonModifierBlob(MouseEvent event) {
+    	if(labelAide.isVisible())
+    	{
+    		labelAide.setVisible(false);
+    		panelTreel.getChildren().add(treel);
+    	}
+    	else
+    	{
+    		labelAide.setVisible(true);
+    		panelTreel.getChildren().remove(treel);
+    	}
+    	   	
+    }
+    
+    
+    @FXML
+    void onKeyPressed(KeyEvent event) {
+    	KeyCode kcode = event.getCode();
+    	//System.out.println("je viens d'appuyer sur une touche !");
+    	
+    	if(blobToMove == null)
+    		return;
+    	if(!blobActifs.contains(blobToMove))
+    		return;
+    	
+    	if(kcode.isArrowKey())
+    	{
+    		double[] coo = blobToMove.getBlob().getCoordonnee().clone();
+    	
+    		if (kcode.equals(KeyCode.UP))
+    			coo[1] -= 1;
+    		else if (kcode.equals(KeyCode.DOWN))
+    			coo[1] += 1;
+    		else if (kcode.equals(KeyCode.RIGHT))
+    			coo[0] += 1;
+    		else
+    			coo[0] -= 1;
+    		
+    		moveBlob(blobToMove, coo);
+    	}
+    	else if (kcode.isLetterKey())
+    	{
+    		rentrerBlob(blobToMove);
+    	}
+    	else if (kcode.equals(KeyCode.ESCAPE))
+    		deleteSelection();
+    	
+    	
+    	
+    	
     	
     }
+    
+    
+    /* calcule la distance euclidienne entre 2 points cooA et cooB */
+	private double calculeDistance(double[] cooA, double[] cooB){
+		double sum = 0;
+		for(int i = 0; i < cooA.length ; i++)
+			sum += ((cooB[i] - cooA[i])*(cooB[i] - cooA[i]));
+		return Math.sqrt(sum);		
+		
+	}
+    
+    
+    @FXML
+    void onClicTr(MouseEvent event) {
+    	
+    	if (blobToMove != null)
+    		deleteSelection();
+    	
+    	
+    	// Trouvons les coordonnes du clic au niveau de Tr
+    	double xcor = event.getSceneX();
+    	double ycor = event.getSceneY();
+    	System.out.println("on a cliqué sur les coordonnées : " + xcor + " ; " + ycor);
+    	
+    	// la scene prend en compte le 1er xpanel. j'enlève donc sa largeur fixe de 500pxl
+    	xcor -= 500;
+    	
+    	// les coordonnees des Blobs sont exprimés en metres ... je transforme donc les pxls en metres.
+    	double[] tmp = new double[2];
+    	tmp[0] = xcor;
+    	tmp[1] = ycor;
+    	tmp = treel.PxlTometre(tmp);
+    	System.out.println("equivalent en metre à  : " + tmp[0] + " ; " + tmp[1]);
 
+    	
+    	
+    	if(blobActifs.size() == 0)
+    	{
+    		System.out.println("Il n'y a rien a selectionner");
+    		return;
+    	}
+    	
+    	
+    	//deleteSelection();
+    	
+    	// Trouvons le blob le plus proche de l'endroit cliqué.
+    	
+    	blobToMove = blobActifs.get(0);
+    	double distanceMin = calculeDistance(tmp, blobToMove.getBlob().getCoordonnee());
+    	double distance;
+    	
+    	for (int i = 0; i < blobActifs.size(); i++){
+    		distance = calculeDistance(tmp, blobActifs.get(i).getBlob().getCoordonnee());
+    		if(distance < distanceMin)
+    		{
+    			distanceMin = distance;
+    			blobToMove = blobActifs.get(i);
+    		}
+    	}
+    	
+    	showSelection();
+    	
+    }
+    
+
+    @FXML
+    void onClicButtonOKnbBlobs(MouseEvent event) {
+		System.out.println(textFieldNbBlobs.textProperty().getValue());
+		int nbBlobs = Integer.parseInt(textFieldNbBlobs.textProperty().getValue());
+		
+		
+    	tAmas = new AmasThread(this, nbBlobs);
+		tAmas.start();
+		 
+		buttonOKNbBlobs.setDisable(true);
+    }
+    
+    
+    
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		diso.bind(Sdiso.valueProperty());
 		hetero.bind(sHeterogeneite.valueProperty());
 		stabPos.bind(sStabilitePosition.valueProperty());
-		stabEtat.bind(sStabiliteEtat.valueProperty());
-		tauxMur.bind(STauxMurissement.valueProperty());
 		radiusVoisins.bind(sRadiusVoisins.valueProperty());
-		distanceRealite.bind(SDistanceRealite.valueProperty());
 	    
 		
 		tideal = new TerrainForm();
@@ -147,13 +292,12 @@ public class Controller implements Initializable{
 		toriginel = new ToForm();
 		panelToriginel.getChildren().add(toriginel);
 		
-		// J'initialise à 2 chaque sliders.
-		Sdiso.setValue(2);
+		// J'initialise chaque sliders.
+		Sdiso.setValue(10);
 		sHeterogeneite.setValue(2);
-		sStabiliteEtat.setValue(2);
 		sStabilitePosition.setValue(2);
-		
-		
+		sRadiusVoisins.setValue(7);
+		blobActifs = new ArrayList<>();
 		
 	}
 	
@@ -206,20 +350,15 @@ public class Controller implements Initializable{
 		return(sHeterogeneite.valueProperty().intValue());
 	}
 	
-	public int getStabiliteHeterogeneite(){
-		return(sStabiliteEtat.valueProperty().intValue());
-	}
 	
 	public int getStabilitePosition(){
 		return(sStabilitePosition.valueProperty().intValue());
 	}
 	
-	public int getDistanceRealite(){
-		return( distanceRealite.getValue().intValue());
-	}
+	
 	
 	public double getTauxMurissement(){
-		return(tauxMur.getValue());
+		return(2);  // TODO est a remplacer
 	}
 
 
@@ -231,6 +370,59 @@ public class Controller implements Initializable{
 	public void settAmas(AmasThread tAmas) {
 		this.tAmas = tAmas;
 	}
+	
+	
+	private void showSelection(){
+		treel.showSelection(blobToMove.getBlob());
+	}
+	
+	private void deleteSelection(){
+		treel.deleteSelection(blobToMove.getBlob());
+		blobToMove = null;
+	}
+	
+	
+	/* ***************************************************************************** *
+	 *  ******** 		METHODES DE POSITION_THREAD			************************ *
+	 *	**************************************************************************** */
+	
+	public void sortirBlob(Migrant b){
+		Blob tmp = b.getBlob();
+		double[] coo = new double[2];
+		coo[0] = Math.random() * 25;
+		boolean isOk = false;
+		while(!isOk){
+			coo[1] = Math.random() * 25;
+			if ((coo[0] - 12.5)*(coo[0] - 12.5) + (coo[1] - 12.5) * (coo[1] - 12.5) <= 12.5 * 12.5)
+				isOk = true;
+		}
+		
+		tmp.setCoordonnee(coo);
+		b.setBlob(tmp);
+		tAmas.t0_to_tr(b);
+		blobHibernants.remove(b);
+		blobActifs.add(b);	
+	}
+	
+	
+	public void rentrerBlob(Migrant b){
+		tAmas.tr_to_t0(b);
+		blobHibernants.add(b);
+		blobActifs.remove(b);
+	}
+	
+	public void moveBlob(Migrant b, double[] coo){
+		tAmas.move_blob(b, coo);	
+	}
+
+	public ArrayList<Migrant> getBlobHibernants() {
+		return blobHibernants;
+	}
+
+	public void setBlobHibernants(ArrayList<Migrant> blobHibernants) {
+		this.blobHibernants = blobHibernants;
+	}
+	
 	
 
 }
