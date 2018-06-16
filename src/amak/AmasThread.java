@@ -115,14 +115,6 @@ public class AmasThread extends Thread{
 		});		
 	}
 
-	public void setStabiliteEtat(int stabilite_etat) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				myAmas.getEnvironment().setStabilite_etat(stabilite_etat);
-				System.out.println("tAmas : changement de la stabilité des etats à " + stabilite_etat);
-			}
-		});			
-	}
 
 	public void setStabilitePosition(int stabilite_position) {
 		Platform.runLater(new Runnable() {
@@ -141,18 +133,6 @@ public class AmasThread extends Thread{
 				System.out.println("tAmas : changement Taux Murissement à " + tauxMurissemnt);
 			}
 		});		
-	}
-
-	public void setDistanceRealite(int distanceRepresentation) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				myAmas.getEnvironment().setDistanceRealite(distanceRepresentation);
-				System.out.println("tAmas : changement diastance à la réalitét à " + distanceRepresentation);
-			}
-		});			
-	}
-	
-	
-	
+	}	
 }
 

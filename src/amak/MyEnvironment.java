@@ -13,13 +13,12 @@ public class MyEnvironment extends Environment {
 	private int radius = 4; // radius utilisé pour les différents sliders
 	/* possede les valeurs des differents curseurs*/
 	private double isolement;
-	private double stabilite_etat;
+	//private double stabilite_etat;
 	private double stabilite_position;
 	private double heterogeneite;
-	private double distanceRealite;
 	private double tauxMurissemnt;
 	public double rayonTerrain = 12.5; // exprimé en metres
-	private CriticalityFunction fctCriticalityStabiliteEtat;
+	//private CriticalityFunction fctCriticalityStabiliteEtat;
 	
 	/* communication avec l'interface graphique */
 	private Controller controller;
@@ -37,12 +36,10 @@ public class MyEnvironment extends Environment {
 		//this.setRealBlobs(realBlobs);
 		this.controller = (Controller) params[0];
 		isolement = controller.getIsolement();
-		stabilite_etat = controller.getStabiliteHeterogeneite();
 		stabilite_position = controller.getStabilitePosition();
 		heterogeneite = controller.getHeterogenite();
-		distanceRealite = controller.getDistanceRealite();
 		tauxMurissemnt = controller.getTauxMurissement();
-		fctCriticalityStabiliteEtat = new CriticalityFunction(-1.2, 1.2, -0.05, 0.05);
+		//fctCriticalityStabiliteEtat = new CriticalityFunction(-1.2, 1.2, -0.05, 0.05);
 		//fctCriticalityStabiliteEtat = new CriticalityFunction(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
 	}
 
@@ -237,15 +234,6 @@ public class MyEnvironment extends Environment {
 		//majFctCriticalityStabiliteEtat();
 	}
 
-	public double getStabilite_etat() {
-		return stabilite_etat;
-	}
-
-	public void setStabilite_etat(int stabilite_etat) {
-		this.stabilite_etat = stabilite_etat;
-		System.out.println("la nouvelle valeur de la stabilité d'état a été prise en compte");
-		majFctCriticalityStabiliteEtat();
-	}
 
 	public double getStabilite_position() {
 		return stabilite_position;
@@ -273,14 +261,6 @@ public class MyEnvironment extends Environment {
 
 	public void setController(Controller controller) {
 		this.controller = controller;
-	}
-
-	public double getDistanceRealite() {
-		return distanceRealite;
-	}
-
-	public void setDistanceRealite(int distanceRealite) {
-		this.distanceRealite = distanceRealite;
 	}
 
 

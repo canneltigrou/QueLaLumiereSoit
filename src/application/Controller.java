@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import com.sun.webkit.dom.KeyboardEventImpl;
+
 import amak.AmasThread;
 import amak.BlobAgent;
 import amak.Immaginaire;
@@ -26,6 +28,7 @@ public class Controller implements Initializable{
 	
 	private ArrayList<Migrant> blobHibernants;
 	private ArrayList<Migrant> blobActifs;
+	private Migrant blobToMove;
 	
 	
     @FXML
@@ -43,8 +46,6 @@ public class Controller implements Initializable{
     @FXML
     private Slider sStabilitePosition;
 
-    @FXML
-    private Slider sStabiliteEtat;
 
     @FXML
     private AnchorPane panelTideal;
@@ -56,10 +57,11 @@ public class Controller implements Initializable{
     private AnchorPane panelToriginel;
     
     @FXML
-    private Slider STauxMurissement;
+    private AnchorPane panelBlobSelectione;
     
     @FXML
-    private Slider SDistanceRealite;
+    private Label labelAide;
+    
     
     @FXML
     private Slider sRadiusVoisins;
@@ -88,11 +90,7 @@ public class Controller implements Initializable{
     DoubleProperty diso = new SimpleDoubleProperty(0);
     DoubleProperty hetero = new SimpleDoubleProperty(0);
     DoubleProperty stabPos = new SimpleDoubleProperty(0);
-    DoubleProperty stabEtat = new SimpleDoubleProperty(0);
-    DoubleProperty tauxMur = new SimpleDoubleProperty(0);
-
     DoubleProperty radiusVoisins = new SimpleDoubleProperty(0);
-    DoubleProperty distanceRealite = new SimpleDoubleProperty(0);
 
 
 	@FXML
@@ -114,24 +112,7 @@ public class Controller implements Initializable{
     	tAmas.setStabilitePosition(stabPos.getValue().intValue());
     }
 	
-	@FXML
-    void clicEtatVois(MouseEvent event) {
-    	System.out.println(" Valeur de la stabilité de l'etat du voisinage : " + stabEtat.get() + "\n");
-    	tAmas.setStabiliteEtat(stabEtat.getValue().intValue());
-    }
-	
-	@FXML
-    void clicTauxMur(MouseEvent event) {
-    	System.out.println(" Valeur de la stabilité du taux de murriseement : " + tauxMur.get() + "\n");
-    	tAmas.setTauxMurissement(tauxMur.getValue().intValue());
-    }
-	
-	@FXML
-    void clicDistRea(MouseEvent event) {
-    	System.out.println(" Valeur de la distance à  la réalité : " + distanceRealite.get() + "\n");
-    	tAmas.setDistanceRealite(distanceRealite.getValue().intValue());
-    }
-	
+
     @FXML
     void clicRadiusVoisins(MouseEvent event) {
     	System.out.println(" Valeur du radius des voisins : " + radiusVoisins.get() + "\n");
@@ -161,8 +142,86 @@ public class Controller implements Initializable{
 	
     @FXML
     void onClicButtonModifierBlob(MouseEvent event) {
+    	if(labelAide.isVisible())
+    	{
+    		labelAide.setVisible(false);
+    		panelTreel.getChildren().add(treel);
+    	}
+    	else
+    	{
+    		labelAide.setVisible(true);
+    		panelTreel.getChildren().remove(treel);
+    	}
+    	   	
+    }
+    
+    
+    @FXML
+    void onKeyPressed(KeyboardEventImpl event) {
     	
     }
+    
+    
+    /* calcule la distance euclidienne entre 2 points cooA et cooB */
+	private double calculeDistance(double[] cooA, double[] cooB){
+		double sum = 0;
+		for(int i = 0; i < cooA.length ; i++)
+			sum += ((cooB[i] - cooA[i])*(cooB[i] - cooA[i]));
+		return Math.sqrt(sum);		
+		
+	}
+    
+    
+    @FXML
+    void onClicTr(MouseEvent event) {
+    	
+    	
+    	
+    	// Trouvons les coordonnes du clic au niveau de Tr
+    	double xcor = event.getSceneX();
+    	double ycor = event.getSceneY();
+    	System.out.println("on a cliqué sur les coordonnées : " + xcor + " ; " + ycor);
+    	
+    	// la scene prend en compte le 1er xpanel. j'enlève donc sa largeur fixe de 500pxl
+    	xcor -= 500;
+    	
+    	// les coordonnees des Blobs sont exprimés en metres ... je transforme donc les pxls en metres.
+    	double[] tmp = new double[2];
+    	tmp[0] = xcor;
+    	tmp[1] = ycor;
+    	tmp = treel.PxlTometre(tmp);
+    	System.out.println("equivalent en metre à  : " + tmp[0] + " ; " + tmp[1]);
+
+    	
+    	
+    	if(blobActifs.size() == 0)
+    	{
+    		System.out.println("Il n'y a rien a selectionner");
+    		return;
+    	}
+    	
+    	
+    	//deleteSelection();
+    	
+    	// Trouvons le blob le plus proche de l'endroit cliqué.
+    	
+    	blobToMove = blobActifs.get(0);
+    	double distanceMin = calculeDistance(tmp, blobToMove.getBlob().getCoordonnee());
+    	double distance;
+    	
+    	for (int i = 0; i < blobActifs.size(); i++){
+    		distance = calculeDistance(tmp, blobActifs.get(i).getBlob().getCoordonnee());
+    		if(distance < distanceMin)
+    		{
+    			distanceMin = distance;
+    			blobToMove = blobActifs.get(i);
+    		}
+    	}
+    	
+    	showSelection();
+    	
+    }
+    
 
     @FXML
     void onClicButtonOKnbBlobs(MouseEvent event) {
@@ -184,10 +243,7 @@ public class Controller implements Initializable{
 		diso.bind(Sdiso.valueProperty());
 		hetero.bind(sHeterogeneite.valueProperty());
 		stabPos.bind(sStabilitePosition.valueProperty());
-		stabEtat.bind(sStabiliteEtat.valueProperty());
-		tauxMur.bind(STauxMurissement.valueProperty());
 		radiusVoisins.bind(sRadiusVoisins.valueProperty());
-		distanceRealite.bind(SDistanceRealite.valueProperty());
 	    
 		
 		tideal = new TerrainForm();
@@ -202,10 +258,8 @@ public class Controller implements Initializable{
 		// J'initialise chaque sliders.
 		Sdiso.setValue(10);
 		sHeterogeneite.setValue(2);
-		sStabiliteEtat.setValue(2);
 		sStabilitePosition.setValue(2);
-		STauxMurissement.setValue(3);
-		
+		sRadiusVoisins.setValue(7);
 		blobActifs = new ArrayList<>();
 		
 	}
@@ -259,20 +313,15 @@ public class Controller implements Initializable{
 		return(sHeterogeneite.valueProperty().intValue());
 	}
 	
-	public int getStabiliteHeterogeneite(){
-		return(sStabiliteEtat.valueProperty().intValue());
-	}
 	
 	public int getStabilitePosition(){
 		return(sStabilitePosition.valueProperty().intValue());
 	}
 	
-	public int getDistanceRealite(){
-		return( distanceRealite.getValue().intValue());
-	}
+	
 	
 	public double getTauxMurissement(){
-		return(tauxMur.getValue());
+		return(2);  // TODO est a remplacer
 	}
 
 
@@ -285,6 +334,14 @@ public class Controller implements Initializable{
 		this.tAmas = tAmas;
 	}
 	
+	
+	private void showSelection(){
+		treel.showSelection(blobToMove.getBlob());
+	}
+	
+	private void deleteSelection(){
+		treel.deleteSelection(blobToMove.getBlob());
+	}
 	
 	
 	/* ***************************************************************************** *
@@ -328,6 +385,10 @@ public class Controller implements Initializable{
 		this.blobHibernants = blobHibernants;
 	}
 	
+	public void selectionBlob(){
+		
+	
+	}
 	
 	
 	

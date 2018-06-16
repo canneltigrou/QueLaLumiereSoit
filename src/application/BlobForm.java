@@ -6,6 +6,8 @@ import business.Couleur;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 
 // https://openclassrooms.com/courses/les-applications-web-avec-javafx/les-noeuds-graphiques
 
@@ -14,11 +16,17 @@ public class BlobForm extends Parent{
 	private Blob blob;
 	Circle fond_blob;
 	ArrayList<Circle> globules;
+	Rectangle selection = null;
+	
 	
 	public BlobForm(Blob b){
 		//blobList = new HashMap<Blob, BlobForm>();
 		globules = new ArrayList<Circle>();
-
+		selection = new Rectangle(13, 13);
+		selection.setFill(Color.TRANSPARENT);
+		selection.setStrokeType(StrokeType.CENTERED);
+		selection.setStroke(Color.TRANSPARENT);
+		this.getChildren().add(selection);
 
 		this.setTranslateX(b.getCoordonnee()[0]);// on positionne le groupe 
 		this.setTranslateY(b.getCoordonnee()[1]);
@@ -38,7 +46,12 @@ public class BlobForm extends Parent{
 		//blobList = new HashMap<Blob, BlobForm>();
 		globules = new ArrayList<Circle>();
 
-
+		selection = new Rectangle(13, 13);
+		selection.setFill(Color.TRANSPARENT);
+		selection.setStrokeType(StrokeType.CENTERED);
+		selection.setStroke(Color.TRANSPARENT);
+		this.getChildren().add(selection);
+		
 		this.setTranslateX(coo[0]);// on positionne le groupe 
 		this.setTranslateY(coo[1]);
 		
@@ -124,5 +137,23 @@ public class BlobForm extends Parent{
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}
+	
+	
+	public void showSelection(){
+		
+		assert(selection != null);
+		//selection.setStrokeType(StrokeType.CENTERED);
+		selection.setStroke(Color.ANTIQUEWHITE);
+		
+		//selection.setFill(Color.WHITE);
+	}
+	
+	public void deleteSelection(){
+		selection.setStroke(Color.TRANSPARENT);
+		//selection.setFill(Color.TRANSPARENT);
+	}
+	
+	
+	
 	
 }
