@@ -17,13 +17,15 @@ public class Main extends Application {
 			FXMLLoader loader= new FXMLLoader(this.getClass().getResource("/ControlPanelProto2.fxml"));
 			Parent root = loader.load();
 			
-			Scene scene = new Scene(root,1000,600);
+			Scene scene = new Scene(root,1300,700);
      
-			
+			/*
 			Controller runnerActivityController = loader.getController();
-			AmasThread tAmas = new AmasThread(runnerActivityController);
-			runnerActivityController.settAmas(tAmas);
-			tAmas.start();
+			 AmasThread tAmas = new AmasThread(runnerActivityController);
+			 runnerActivityController.settAmas(tAmas);
+			 tAmas.start();
+			 */
+			
 
 			
 			primaryStage.setScene(scene);

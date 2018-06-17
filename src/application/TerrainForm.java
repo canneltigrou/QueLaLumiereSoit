@@ -3,6 +3,7 @@ package application;
 import java.util.HashMap;
 import java.util.Map;
 
+import amak.Migrant;
 import business.Blob;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -41,10 +42,18 @@ public class TerrainForm extends Parent {
 	
 	
 	// param : the coordinates on meter. Returne the coordinates(pxl) in the shape.
-		private double[] metreToPxl(double[] coo){
+	private double[] metreToPxl(double[] coo){
+		double[] res = new double[2];
+		res[0] = coo[0]/rayonSalle * (rayonRepresentation - tailleBlob);
+		res[1] = coo[1]/rayonSalle * (rayonRepresentation - tailleBlob);
+		return res;
+	}
+	
+	// param : the coordinates on meter. Returne the coordinates(pxl) in the shape.
+		public double[] PxlTometre(double[] coo){
 			double[] res = new double[2];
-			res[0] = coo[0]/rayonSalle * (rayonRepresentation - tailleBlob);
-			res[1] = coo[1]/rayonSalle * (rayonRepresentation - tailleBlob);
+			res[0] = coo[0]/(rayonRepresentation - tailleBlob) * rayonSalle;
+			res[1] = coo[1]/(rayonRepresentation - tailleBlob) * rayonSalle;
 			return res;
 		}
 	
@@ -81,5 +90,25 @@ public class TerrainForm extends Parent {
 			}
 		});
 	}
+	
+	public void showSelection(Blob blob){
+		Platform.runLater(new Runnable() {
+			public void run() {
+				BlobForm bfToChange = blobList.get(blob);
+				assert(bfToChange != null);
+				bfToChange.showSelection();
+			}
+		});
+	}
+	
+	public void deleteSelection(Blob blob){
+		Platform.runLater(new Runnable() {
+			public void run() {
+				BlobForm bfToChange = blobList.get(blob);
+				bfToChange.deleteSelection();
+			}
+		});
+	}
+	
 }
 

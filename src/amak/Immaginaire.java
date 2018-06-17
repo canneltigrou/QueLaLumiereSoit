@@ -44,7 +44,7 @@ public class Immaginaire extends BlobAgent{
 	     BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
 		 Critere most_critic = Most_critical_critere(agentNeedingHelp.getCriticite());
 		 //System.out.println("criticite de stabilité de position = " + criticite[Critere.Stabilite_position.getValue()]);
-		 System.out.println("le plus critique est : " + most_critic.toString());
+		 //System.out.println("le plus critique est : " + most_critic.toString());
 		 
 		 switch (most_critic){
 		 case Isolement:
