@@ -34,11 +34,11 @@ public class MyEnvironment extends Environment {
 		agents = new ArrayList<BlobAgent>();
 		hibernants = new ArrayList<Migrant>();
 		//this.setRealBlobs(realBlobs);
-		this.controller = (Controller) params[0];
-		isolement = controller.getIsolement();
-		stabilite_position = controller.getStabilitePosition();
-		heterogeneite = controller.getHeterogenite();
-		tauxMurissemnt = controller.getTauxMurissement();
+		//this.controller = (Controller) params[0];
+		isolement = 20; //controller.getIsolement();
+		stabilite_position = 2 ;//controller.getStabilitePosition();
+		heterogeneite = 25; //controller.getHeterogenite();
+		tauxMurissemnt = 15 ; //controller.getTauxMurissement();
 		//fctCriticalityStabiliteEtat = new CriticalityFunction(-1.2, 1.2, -0.05, 0.05);
 		//fctCriticalityStabiliteEtat = new CriticalityFunction(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
 	}
@@ -254,7 +254,7 @@ public class MyEnvironment extends Environment {
 	}
 
 
-	public Controller getController() {
+	/*public Controller getController() {
 		return controller;
 	}
 
@@ -263,7 +263,7 @@ public class MyEnvironment extends Environment {
 		this.controller = controller;
 	}
 
-
+*/
 	public double getTauxMurissemnt() {
 		return tauxMurissemnt;
 	}

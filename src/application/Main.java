@@ -12,12 +12,20 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
+		Controller runnerActivityController;
+		AmasThread tAmas = new AmasThread(30 );//runnerActivityController, 30);
+		//runnerActivityController.settAmas(tAmas);
+		tAmas.start();
+	}
+		
+		/*
+		
 		try {
 			
 			FXMLLoader loader= new FXMLLoader(this.getClass().getResource("/ControlPanelProto2.fxml"));
 			Parent root = loader.load();
 			
-			Scene scene = new Scene(root,1300,700);
+			Scene scene = new Scene(root,1300,700);*/
      
 			/*
 			Controller runnerActivityController = loader.getController();
@@ -25,7 +33,7 @@ public class Main extends Application {
 			 runnerActivityController.settAmas(tAmas);
 			 tAmas.start();
 			 */
-			
+			/*
 
 			
 			primaryStage.setScene(scene);
@@ -35,7 +43,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+	*/
 	
 	public static void main(String[] args) {
 		launch(args);

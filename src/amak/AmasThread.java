@@ -17,9 +17,9 @@ public class AmasThread extends Thread{
 		this.tposition = tposition;
 	}
 
-	public AmasThread(Controller controller, int nbBlobs){
+	public AmasThread(int nbBlobs){
 			super();
-			this.controller = controller;
+			//this.controller = controller;
 			this.nbBlobs = nbBlobs;
 	}
 	
@@ -41,7 +41,7 @@ public class AmasThread extends Thread{
 		
 		b.getBlob().setCoordonnee(coo);
 		
-		controller.move_blobMigrant(b);
+		//controller.move_blobMigrant(b);
 	}
 	
 	public void t0_to_tr(Migrant blob){
@@ -67,35 +67,24 @@ public class AmasThread extends Thread{
 	public void run(){
 
 		MyEnvironment env = new MyEnvironment(controller);
-        myAmas = new MyAMAS(env, controller, nbBlobs);
-        controller.setBlobHibernants(env.getHibernants());
+        myAmas = new MyAMAS(env, nbBlobs);
+        //controller.setBlobHibernants(env.getHibernants());
         
         
-        /*
+        
         PositionThread tPosition = new PositionThread(this, env.getHibernants());
 		tPosition.start();
-        */
+        
 	}
 
-	public Controller getController() {
-		return controller;
-	}
+	//public Controller getController() {
+		//return controller;
+	//}
 
 	public void setController(Controller controller) {
-		this.controller = controller;
+		//this.controller = controller;
 	}
 	
-	
-	/*public void setCaracteristiques(int isolement, int heterogeneite, int stabilite_etat, int stabilite_position){
-		Platform.runLater(new Runnable() {
-			public void run() {
-				myAmas.getEnvironment().setIsolement(isolement);
-				myAmas.getEnvironment().setHeterogeneite(heterogeneite);
-				myAmas.getEnvironment().setStabilite_etat(stabilite_etat);
-				myAmas.getEnvironment().setStabilite_position(stabilite_position);
-			}
-		});
-	}*/
 	
 	public void setIsolement(int isolement){
 		Platform.runLater(new Runnable() {

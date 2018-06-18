@@ -132,6 +132,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		blob.setPulsation(voisins.size());
 		
 		// la couleur s'acquiert si un voisin est present depuis un temps defini.
+		/*
 		Set<BlobAgent> blobsConnus = (Set<BlobAgent>) connaissance.keySet();
 		for (BlobAgent blobConnu : blobsConnus) {
 			if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
@@ -139,12 +140,15 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 				connaissance.put(blobConnu, 0);
 			}
 		}
+		*/
+		
 		
 		// ITERATION
 		if (actionPassive == (Action.CHANGER_COULEUR) || actionPassive == (Action.CHANGER_FORME ))
 			nbExperience++;
 		
 		// maj des connaissances:
+		/*
 		for(int i = 0; i < voisins.size(); i++){
 			if(connaissance.containsKey(voisins.get(i))){
 				connaissance.put(voisins.get(i), connaissance.get(voisins.get(i)) + 1);
@@ -152,6 +156,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			else 
 				connaissance.put(voisins.get(i), 0);
 		}
+		*/
 	}
 	
 	
@@ -372,10 +377,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 
 	public void setVoisins(ArrayList<BlobAgent> voisins) {
 		this.voisins = voisins;
-		blob.clearVoisin();
-		for(int i = 0; i<voisins.size(); i++){
-			blob.addVoisin(voisins.get(i).blob);
-		}		
 	}
 
 

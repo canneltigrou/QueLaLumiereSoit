@@ -59,8 +59,9 @@ public class TerrainForm extends Parent {
 	
 
 	public void add_blob(Blob b) {
-
-		Platform.runLater(new Runnable() {
+		
+		System.out.print("add : " + blobList.size());
+		System.out.println(" - " + getChildren().size());		Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bf = new BlobForm(b, metreToPxl(b.getCoordonnee()));
 				blobList.put(b, bf);
@@ -72,6 +73,9 @@ public class TerrainForm extends Parent {
 	}
 
 	public void remove_blob(Blob b) {
+		System.out.print("remve : " + blobList.size());
+		System.out.println(" - " + getChildren().size());
+
 		Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bf = blobList.get(b);
@@ -83,6 +87,8 @@ public class TerrainForm extends Parent {
 	}
 
 	public void move_blob(Blob b) {
+		System.out.print("move : " + blobList.size());
+		System.out.println(" - " + getChildren().size());
 		Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bf = blobList.get(b);

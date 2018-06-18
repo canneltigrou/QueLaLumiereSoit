@@ -17,7 +17,7 @@ public class MyAMAS extends Amas<MyEnvironment>{
 	
 	@Override
 	protected void onInitialConfiguration() {
-		int nbBlobs = (int) params[1];
+		int nbBlobs = (int) params[0];
 		Migrant migrant;
 		double xcor;
 		double ycor;
@@ -26,7 +26,7 @@ public class MyAMAS extends Amas<MyEnvironment>{
 		int indiceForme;
 		Forme[] formeListe = Forme.values();
 		Blob blob;
-		controller = (Controller) params[0];		
+		//controller = (Controller) params[0];		
 		for(int i = nbBlobs ; i > 0 ; i--){
 			xcor = Math.random() * ( 100 );
 			ycor = Math.random() * ( 100 );
@@ -35,14 +35,14 @@ public class MyAMAS extends Amas<MyEnvironment>{
 			blob = new Blob(xcor,ycor, couleurListe[indiceCouleur], 1, formeListe[indiceForme], true);
 			migrant = new Migrant(this, blob, controller);
 			getEnvironment().addMigrant(migrant);
-			controller.add_blobHibernant(migrant);
+			//controller.add_blobHibernant(migrant);
 		}
 		super.onInitialConfiguration();
 		System.out.println("fin de l'initilisation de MyAmas");
 	}
 	
-	public MyAMAS(MyEnvironment env, Controller controller, int nbBlobs) {
-		super(env, Scheduling.DEFAULT, controller, nbBlobs);
+	public MyAMAS(MyEnvironment env, int nbBlobs) {
+		super(env, Scheduling.DEFAULT, nbBlobs);
 	}
 
 	

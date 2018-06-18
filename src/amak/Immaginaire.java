@@ -16,8 +16,10 @@ public class Immaginaire extends BlobAgent{
 		return(computeCriticalityInTideal());
 	}
 	
+	
 	@Override
     protected void onUpdateRender() {
+		/*
     	switch(currentAction){
     	case SE_DEPLACER :
     		controller.move_blobImmaginaire(this);
@@ -31,7 +33,7 @@ public class Immaginaire extends BlobAgent{
 		default:
 			break;
     	}
-
+*/
     }
 	
 	

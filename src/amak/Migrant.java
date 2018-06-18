@@ -117,7 +117,9 @@ public class Migrant extends BlobAgent{
 	
 	@Override
     protected void onUpdateRender() {
-    	switch(currentAction){
+    	/*
+    	 switch(currentAction){
+    	 
     	case CREER :
     		super.controller.add_blobImmaginaire(newFils);
     		break;
@@ -129,21 +131,21 @@ public class Migrant extends BlobAgent{
     			super.controller.move_blobMigrant(this);
     		break;
     	}
-
+	*/
     }
 	
 	public void t0_to_tr(){
 		isHome = false;
 		getAmas().getEnvironment().t0_to_tr(this);
-		controller.add_blobMigrant(this);
-		controller.remove_blobHibernant(this);
+		//controller.add_blobMigrant(this);
+		//controller.remove_blobHibernant(this);
 	}
 
 	public void tr_to_t0(){
 		isHome = true;
 		getAmas().getEnvironment().tr_to_t0(this);
-		controller.add_blobHibernant(this);
-		controller.remove_blobMigrant(this);
+		//controller.add_blobHibernant(this);
+		//controller.remove_blobMigrant(this);
 	}
 	
 	

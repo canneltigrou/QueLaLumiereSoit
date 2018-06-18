@@ -95,7 +95,7 @@ public class BlobForm extends Parent{
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-	        
+	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}
@@ -113,7 +113,7 @@ public class BlobForm extends Parent{
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-	        
+	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}
@@ -133,7 +133,7 @@ public class BlobForm extends Parent{
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleur ); 
-	        
+	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}
