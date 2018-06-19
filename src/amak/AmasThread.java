@@ -126,13 +126,5 @@ public class AmasThread extends Thread{
 		
 	}
 
-	public void setTauxMurissement(int tauxMurissemnt) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				myAmas.getEnvironment().setTauxMurissemnt(tauxMurissemnt);
-				System.out.println("tAmas : changement Taux Murissement à " + tauxMurissemnt);
-			}
-		});		
-	}	
 }
 

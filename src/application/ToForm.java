@@ -15,13 +15,13 @@ import javafx.scene.shape.Rectangle;
 public class ToForm extends Parent{
 	private Map<Blob, BlobForm> blobList;
 	private double dimRepresentation = 350;	// rayon/coté de la représentation en pxl (il s'agit d'une sphère)
-	private double tailleBlob = 12;
+	private int tailleBlob = 16;
 
 	public ToForm() {
 		blobList = new HashMap<Blob, BlobForm>();
 
 	//	Circle fond_Terrain = new Circle (dimRepresentation, dimRepresentation, dimRepresentation);
-
+		
 		Rectangle fond_Terrain = new Rectangle ();
 		fond_Terrain.setWidth(dimRepresentation);
 		fond_Terrain.setHeight(dimRepresentation);
@@ -52,9 +52,9 @@ public class ToForm extends Parent{
 			public void run() {
 				BlobForm bf;
 				if (isRiped)
-					bf = new BlobForm(b, percentToRepresentation(b.getCoordonnee()));
+					bf = new BlobForm(b, percentToRepresentation(b.getCoordonnee()), (int)tailleBlob);
 				else
-					bf = new BlobForm(b, percentToRepresentation(b.getCoordonnee()), Color.WHITE);
+					bf = new BlobForm(b, percentToRepresentation(b.getCoordonnee()), Color.WHITE, (int)tailleBlob);
 
 				blobList.put(b, bf);
 				getChildren().add(bf);
@@ -80,9 +80,9 @@ public class ToForm extends Parent{
 			public void run() {
 				BlobForm bf = blobList.get(b);
 				if (isRiped)
-					bf.changeBlob(b, percentToRepresentation(b.getCoordonnee()));
+					bf.changeBlob(b, percentToRepresentation(b.getCoordonnee()), tailleBlob);
 				else
-					bf.changeBlob(b, percentToRepresentation(b.getCoordonnee()), Color.WHITE);
+					bf.changeBlob(b, percentToRepresentation(b.getCoordonnee()), Color.WHITE, tailleBlob);
 
 			}
 		});

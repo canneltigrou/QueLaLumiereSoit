@@ -12,6 +12,7 @@ public class Migrant extends BlobAgent{
 	private int cptRiped;
 	//private int cpt_hibernation;
 	private int nbRipedIdeal = 1;
+	private double tauxMurissement = 5;
 	
 	
 	
@@ -33,7 +34,7 @@ public class Migrant extends BlobAgent{
 	
 	// boolean renvoyant true avec une probabilité de 'tauxMurissement' géré dans l'IHM.
 	private boolean mustRipe(){
-		return( Math.random() * 100 < getAmas().getEnvironment().getTauxMurissemnt());
+		return( Math.random() * 100 < tauxMurissement);
 	}
 	
 	
@@ -47,6 +48,23 @@ public class Migrant extends BlobAgent{
 		}
 		return(nbRipedIdeal - cpt);
 	}
+	
+	private double computeCriticalityPositionTo(){
+		// je compte le nombre de voisins qui bougent autour de moi.
+		double cpt = 0;
+		for (int i = 0; i< voisins.size(); i++){
+			if( ( (Migrant)(voisins.get(i))).isRiped)
+				cpt++;
+		}
+		return(nbRipedIdeal - cpt);
+	}
+	
+	private double computeCriticalityIsolementTo(){
+		//if (nbBlobs / 2 > 1 )
+		
+		return(getAmas().getEnvironment().getIsolement() - voisins.size());
+	}
+	
 	
 	
 	private void action_murir(){
@@ -91,10 +109,11 @@ public class Migrant extends BlobAgent{
 				 action_creer();
 			 break;
 				 
-		 case Stabilite_etat:
-			 break;
-			 
 		 case Stabilite_position:
+			 // only in To
+			 if(isHome)
+				 
+			 
 			 break;
 			 
 		 case Heterogeneite:
@@ -149,6 +168,8 @@ public class Migrant extends BlobAgent{
 	
 	private double computeCriticalityInTo(){
 		criticite[Critere.Murissement.getValue()] =	computeCriticalityMurissement();
+		criticite[Critere.Isolement.getValue()] = computeCriticalityIsolementTo();
+		criticite[Critere.Stabilite_position.getValue()] = computeCriticalityPositionTo();
 
 		return criticite[Critere.Murissement.getValue()]; // TODO
 	}
