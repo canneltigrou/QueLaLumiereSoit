@@ -10,6 +10,8 @@ import business.Blob;
 import business.Couleur;
 import business.Forme;
 
+//https://openclassrooms.com/courses/java-et-la-programmation-reseau/les-sockets-cote-serveur
+// https://gfx.developpez.com/tutoriel/java/network/
 
 // permet de lancer un thread pour établir la connexion bluetooth
 // et récolter les données en temps réel

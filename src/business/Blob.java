@@ -8,7 +8,6 @@ public class Blob {
 	private Forme forme;
 	private double[] coordonnee;
 	// liste des voisins Reels pour TR, utilisé pour l'apparence du blob, mais à voir le taux de rafraichissement
-	private ArrayList<Blob> voisins;
 	
 	private boolean real;
 	
@@ -103,21 +102,6 @@ public class Blob {
 		this.coordonnee = coordonnee;
 	}
 
-	
-	public ArrayList<Blob> getVoisins() {
-		return voisins;
-	}
-	public void setVoisins(ArrayList<Blob> voisins) {
-		this.voisins = voisins;
-	}
-	
-	public void addVoisin(Blob blobToAdd){
-		this.voisins.add(blobToAdd);
-	}
-	
-	public void clearVoisin(){
-		this.voisins.clear();
-	}
 
 
 	public boolean isReal() {
