@@ -43,7 +43,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	// lie aux decisions 'passives' : en fonction de l'etat du voisinage
 	private int nbExperience; // le nombre d'exp�riences coop�ratives. Agit sur la forme
-	private HashMap<BlobAgent, Integer> connaissance; // r�pertorie le temps pass� avec un agent
+	private HashMap<BlobAgent, Integer> connaissance; // repertorie le temps passe avec un agent
 	private int nbExperiencesRequises = 3;
 	private int tpsConnaissanceRequise = 2;
 	

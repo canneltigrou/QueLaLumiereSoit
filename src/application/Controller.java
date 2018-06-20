@@ -5,8 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import com.sun.webkit.dom.KeyboardEventImpl;
-
 import amak.AmasThread;
 import amak.BlobAgent;
 import amak.Immaginaire;
@@ -24,6 +22,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.fxml.Initializable;
 
 public class Controller implements Initializable{
@@ -81,12 +80,15 @@ public class Controller implements Initializable{
     @FXML
     private TextField textFieldNbBlobs;
     
+    @FXML
+    private Pane paneAppercuBlob;
     
     
 
     private TerrainForm tideal;  
     private TerrainForm treel;    
     private ToForm toriginel;
+    private AppercuBlob appercuBlob;
     
     private AmasThread tAmas;
     
@@ -313,6 +315,9 @@ public class Controller implements Initializable{
 		toriginel = new ToForm();
 		panelToriginel.getChildren().add(toriginel);
 		
+		appercuBlob = new AppercuBlob();
+		paneAppercuBlob.getChildren().add(appercuBlob);
+		
 		// J'initialise chaque sliders.
 		Sdiso.setValue(10);
 		sHeterogeneite.setValue(50);
@@ -395,11 +400,17 @@ public class Controller implements Initializable{
 	
 	private void showSelection(){
 		treel.showSelection(blobToMove.getBlob());
+		appercuBlob.add_blob(blobToMove);
+		
 	}
 	
 	private void deleteSelection(){
 		if(blobActifs.contains(blobToMove))
+		{
 			treel.deleteSelection(blobToMove.getBlob());
+			appercuBlob.remove_blob(blobToMove);
+		}
+		
 		blobToMove = null;
 	}
 	
@@ -428,13 +439,18 @@ public class Controller implements Initializable{
 	
 	
 	public void rentrerBlob(Migrant b){
+		if (b == blobToMove)
+			deleteSelection();
 		tAmas.tr_to_t0(b);
 		blobHibernants.add(b);
 		blobActifs.remove(b);
+		
 	}
 	
 	public void moveBlob(Migrant b, double[] coo){
-		tAmas.move_blob(b, coo);	
+		tAmas.move_blob(b, coo);
+		if (b == blobToMove)
+			appercuBlob.move_blob(b);
 	}
 
 	public ArrayList<Migrant> getBlobHibernants() {

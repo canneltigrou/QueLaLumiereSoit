@@ -164,7 +164,10 @@
                                 <tabs>
                                   <Tab text="apperçu du BLob">
                                     <content>
-                                      <AnchorPane fx:id="panelBlobSelectione" minHeight="0.0" minWidth="0.0" prefHeight="237.0" prefWidth="476.0" />
+                                      <AnchorPane fx:id="panelBlobSelectione" minHeight="0.0" minWidth="0.0" prefHeight="237.0" prefWidth="476.0">
+                                             <children>
+                                                <Pane fx:id="paneAppercuBlob" layoutX="163.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" />
+                                             </children></AnchorPane>
                                     </content>
                                   </Tab>
                                 </tabs>
