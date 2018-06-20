@@ -126,7 +126,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 	
 	protected void majAspectAgent(){
-		System.out.println("Jai " + connaissance.size() + "Blobs connus");
 		// La forme s'acquiert a partir d'un nombre d'exp�rience atteint.
 		if (nbExperience >= nbExperiencesRequises)
 			changer_de_forme();
