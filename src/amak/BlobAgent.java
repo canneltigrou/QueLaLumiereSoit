@@ -372,10 +372,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 
 	public void setVoisins(ArrayList<BlobAgent> voisins) {
 		this.voisins = voisins;
-		blob.clearVoisin();
-		for(int i = 0; i<voisins.size(); i++){
-			blob.addVoisin(voisins.get(i).blob);
-		}		
+			
 	}
 
 

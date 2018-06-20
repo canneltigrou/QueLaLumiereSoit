@@ -1,14 +1,15 @@
 package business;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 
 public class Blob {
 	//private String id;
 	private int pulsation;
-	private Forme forme;
+	//private Forme forme;
 	private double[] coordonnee;
 	// liste des voisins Reels pour TR, utilisé pour l'apparence du blob, mais à voir le taux de rafraichissement
-	private ArrayList<Blob> voisins;
 	
 	private boolean real;
 	
@@ -20,15 +21,33 @@ public class Blob {
 		coordonnee = new double[2];
 	}
 	
-	public Blob(double xcor, double ycor, Couleur couleur, int pulsation, Forme forme, boolean reel)
+	public Blob(double xcor, double ycor, Couleur couleur, int pulsation, ArrayList<double[]> forme , boolean reel)
 	{
 		coordonnee = new double[2];
 		coordonnee[0] = xcor;
 		coordonnee[1] = ycor;
 		this.pulsation = pulsation;
-		this.forme = forme;
+		//this.forme = forme;
 		real = reel;
-		globules_position = forme.creerPosition(forme);
+		globules_position = forme; //forme.creerPosition(forme);
+		setGlobules_couleurs(new ArrayList<Couleur>());
+		for (int i = 0; i < globules_position.size(); i++){
+			globules_couleurs.add(couleur);
+		}
+	}
+	
+	// on crée un blob à la position (xcor, ycor) de couleur et de forme aléatoire.
+	public Blob(double xcor, double ycor, boolean reel)
+	{
+		coordonnee = new double[2];
+		coordonnee[0] = xcor;
+		coordonnee[1] = ycor;
+		//this.pulsation = pulsation;
+		real = reel;
+		globules_position = generateFormRandom(); //forme.creerPosition(forme);
+		Couleur[] couleurListe = Couleur.values();
+		int indiceCouleur = (int) (Math.random() * ( couleurListe.length ));
+		Couleur couleur = couleurListe[indiceCouleur];
 		setGlobules_couleurs(new ArrayList<Couleur>());
 		for (int i = 0; i < globules_position.size(); i++){
 			globules_couleurs.add(couleur);
@@ -37,7 +56,7 @@ public class Blob {
 	
 	
 	public Blob copy_blob(){
-		Blob res = new Blob(coordonnee[0], coordonnee[1], globules_couleurs.get(0), pulsation, forme, real);
+		Blob res = new Blob(coordonnee[0], coordonnee[1], globules_couleurs.get(0), pulsation, globules_position, real);
 		res.setGlobules_couleurs(new ArrayList<Couleur>( this.globules_couleurs));
 		return(res);
 	}
@@ -81,19 +100,6 @@ public class Blob {
 		this.pulsation = pulsation;
 	}
 
-	public Forme getForme() {
-		return forme;
-	}
-
-	public void setForme(Forme forme) {
-		this.forme = forme;
-		globules_position = forme.creerPosition(forme);
-		for (int i = 0; i < globules_position.size(); i++){
-			Couleur couleur = globules_couleurs.get(0);
-			globules_couleurs.clear();
-			globules_couleurs.add(couleur);
-		}
-	}
 
 	public double[] getCoordonnee() {
 		return coordonnee;
@@ -103,21 +109,6 @@ public class Blob {
 		this.coordonnee = coordonnee;
 	}
 
-	
-	public ArrayList<Blob> getVoisins() {
-		return voisins;
-	}
-	public void setVoisins(ArrayList<Blob> voisins) {
-		this.voisins = voisins;
-	}
-	
-	public void addVoisin(Blob blobToAdd){
-		this.voisins.add(blobToAdd);
-	}
-	
-	public void clearVoisin(){
-		this.voisins.clear();
-	}
 
 
 	public boolean isReal() {
@@ -155,11 +146,9 @@ public class Blob {
 	
 	// permet de changer de forme en choisissant une forme aléatoire.
 	public void changeForme() {
-		Forme[] formeListe = Forme.values();
-		int indiceForme = (int) (Math.random() * (formeListe.length));
-		this.forme = formeListe[indiceForme];
-		globules_position = forme.creerPosition(forme);
-		for (int i = 0; i < globules_position.size(); i++){
+		
+		 generateFormRandom();
+		 for (int i = 0; i < globules_position.size(); i++){ //TODO : il ne dois pas perdre toutes ses couleurs !
 			Couleur couleur = globules_couleurs.get(0);
 			globules_couleurs.clear();
 			globules_couleurs.add(couleur);
@@ -184,4 +173,116 @@ public class Blob {
 		}
 		return(globules_couleurs.get(indice));
 	}
+	
+	
+	/* ***************************************************************************** *
+	 * *****************			FORMES					************************ *
+	 * ***************************************************************************** */
+	
+	
+	private boolean contenir(ArrayList<double[]> liste, double[] coo){
+		for(int i = 0; i<liste.size(); i++)
+			if(liste.get(i)[0] == coo[0] && liste.get(i)[1] == coo[1])
+				return(true);
+		return(false);
+	}
+	
+	// renvoie dans l'ordre : le Xcor min; le Xcor max; le Ycor min; le Ycor max
+	private double[] minMaxXYcor(ArrayList<double[]> liste){
+		double[] res = new double[4];
+		res[0] = liste.get(0)[0];
+		res[1] = liste.get(0)[1];
+		res[2] = liste.get(0)[0];
+		res[3] = liste.get(0)[1];
+		
+		double tmp;
+				
+		for(int i = 0; i < liste.size(); i++)
+		{
+			
+			if ((tmp = liste.get(i)[0]) < res[0])
+				res[0] = tmp;
+			else if (tmp > res[1])
+				res[1] = tmp;
+			if ((tmp = liste.get(i)[1]) < res[2])
+				res[2] = tmp;
+			else if (tmp > res[3])
+				res[3] = tmp;
+		}
+		
+		return res;
+	}
+	
+	
+	// je considère un blob dans un carré de 100*100. les positions sont donc en %
+	public ArrayList<double[]> generateFormRandom(){
+		ArrayList<double[]> res = new ArrayList<>();
+		
+		double[] tmp = new double[2];
+		tmp[0] = 50;
+		tmp[1] = 50;
+		res.add(tmp.clone());
+		
+		Random rn = new Random();
+		int nbGlobules = rn.nextInt(4) + 1;
+		
+		int pos;
+		ArrayList<double[]> listePossible = new ArrayList<>();
+		
+		for (int i = 1; i < nbGlobules ; i++)
+		{
+			// je génère les positions possibles de prendre autour du dernier globule créé.
+			listePossible.clear();
+			
+			tmp = res.get(i - 1).clone();
+			// à droite
+			tmp[0] += 25;
+			if (!contenir(res, tmp))
+				listePossible.add(tmp.clone());
+			
+			// à gauche
+			tmp[0] -= 50;
+			if (!contenir(res, tmp))
+				listePossible.add(tmp.clone());
+			
+			// en haut
+			tmp[0] += 25;
+			tmp[1] -= 25;
+			if (!contenir(res, tmp))
+				listePossible.add(tmp.clone());
+			
+			// en bas
+			tmp[1] += 50;
+			if (!contenir(res, tmp))
+				listePossible.add(tmp.clone());
+			
+			
+			rn = new Random();
+			if (i == 1)
+				pos = rn.nextInt(4);
+			else
+				pos = rn.nextInt(3);
+			
+			res.add(listePossible.get(pos));
+		}
+		
+		// j'ai à ce stade, créé un blob, mais non centré.
+		// centrons-le : (translation des deux axes par (Max - Min)/2
+		double[] minMaxcor = minMaxXYcor(res);
+		// nouveau centre = min + (max - min)/2
+		double xNouveauCentre = minMaxcor[0] + (minMaxcor[1] - minMaxcor[0]) /2;
+		double yNouveauCentre = minMaxcor[2] + (minMaxcor[3] - minMaxcor[2]) /2;
+		
+		// à chaque position, j'ajoute le vecteur (ancien centre (50,50) - nouveau Centre )
+		for (int i = 0; i < res.size(); i++){
+			res.get(i)[0] += 50 - xNouveauCentre;
+			res.get(i)[1] += 50 - yNouveauCentre;
+		}
+		
+		return res;
+	}
+	
+	
+	
+	
 }
