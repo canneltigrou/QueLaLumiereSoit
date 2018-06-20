@@ -352,6 +352,8 @@ public class Controller implements Initializable{
 	public void remove_blobMigrant(Migrant b){
 		tideal.remove_blob(b.getBlob());
 		treel.remove_blob(b.getBlob());
+		if (b == blobToMove)
+			deleteSelection();
 	}
 	
 	
@@ -367,6 +369,8 @@ public class Controller implements Initializable{
 	public void move_blobMigrant(Migrant b){
 		tideal.move_blob(b.getBlob());
 		treel.move_blob(b.getBlob());
+		if (b == blobToMove)
+			appercuBlob.move_blob(b);
 	}
 	
 	public void move_blobHibernant(Migrant b){
