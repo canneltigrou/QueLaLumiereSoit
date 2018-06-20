@@ -138,14 +138,16 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		
 			Platform.runLater(new Runnable() {
 				public void run() {
-					for (BlobAgent blobConnu : (Set<BlobAgent>) connaissance.keySet()) 
+					Iterator it = connaissance.keySet().iterator();
+					while (it.hasNext()) 
 					{
+						BlobAgent blobConnu = (BlobAgent)it.next();
 						if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
 							changer_de_couleur_passif(blobConnu);
 							connaissance.put(blobConnu, 0);
 						}
 						if (!voisins.contains(blobConnu))
-							connaissance.remove(blobConnu);
+							it.remove();
 					}
 				}
 			});
