@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import application.BlobForm;
 import application.Controller;
 import business.Blob;
 import business.Couleur;
 import business.Critere;
 import business.CriticalityFunction;
 import fr.irit.smac.amak.Agent;
+import javafx.application.Platform;
 
 
 enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER, CHANGER_COULEUR, CHANGER_FORME, MURIR };
@@ -43,7 +45,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	// lie aux decisions 'passives' : en fonction de l'etat du voisinage
 	private int nbExperience; // le nombre d'exp�riences coop�ratives. Agit sur la forme
-	private HashMap<BlobAgent, Integer> connaissance; // r�pertorie le temps pass� avec un agent
+	private HashMap<BlobAgent, Integer> connaissance; // repertorie le temps passe avec un agent
 	private int nbExperiencesRequises = 3;
 	private int tpsConnaissanceRequise = 2;
 	
@@ -124,6 +126,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 	
 	protected void majAspectAgent(){
+		System.out.println("Jai " + connaissance.size() + "Blobs connus");
 		// La forme s'acquiert a partir d'un nombre d'exp�rience atteint.
 		if (nbExperience >= nbExperiencesRequises)
 			changer_de_forme();
@@ -132,26 +135,43 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		blob.setPulsation(voisins.size());
 		
 		// la couleur s'acquiert si un voisin est present depuis un temps defini.
-		Set<BlobAgent> blobsConnus = (Set<BlobAgent>) connaissance.keySet();
-		for (BlobAgent blobConnu : blobsConnus) {
-			if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
-				changer_de_couleur_passif(blobConnu);
-				connaissance.put(blobConnu, 0);
-			}
-		}
+		
+			Platform.runLater(new Runnable() {
+				public void run() {
+					for (BlobAgent blobConnu : (Set<BlobAgent>) connaissance.keySet()) 
+					{
+						if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
+							changer_de_couleur_passif(blobConnu);
+							connaissance.put(blobConnu, 0);
+						}
+						if (!voisins.contains(blobConnu))
+							connaissance.remove(blobConnu);
+					}
+				}
+			});
+		
+		
 		
 		// ITERATION
 		if (actionPassive == (Action.CHANGER_COULEUR) || actionPassive == (Action.CHANGER_FORME ))
 			nbExperience++;
 		
 		// maj des connaissances:
-		for(int i = 0; i < voisins.size(); i++){
-			if(connaissance.containsKey(voisins.get(i))){
-				connaissance.put(voisins.get(i), connaissance.get(voisins.get(i)) + 1);
-			}
-			else 
-				connaissance.put(voisins.get(i), 0);
-		}
+		
+			Platform.runLater(new Runnable() {
+				public void run() {
+					for(int i = 0; i < voisins.size(); i++){
+					if(connaissance.containsKey(voisins.get(i))){
+						connaissance.put(voisins.get(i), connaissance.get(voisins.get(i)) + 1);
+					}
+					else 
+						connaissance.put(voisins.get(i), 0);
+				}
+				}
+			});
+			
+			
+			
 	}
 	
 	
@@ -372,10 +392,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 
 	public void setVoisins(ArrayList<BlobAgent> voisins) {
 		this.voisins = voisins;
-		blob.clearVoisin();
-		for(int i = 0; i<voisins.size(); i++){
-			blob.addVoisin(voisins.get(i).blob);
-		}		
+			
 	}
 
 

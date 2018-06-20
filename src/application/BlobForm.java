@@ -17,9 +17,10 @@ public class BlobForm extends Parent{
 	Circle fond_blob;
 	ArrayList<Circle> globules;
 	Rectangle selection = null;
+	private int tailleBlob;
 	
-	
-	public BlobForm(Blob b){
+	/*
+	public BlobForm(Blob b, int tailleBlob){
 		//blobList = new HashMap<Blob, BlobForm>();
 		globules = new ArrayList<Circle>();
 		selection = new Rectangle(13, 13);
@@ -40,13 +41,14 @@ public class BlobForm extends Parent{
 	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
 		}
-    }
+    }*/
 	
-	public BlobForm(Blob b, double[] coo){
+	public BlobForm(Blob b, double[] coo, int tailleBlob){
 		//blobList = new HashMap<Blob, BlobForm>();
+		this.tailleBlob = tailleBlob;
 		globules = new ArrayList<Circle>();
-
-		selection = new Rectangle(13, 13);
+		
+		selection = new Rectangle(tailleBlob, tailleBlob);
 		selection.setFill(Color.TRANSPARENT);
 		selection.setStrokeType(StrokeType.CENTERED);
 		selection.setStroke(Color.TRANSPARENT);
@@ -55,33 +57,54 @@ public class BlobForm extends Parent{
 		this.setTranslateX(coo[0]);// on positionne le groupe 
 		this.setTranslateY(coo[1]);
 		
-		ArrayList<double[]> positionGlobule = b.getGlobules_position();
+		ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
 		ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
 		globules.clear();
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
+			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
 	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
 		}
     }
 	
-	public BlobForm(Blob b, double[] coo, Color couleur){
+	private ArrayList<double[]> proportionToVal(ArrayList<double[]> globules_position) {
+		ArrayList<double[]> res = new ArrayList<>();
+		double[] coo;
+		for (int i = 0; i < globules_position.size(); i++)
+		{
+			coo = new double[2];
+			coo[0] = globules_position.get(i)[0]/100 * tailleBlob;
+			coo[1] = globules_position.get(i)[1] / 100 * tailleBlob;
+			res.add(coo);
+		}
+		return res;
+	}
+
+	public BlobForm(Blob b, double[] coo, Color couleur, int tailleBlob){
+		this.tailleBlob = tailleBlob;
 		globules = new ArrayList<Circle>();
 		this.setTranslateX(coo[0]);// on positionne le groupe 
 		this.setTranslateY(coo[1]);
-		ArrayList<double[]> positionGlobule = b.getGlobules_position();
+		ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
 		globules.clear();
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleur ); 
+			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleur ); 
 	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
 		}
+		
+		selection = new Rectangle(tailleBlob, tailleBlob);
+		selection.setFill(Color.TRANSPARENT);
+		selection.setStrokeType(StrokeType.CENTERED);
+		selection.setStroke(Color.TRANSPARENT);
+		this.getChildren().add(selection);
     }
 	
 	
-	public void changeBlob(Blob b){
+	public void changeBlob(Blob b, int tailleBlob){
+		this.tailleBlob = tailleBlob;
 		this.blob = b;
 		this.setTranslateX(blob.getCoordonnee()[0]);//positionnement du blob
         this.setTranslateY(blob.getCoordonnee()[1]);
@@ -89,17 +112,18 @@ public class BlobForm extends Parent{
 			this.getChildren().remove(globules.get(i));
 		}
         
-        ArrayList<double[]> positionGlobule = b.getGlobules_position();
+        ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
 		ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
 		globules.clear();
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-	        
+			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
+	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}
-	public void changeBlob(Blob b, double[] coo){
+	public void changeBlob(Blob b, double[] coo, int tailleBlob){
+		this.tailleBlob = tailleBlob;
 		this.blob = b;
 		this.setTranslateX(coo[0]);//positionnement du blob
         this.setTranslateY(coo[1]);
@@ -107,20 +131,21 @@ public class BlobForm extends Parent{
 			this.getChildren().remove(globules.get(i));
 		}
         
-        ArrayList<double[]> positionGlobule = b.getGlobules_position();
+        ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
 		ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
 		globules.clear();
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-	        
+			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
+	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}
 	
 	// cette fonction est appelée si le globule n'est pas mûr et doit être repésenté blanc.
 	// la couleur blanche est donc donnée en paramètre.
-	public void changeBlob(Blob b, double[] coo, Color couleur){
+	public void changeBlob(Blob b, double[] coo, Color couleur, int tailleBlob){
+		this.tailleBlob = tailleBlob;
 		this.blob = b;
 		this.setTranslateX(coo[0]);//positionnement du blob
         this.setTranslateY(coo[1]);
@@ -128,12 +153,12 @@ public class BlobForm extends Parent{
 			this.getChildren().remove(globules.get(i));
 		}
         
-        ArrayList<double[]> positionGlobule = b.getGlobules_position();
+        ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
 		globules.clear();
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleur ); 
-	        
+			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleur ); 
+	        globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}

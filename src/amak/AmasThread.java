@@ -126,13 +126,15 @@ public class AmasThread extends Thread{
 		
 	}
 
-	public void setTauxMurissement(int tauxMurissemnt) {
+	public void setRadiusVoisinage(double radiusVoisins) {
 		Platform.runLater(new Runnable() {
 			public void run() {
-				myAmas.getEnvironment().setTauxMurissemnt(tauxMurissemnt);
-				System.out.println("tAmas : changement Taux Murissement à " + tauxMurissemnt);
+				myAmas.getEnvironment().setRadiusVoisins(radiusVoisins);
+				System.out.println("tAmas : changement du radius à " + radiusVoisins);
 			}
-		});		
-	}	
+		});	
+		
+	}
+
 }
 

@@ -8,8 +8,9 @@ import amak.AmasThread;
 import amak.Migrant;
 import business.Blob;
 import business.Couleur;
-import business.Forme;
 
+//https://openclassrooms.com/courses/java-et-la-programmation-reseau/les-sockets-cote-serveur
+// https://gfx.developpez.com/tutoriel/java/network/
 
 // permet de lancer un thread pour établir la connexion bluetooth
 // et récolter les données en temps réel
@@ -72,9 +73,9 @@ public class PositionThread extends Thread{
 		for(int i = 0 ; i < blobList.size(); i++){
 			
 			Couleur couleurG1 = blobList.get(i).getBlob().getGlobules_couleurs().get(0);
-			Forme forme = blobList.get(i).getBlob().getForme();
+			//Forme forme = blobList.get(i).getBlob().getForme();
 			double[] pos = blobList.get(i).getBlob().getCoordonnee();
-			System.out.println("" + i + " : " + couleurG1 + " " + forme + " " + pos[0] + " ; " + pos[1]);			
+			System.out.println("" + i + " : " + couleurG1 + " "  + " " + pos[0] + " ; " + pos[1]);			
 		}	
 	}
 	
@@ -121,69 +122,7 @@ public class PositionThread extends Thread{
 	}
 		
 	
-	/*
-	 private Blob console_formulaireBlob(BufferedReader standardInput, Blob blob){
-	 
-		System.out.println("nouveau x :");
-		String tmp;
-		// position :
-		try {
-			tmp = standardInput.readLine();
-			double newPosX = Double.parseDouble(tmp);
-			System.out.println("nouveau y :");
-			tmp = standardInput.readLine();
-			double newPosY = Double.parseDouble(tmp);
-			double[] coo = new double[2];
-			coo[0] = newPosX;
-			coo[1] = newPosY;
-			blob.setCoordonnee(coo);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// Forme :
-		console_afficher_formes_enum();
-		try {
-			System.out.println("choisissez une forme :");
-			tmp = standardInput.readLine();
-			
-			Forme[] listeFormes = Forme.values();
-			int indice = Integer.parseInt(tmp);
-			System.out.println(listeFormes[indice]);
-			blob.setForme(listeFormes[indice]);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		// Couleur :
-				console_afficher_couleurs_enum();
-				try {
-					System.out.println("choisissez une couleur ('n' pour ne pas changer de couleur):");
-					tmp = standardInput.readLine();
-					
-					if(!tmp.equals("n")){
-						Couleur[] listeCouleurs = Couleur.values();
-						int indice = Integer.parseInt(tmp);
-						ArrayList<Couleur> listeGlobuleCouleur = new ArrayList<Couleur>();
-						for(int i = 0 ; i<blob.getGlobules_position().size() ; i++)
-							listeGlobuleCouleur.add(listeCouleurs[indice]);
-						blob.setGlobules_couleurs(listeGlobuleCouleur);
-						System.out.println("coucou");
-					}
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		
-		return(blob);
-	}
-	*/
+	
 	
 	private void console_modifierBlob(BufferedReader standardInput){
 		console_afficher_blobs(blobActifs);

@@ -2,7 +2,7 @@ package business;
 
 import javafx.scene.paint.Color;
 
-public enum Couleur { WHITE, RED, BLUE, YELLOW, GREEN, AQUA, DARKORANGE, BISQUE, BLUEVIOLET, DARKSALMON, CYAN, BURLYWOOD, CORAL;
+public enum Couleur { RED, BLUE, YELLOW, GREEN, AQUA, DARKORANGE, BISQUE, BLUEVIOLET, DARKSALMON, CYAN, BURLYWOOD, CORAL;
 	
 	
 	public Color getColor(Couleur clr){
@@ -10,8 +10,6 @@ public enum Couleur { WHITE, RED, BLUE, YELLOW, GREEN, AQUA, DARKORANGE, BISQUE,
 			return(Color.YELLOW);
 		if (clr == RED )
 			return(Color.RED);
-		if (clr == WHITE )
-			return(Color.WHITE);
 		if (clr == BLUE )
 			return(Color.BLUE);
 		if (clr == GREEN )

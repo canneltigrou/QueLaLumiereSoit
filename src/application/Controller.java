@@ -5,8 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import com.sun.webkit.dom.KeyboardEventImpl;
-
 import amak.AmasThread;
 import amak.BlobAgent;
 import amak.Immaginaire;
@@ -24,6 +22,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.fxml.Initializable;
 
 public class Controller implements Initializable{
@@ -31,6 +30,7 @@ public class Controller implements Initializable{
 	private ArrayList<Migrant> blobHibernants;
 	private ArrayList<Migrant> blobActifs;
 	private Migrant blobToMove;
+	private double[] valeurCurseurs = new double[4];
 	
 	
     @FXML
@@ -80,12 +80,15 @@ public class Controller implements Initializable{
     @FXML
     private TextField textFieldNbBlobs;
     
+    @FXML
+    private Pane paneAppercuBlob;
     
     
 
     private TerrainForm tideal;  
     private TerrainForm treel;    
     private ToForm toriginel;
+    private AppercuBlob appercuBlob;
     
     private AmasThread tAmas;
     
@@ -100,24 +103,30 @@ public class Controller implements Initializable{
     	
     	System.out.println(" Valeur Degrés d'isolement : " + diso.get() + "\n");
     	tAmas.setIsolement(diso.getValue().intValue());
+    	valeurCurseurs[0] = diso.getValue();
     }
 	
 	@FXML
     void clicHeter(MouseEvent event) {
     	System.out.println(" Valeur Degrés d'heterogénéité : " + hetero.get() + "\n");
     	tAmas.setHeterogeneite(hetero.getValue().intValue());
+    	valeurCurseurs[3] = hetero.getValue();
     }
 	
 	@FXML
     void clicStabPos(MouseEvent event) {
     	System.out.println(" Valeur de la stabilité de la position du voisinage : " + stabPos.get() + "\n");
     	tAmas.setStabilitePosition(stabPos.getValue().intValue());
+    	valeurCurseurs[2] = stabPos.getValue();
     }
 	
 
     @FXML
     void clicRadiusVoisins(MouseEvent event) {
     	System.out.println(" Valeur du radius des voisins : " + radiusVoisins.get() + "\n");
+    	tAmas.setRadiusVoisinage(radiusVoisins.getValue());
+    	valeurCurseurs[1] = radiusVoisins.getValue();
+
     }
 	
     @FXML
@@ -160,8 +169,21 @@ public class Controller implements Initializable{
     
     @FXML
     void onKeyPressed(KeyEvent event) {
+    	
+    	
     	KeyCode kcode = event.getCode();
     	//System.out.println("je viens d'appuyer sur une touche !");
+    	
+    	if (textFieldNbBlobs.getText().equals(""))
+    	{
+    		if (kcode.isDigitKey())
+    			textFieldNbBlobs.setText(kcode.getName());
+    		return;
+    	}
+    		
+    		
+    	
+    	
     	
     	if(blobToMove == null)
     		return;
@@ -190,10 +212,11 @@ public class Controller implements Initializable{
     	else if (kcode.equals(KeyCode.ESCAPE))
     		deleteSelection();
     	
-    	
-    	
-    	
-    	
+    	// remise des curseurs à leur etat actuel
+    	Sdiso.setValue(valeurCurseurs[0]);
+    	sStabilitePosition.setValue(valeurCurseurs[2]);
+    	sHeterogeneite.setValue(valeurCurseurs[3]);
+    	sRadiusVoisins.setValue(valeurCurseurs[1]);
     }
     
     
@@ -292,12 +315,20 @@ public class Controller implements Initializable{
 		toriginel = new ToForm();
 		panelToriginel.getChildren().add(toriginel);
 		
+		appercuBlob = new AppercuBlob();
+		paneAppercuBlob.getChildren().add(appercuBlob);
+		
 		// J'initialise chaque sliders.
 		Sdiso.setValue(10);
-		sHeterogeneite.setValue(2);
-		sStabilitePosition.setValue(2);
+		sHeterogeneite.setValue(50);
+		sStabilitePosition.setValue(75);
 		sRadiusVoisins.setValue(7);
 		blobActifs = new ArrayList<>();
+		
+		valeurCurseurs[0] = Sdiso.getValue();
+		valeurCurseurs[1] = sRadiusVoisins.getValue();
+		valeurCurseurs[2] = sStabilitePosition.getValue();
+		valeurCurseurs[3] = sHeterogeneite.getValue();
 		
 	}
 	
@@ -321,6 +352,8 @@ public class Controller implements Initializable{
 	public void remove_blobMigrant(Migrant b){
 		tideal.remove_blob(b.getBlob());
 		treel.remove_blob(b.getBlob());
+		if (b == blobToMove)
+			deleteSelection();
 	}
 	
 	
@@ -336,6 +369,8 @@ public class Controller implements Initializable{
 	public void move_blobMigrant(Migrant b){
 		tideal.move_blob(b.getBlob());
 		treel.move_blob(b.getBlob());
+		if (b == blobToMove)
+			appercuBlob.move_blob(b);
 	}
 	
 	public void move_blobHibernant(Migrant b){
@@ -355,11 +390,6 @@ public class Controller implements Initializable{
 		return(sStabilitePosition.valueProperty().intValue());
 	}
 	
-	
-	
-	public double getTauxMurissement(){
-		return(2);  // TODO est a remplacer
-	}
 
 
 	public AmasThread gettAmas() {
@@ -374,10 +404,17 @@ public class Controller implements Initializable{
 	
 	private void showSelection(){
 		treel.showSelection(blobToMove.getBlob());
+		appercuBlob.add_blob(blobToMove);
+		
 	}
 	
 	private void deleteSelection(){
-		treel.deleteSelection(blobToMove.getBlob());
+		if(blobActifs.contains(blobToMove))
+		{
+			treel.deleteSelection(blobToMove.getBlob());
+			appercuBlob.remove_blob(blobToMove);
+		}
+		
 		blobToMove = null;
 	}
 	
@@ -406,13 +443,18 @@ public class Controller implements Initializable{
 	
 	
 	public void rentrerBlob(Migrant b){
+		if (b == blobToMove)
+			deleteSelection();
 		tAmas.tr_to_t0(b);
 		blobHibernants.add(b);
 		blobActifs.remove(b);
+		
 	}
 	
 	public void moveBlob(Migrant b, double[] coo){
-		tAmas.move_blob(b, coo);	
+		tAmas.move_blob(b, coo);
+		if (b == blobToMove)
+			appercuBlob.move_blob(b);
 	}
 
 	public ArrayList<Migrant> getBlobHibernants() {
