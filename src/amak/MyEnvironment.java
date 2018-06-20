@@ -133,7 +133,13 @@ public class MyEnvironment extends Environment {
 	// returne true if ok. 
 	//Ici il s'agit de To : valide si compris dans un carré de 100*100
 	private boolean isValideInTo(double[] coo){
-		if (0 < coo[0] && coo[0] < 100 && 0 < coo[1] && coo[1] < 100)
+		
+		// si dans un carré de 100*100
+		/*if (0 < coo[0] && coo[0] < 100 && 0 < coo[1] && coo[1] < 100)
+			return true;*/
+		
+		// si dans un cercle de diametre 100 ie de rayon 50
+		if ((coo[0] - 50)*(coo[0] - 50) + (coo[1] - 50) * (coo[1] - 50) <= 50 * 50)
 			return true;
 		return false;
 	}

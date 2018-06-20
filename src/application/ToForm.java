@@ -20,13 +20,14 @@ public class ToForm extends Parent{
 	public ToForm() {
 		blobList = new HashMap<Blob, BlobForm>();
 
-	//	Circle fond_Terrain = new Circle (dimRepresentation, dimRepresentation, dimRepresentation);
-		
+		Circle fond_Terrain = new Circle (dimRepresentation/2, dimRepresentation/2, dimRepresentation/2);
+		/*
 		Rectangle fond_Terrain = new Rectangle ();
 		fond_Terrain.setWidth(dimRepresentation);
 		fond_Terrain.setHeight(dimRepresentation);
 		fond_Terrain.setArcWidth(10);
 		fond_Terrain.setArcHeight(10);
+		*/
 		fond_Terrain.setFill(Color.BLACK);
 
 		this.setTranslateX(0);// on positionne le groupe plutôt que le rectangle
@@ -87,8 +88,4 @@ public class ToForm extends Parent{
 			}
 		});
 	}
-	
-	
-	
-	
 }
