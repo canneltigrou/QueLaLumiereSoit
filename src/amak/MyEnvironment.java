@@ -271,5 +271,10 @@ public class MyEnvironment extends Environment {
 	}
 
 
+	public void setRadiusVoisins(double radiusVoisins) {
+		this.radius = (int)radiusVoisins;
+	}
+
+
 	
 }
