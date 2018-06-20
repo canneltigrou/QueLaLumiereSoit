@@ -126,5 +126,15 @@ public class AmasThread extends Thread{
 		
 	}
 
+	public void setRadiusVoisinage(double radiusVoisins) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				myAmas.getEnvironment().setRadiusVoisins(radiusVoisins);
+				System.out.println("tAmas : changement du radius à " + radiusVoisins);
+			}
+		});	
+		
+	}
+
 }
 
