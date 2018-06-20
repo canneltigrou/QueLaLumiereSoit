@@ -3,7 +3,6 @@ package application;
 import java.util.HashMap;
 import java.util.Map;
 
-import amak.Migrant;
 import business.Blob;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -18,7 +17,7 @@ public class TerrainForm extends Parent {
 	private Map<Blob, BlobForm> blobList;
 	private double rayonSalle = 12.5; // rayon de la salle d'exposition en m
 	private double rayonRepresentation = 175;	// rayon de la représentation en pxl
-	private double tailleBlob = 12; // TODO à faire autrement pour le set.
+	private int tailleBlob = 16; // TODO à faire autrement pour le set.
 
 	public TerrainForm() {
 		// blobList = new ArrayList<Blob>();
@@ -62,7 +61,7 @@ public class TerrainForm extends Parent {
 
 		Platform.runLater(new Runnable() {
 			public void run() {
-				BlobForm bf = new BlobForm(b, metreToPxl(b.getCoordonnee()));
+				BlobForm bf = new BlobForm(b, metreToPxl(b.getCoordonnee()), tailleBlob);
 				blobList.put(b, bf);
 				getChildren().add(bf);
 				
@@ -86,7 +85,7 @@ public class TerrainForm extends Parent {
 		Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bf = blobList.get(b);
-				bf.changeBlob(b, metreToPxl(b.getCoordonnee()));
+				bf.changeBlob(b, metreToPxl(b.getCoordonnee()), tailleBlob);
 			}
 		});
 	}

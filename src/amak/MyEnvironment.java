@@ -3,7 +3,7 @@ package amak;
 import java.util.ArrayList;
 
 import application.Controller;
-import business.CriticalityFunction;
+//import business.CriticalityFunction;
 import fr.irit.smac.amak.Environment;
 import fr.irit.smac.amak.Scheduling;
 
@@ -16,9 +16,10 @@ public class MyEnvironment extends Environment {
 	//private double stabilite_etat;
 	private double stabilite_position;
 	private double heterogeneite;
-	private double tauxMurissemnt;
+	//private double tauxMurissemnt;
 	public double rayonTerrain = 12.5; // exprimé en metres
 	//private CriticalityFunction fctCriticalityStabiliteEtat;
+	private int nbInitialBlob;
 	
 	/* communication avec l'interface graphique */
 	private Controller controller;
@@ -38,7 +39,7 @@ public class MyEnvironment extends Environment {
 		isolement = controller.getIsolement();
 		stabilite_position = controller.getStabilitePosition();
 		heterogeneite = controller.getHeterogenite();
-		tauxMurissemnt = controller.getTauxMurissement();
+		//tauxMurissemnt = controller.getTauxMurissement();
 		//fctCriticalityStabiliteEtat = new CriticalityFunction(-1.2, 1.2, -0.05, 0.05);
 		//fctCriticalityStabiliteEtat = new CriticalityFunction(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
 	}
@@ -46,10 +47,10 @@ public class MyEnvironment extends Environment {
 	
 	// j'ai considéré que cette criticité prend en compte l'isolement et le curseur stabilite états.
 	// j'appelle donc cette méthode en cas de changement de chacun des 2 curseurs.
-	private void majFctCriticalityStabiliteEtat(){
-		//fctCriticalityStabiliteEtat.setParameters(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
+	/*private void majFctCriticalityStabiliteEtat(){
+		fctCriticalityStabiliteEtat.setParameters(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
 	}
-		
+	*/
 	
 	public ArrayList<BlobAgent> getAgents() {
 		return agents;
@@ -132,7 +133,13 @@ public class MyEnvironment extends Environment {
 	// returne true if ok. 
 	//Ici il s'agit de To : valide si compris dans un carré de 100*100
 	private boolean isValideInTo(double[] coo){
-		if (0 < coo[0] && coo[0] < 100 && 0 < coo[1] && coo[1] < 100)
+		
+		// si dans un carré de 100*100
+		/*if (0 < coo[0] && coo[0] < 100 && 0 < coo[1] && coo[1] < 100)
+			return true;*/
+		
+		// si dans un cercle de diametre 100 ie de rayon 50
+		if ((coo[0] - 50)*(coo[0] - 50) + (coo[1] - 50) * (coo[1] - 50) <= 50 * 50)
 			return true;
 		return false;
 	}
@@ -261,16 +268,6 @@ public class MyEnvironment extends Environment {
 
 	public void setController(Controller controller) {
 		this.controller = controller;
-	}
-
-
-	public double getTauxMurissemnt() {
-		return tauxMurissemnt;
-	}
-
-
-	public void setTauxMurissemnt(double tauxMurissemnt) {
-		this.tauxMurissemnt = tauxMurissemnt;
 	}
 
 
