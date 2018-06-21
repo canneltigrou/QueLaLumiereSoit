@@ -23,6 +23,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import positionBluetooth.PositionSimulationThread;
 import javafx.fxml.Initializable;
 
 public class Controller implements Initializable{
@@ -31,6 +32,7 @@ public class Controller implements Initializable{
 	private ArrayList<Migrant> blobActifs;
 	private Migrant blobToMove;
 	private double[] valeurCurseurs = new double[4];
+	private PositionSimulationThread tSimuPosition;
 	
 	
     @FXML
@@ -82,6 +84,9 @@ public class Controller implements Initializable{
     
     @FXML
     private Pane paneAppercuBlob;
+    
+    @FXML
+    private Button buttonMouvementAleatoire;
     
     
 
@@ -152,6 +157,17 @@ public class Controller implements Initializable{
     }
 	
     @FXML
+    void onClicButtonMouvementAleatoire(MouseEvent event) {
+
+    	if(!tSimuPosition.is_interrupt)
+    		tSimuPosition.interruption();
+    		//tSimuPosition = null;
+    	else
+    		tSimuPosition.demarrer(blobActifs);
+    	   	
+    }
+    
+    @FXML
     void onClicButtonModifierBlob(MouseEvent event) {
     	if(labelAide.isVisible())
     	{
@@ -165,6 +181,8 @@ public class Controller implements Initializable{
     	}
     	   	
     }
+    
+    
     
     
     @FXML
@@ -202,6 +220,8 @@ public class Controller implements Initializable{
     			coo[0] += 1;
     		else
     			coo[0] -= 1;
+    		
+    		
     		
     		moveBlob(blobToMove, coo);
     	}
@@ -294,6 +314,9 @@ public class Controller implements Initializable{
 		tAmas.start();
 		 
 		buttonOKNbBlobs.setDisable(true);
+		
+		tSimuPosition = new PositionSimulationThread(tAmas, blobActifs);
+		tSimuPosition.start();
     }
     
     
@@ -330,6 +353,8 @@ public class Controller implements Initializable{
 		valeurCurseurs[1] = sRadiusVoisins.getValue();
 		valeurCurseurs[2] = sStabilitePosition.getValue();
 		valeurCurseurs[3] = sHeterogeneite.getValue();
+		
+		
 		
 	}
 	

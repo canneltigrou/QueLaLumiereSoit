@@ -48,6 +48,10 @@
                                                 <Font size="9.0" />
                                              </font>
                                           </Label>
+                                          <Button fx:id="buttonMouvementAleatoire" defaultButton="true" layoutX="270.0" layoutY="289.0" mnemonicParsing="false" onMouseReleased="#onClicButtonMouvementAleatoire" prefHeight="61.0" prefWidth="130.0" text="Mouvement&#10;Aléatoire" textFill="#151fdd">
+                                             <font>
+                                                <Font size="13.0" />
+                                             </font></Button>
                                        </children></AnchorPane>
                                   <AnchorPane fx:id="panelTideal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="352.0" />
                                 </items>
