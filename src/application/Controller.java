@@ -207,6 +207,7 @@ public class Controller implements Initializable{
     	}
     	else if (kcode.isLetterKey())
     	{
+    		deleteSelection();
     		rentrerBlob(blobToMove);
     	}
     	else if (kcode.equals(KeyCode.ESCAPE))

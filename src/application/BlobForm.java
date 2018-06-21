@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import business.Blob;
 import business.Couleur;
 import javafx.scene.Parent;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -18,36 +20,22 @@ public class BlobForm extends Parent{
 	ArrayList<Circle> globules;
 	Rectangle selection = null;
 	private int tailleBlob;
+	BoxBlur boxBlur;// = new BoxBlur(5, 5, 5); 
 	
-	/*
-	public BlobForm(Blob b, int tailleBlob){
-		//blobList = new HashMap<Blob, BlobForm>();
-		globules = new ArrayList<Circle>();
-		selection = new Rectangle(13, 13);
-		selection.setFill(Color.TRANSPARENT);
-		selection.setStrokeType(StrokeType.CENTERED);
-		selection.setStroke(Color.TRANSPARENT);
-		this.getChildren().add(selection);
-
-		this.setTranslateX(b.getCoordonnee()[0]);// on positionne le groupe 
-		this.setTranslateY(b.getCoordonnee()[1]);
-		
-		ArrayList<double[]> positionGlobule = b.getGlobules_position();
-		ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
-		globules.clear();
-		for(int i = 0 ; i < positionGlobule.size(); i++)
-		{
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,2, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-	        globules.add(fond_blob);
-	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
-		}
-    }*/
+	
+	private void generateBoxBlur(){
+		if (tailleBlob > 100)
+			boxBlur = new BoxBlur(0.15 * tailleBlob, tailleBlob * 0.15, tailleBlob/200);
+		else
+			boxBlur = new BoxBlur(tailleBlob * 0.2, tailleBlob *0.2, tailleBlob/2);
+	}
+	
 	
 	public BlobForm(Blob b, double[] coo, int tailleBlob){
 		//blobList = new HashMap<Blob, BlobForm>();
 		this.tailleBlob = tailleBlob;
 		globules = new ArrayList<Circle>();
-		
+		generateBoxBlur();		
 		selection = new Rectangle(tailleBlob, tailleBlob);
 		selection.setFill(Color.TRANSPARENT);
 		selection.setStrokeType(StrokeType.CENTERED);
@@ -62,8 +50,10 @@ public class BlobForm extends Parent{
 		globules.clear();
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
+			
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-	        globules.add(fond_blob);
+			fond_blob.setEffect(boxBlur);
+			globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
 		}
     }
@@ -84,6 +74,7 @@ public class BlobForm extends Parent{
 	public BlobForm(Blob b, double[] coo, Color couleur, int tailleBlob){
 		this.tailleBlob = tailleBlob;
 		globules = new ArrayList<Circle>();
+		generateBoxBlur();
 		this.setTranslateX(coo[0]);// on positionne le groupe 
 		this.setTranslateY(coo[1]);
 		ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
@@ -91,7 +82,8 @@ public class BlobForm extends Parent{
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleur ); 
-	        globules.add(fond_blob);
+			fond_blob.setEffect(boxBlur);
+			globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
 		}
 		
@@ -118,7 +110,8 @@ public class BlobForm extends Parent{
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-	        globules.add(fond_blob);
+			fond_blob.setEffect(boxBlur);
+			globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}
@@ -137,7 +130,8 @@ public class BlobForm extends Parent{
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-	        globules.add(fond_blob);
+			fond_blob.setEffect(boxBlur);
+			globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}
@@ -158,7 +152,8 @@ public class BlobForm extends Parent{
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleur ); 
-	        globules.add(fond_blob);
+			fond_blob.setEffect(boxBlur);
+			globules.add(fond_blob);
 	        this.getChildren().add(fond_blob);//ajout du globule	
 		}
 	}
