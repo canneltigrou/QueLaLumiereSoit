@@ -223,8 +223,8 @@ public class Controller implements Initializable{
     		else
     			coo[0] -= 1;
     		
-    		
-    		
+    		if(!isValideInTi(coo))
+    			return;
     		moveBlob(blobToMove, coo);
     	}
     	else if (kcode.isLetterKey())
@@ -458,6 +458,17 @@ public class Controller implements Initializable{
 	 *  ******** 		METHODES DE POSITION_THREAD			************************ *
 	 *	**************************************************************************** */
 	
+	// indique si la coordonnée entrée en paramètre est valide, ie si elle n'est pas hors terrain.
+	// returne true if ok. 
+	//Ici il s'agit de Tr ou Ti : valide si compris dans un cercle de rayon RayonTerrain et de centre (RayonTerrain;RayonTerrain)
+	private boolean isValideInTi(double[] coo){
+		if ((coo[0] - treel.getRayonSalle())*(coo[0] - treel.getRayonSalle()) + (coo[1] - treel.getRayonSalle()) * (coo[1] - treel.getRayonSalle()) <= treel.getRayonSalle() * treel.getRayonSalle())
+			return true;
+		return false;
+	}
+		
+
+	
 	public void sortirBlob(Migrant b){
 		Blob tmp = b.getBlob();
 		double[] coo = new double[2];
@@ -472,8 +483,6 @@ public class Controller implements Initializable{
 		tmp.setCoordonnee(coo);
 		b.setBlob(tmp);
 		tAmas.t0_to_tr(b);
-		//blobHibernants.remove(b);
-		//blobActifs.add(b);
 		tSimuPosition.add_blob(b);
 	}
 	
@@ -484,8 +493,6 @@ public class Controller implements Initializable{
 			deleteSelection();
 		System.out.println("je suis le blob :" + b.getBlob().getCouleurLaPLusPresente().toString());
 		tAmas.tr_to_t0(b);
-		//blobHibernants.add(b);
-		//blobActifs.remove(b);
 		tSimuPosition.remove_blob(b);
 
 		

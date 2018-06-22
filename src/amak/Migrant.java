@@ -136,16 +136,26 @@ public class Migrant extends BlobAgent{
 	
 	@Override
     protected void onUpdateRender() {
+		
     	switch(currentAction){
     	case CREER :
-    		super.controller.add_blobImmaginaire(newFils);
-    		break;
+    		synchronized (this)
+            {
+    			super.controller.add_blobImmaginaire(newFils);
+            }
+			break;
     		
 		default:
 			if(isHome)
-    			super.controller.move_blobHibernant(this);
+				synchronized (this)
+		        {
+					super.controller.move_blobHibernant(this);
+		        }
     		else
-    			super.controller.move_blobMigrant(this);
+    			synchronized (this)
+    	        {
+    				super.controller.move_blobMigrant(this);
+    	        }
     		break;
     	}
 
