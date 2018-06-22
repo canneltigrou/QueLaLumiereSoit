@@ -41,24 +41,28 @@ public class TerrainForm extends Parent {
 	
 	
 	// param : the coordinates on meter. Returne the coordinates(pxl) in the shape.
-	private double[] metreToPxl(double[] coo){
+	public double[] metreToPxl(double[] coo){
 		double[] res = new double[2];
-		res[0] = coo[0]/rayonSalle * (rayonRepresentation - tailleBlob);
-		res[1] = coo[1]/rayonSalle * (rayonRepresentation - tailleBlob);
+		res[0] = coo[0]/rayonSalle * (rayonRepresentation - tailleBlob/2);
+		res[1] = coo[1]/rayonSalle * (rayonRepresentation - tailleBlob/2);
 		return res;
 	}
 	
 	// param : the coordinates on meter. Returne the coordinates(pxl) in the shape.
 		public double[] PxlTometre(double[] coo){
 			double[] res = new double[2];
-			res[0] = coo[0]/(rayonRepresentation - tailleBlob) * rayonSalle;
-			res[1] = coo[1]/(rayonRepresentation - tailleBlob) * rayonSalle;
+			res[0] = (coo[0])/(rayonRepresentation - tailleBlob/2) * rayonSalle;
+			res[1] = (coo[1])/(rayonRepresentation - tailleBlob/2) * rayonSalle;
 			return res;
 		}
 	
 
 	public void add_blob(Blob b) {
-
+		/*
+		BlobForm bf = new BlobForm(b, metreToPxl(b.getCoordonnee()), tailleBlob);
+		blobList.put(b, bf);
+		getChildren().add(bf);
+		*/
 		Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bf = new BlobForm(b, metreToPxl(b.getCoordonnee()), tailleBlob);
@@ -71,6 +75,10 @@ public class TerrainForm extends Parent {
 	}
 
 	public void remove_blob(Blob b) {
+		/*BlobForm bf = blobList.get(b);
+		getChildren().remove(bf);
+		blobList.remove(b);
+		*/
 		Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bf = blobList.get(b);
@@ -82,32 +90,79 @@ public class TerrainForm extends Parent {
 	}
 
 	public void move_blob(Blob b) {
-		Platform.runLater(new Runnable() {
+		/*
+		 BlobForm bf = blobList.get(b);
+		 assert bf!=null;
+		bf.changeBlob(b, metreToPxl(b.getCoordonnee()), tailleBlob);
+		
+		*/
+		 Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bf = blobList.get(b);
+				assert bf!=null;
 				bf.changeBlob(b, metreToPxl(b.getCoordonnee()), tailleBlob);
 			}
+
 		});
+		
 	}
 	
 	public void showSelection(Blob blob){
-		Platform.runLater(new Runnable() {
+		BlobForm bfToChange = blobList.get(blob);
+		bfToChange.showSelection();
+		
+		/* Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bfToChange = blobList.get(blob);
 				assert(bfToChange != null);
 				bfToChange.showSelection();
 			}
 		});
+		*/
 	}
 	
 	public void deleteSelection(Blob blob){
+		BlobForm bfToChange = blobList.get(blob);
+		bfToChange.deleteSelection();
+		/*
 		Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bfToChange = blobList.get(blob);
 				bfToChange.deleteSelection();
 			}
-		});
+		});*/
 	}
+	
+	public double getRayonSalle() {
+		return rayonSalle;
+	}
+
+
+	public void setRayonSalle(double rayonSalle) {
+		this.rayonSalle = rayonSalle;
+	}
+
+
+	public double getRayonRepresentation() {
+		return rayonRepresentation;
+	}
+
+
+	public void setRayonRepresentation(double rayonRepresentation) {
+		this.rayonRepresentation = rayonRepresentation;
+	}
+
+
+	public int getTailleBlob() {
+		return tailleBlob;
+	}
+
+
+	public void setTailleBlob(int tailleBlob) {
+		this.tailleBlob = tailleBlob;
+	}
+	
+	
 	
 }
 

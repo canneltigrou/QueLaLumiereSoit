@@ -126,7 +126,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 	
 	protected void majAspectAgent(){
-		System.out.println("Jai " + connaissance.size() + "Blobs connus");
 		// La forme s'acquiert a partir d'un nombre d'exp�rience atteint.
 		if (nbExperience >= nbExperiencesRequises)
 			changer_de_forme();
@@ -135,45 +134,30 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		blob.setPulsation(voisins.size());
 		
 		// la couleur s'acquiert si un voisin est present depuis un temps defini.
-		
-			Platform.runLater(new Runnable() {
-				public void run() {
-					Iterator it = connaissance.keySet().iterator();
-					while (it.hasNext()) 
-					{
-						BlobAgent blobConnu = (BlobAgent)it.next();
-						if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
-							changer_de_couleur_passif(blobConnu);
-							connaissance.put(blobConnu, 0);
-						}
-						if (!voisins.contains(blobConnu))
-							it.remove();
-					}
-				}
-			});
-		
-		
-		
+		Iterator<BlobAgent> it = connaissance.keySet().iterator();
+		while (it.hasNext()) 
+		{
+			BlobAgent blobConnu = (BlobAgent)it.next();
+			if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
+				changer_de_couleur_passif(blobConnu);
+				connaissance.put(blobConnu, 0);
+			}
+			if (!voisins.contains(blobConnu))
+				it.remove();
+		}
 		// ITERATION
 		if (actionPassive == (Action.CHANGER_COULEUR) || actionPassive == (Action.CHANGER_FORME ))
 			nbExperience++;
 		
 		// maj des connaissances:
 		
-			Platform.runLater(new Runnable() {
-				public void run() {
-					for(int i = 0; i < voisins.size(); i++){
-					if(connaissance.containsKey(voisins.get(i))){
-						connaissance.put(voisins.get(i), connaissance.get(voisins.get(i)) + 1);
-					}
-					else 
-						connaissance.put(voisins.get(i), 0);
-				}
-				}
-			});
-			
-			
-			
+		for(int i = 0; i < voisins.size(); i++){
+			if(connaissance.containsKey(voisins.get(i))){
+				connaissance.put(voisins.get(i), connaissance.get(voisins.get(i)) + 1);
+			}
+			else 
+				connaissance.put(voisins.get(i), 0);
+		}
 	}
 	
 	

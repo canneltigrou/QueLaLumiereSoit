@@ -5,11 +5,8 @@ import java.util.Random;
 
 
 public class Blob {
-	//private String id;
 	private int pulsation;
-	//private Forme forme;
 	private double[] coordonnee;
-	// liste des voisins Reels pour TR, utilisé pour l'apparence du blob, mais à voir le taux de rafraichissement
 	
 	private boolean real;
 	
@@ -78,6 +75,26 @@ public class Blob {
 		res[1] =  coordonnee[1] + (sign * Math.sqrt(pas * pas + (res[0] - coordonnee[0]) * (res[0] - coordonnee[0]) ));
 		return res;
 	}*/
+	
+	// genere des coordonnées cartésiennes aleatoires dans un cercle de diametre D et de centre D/2;D/2
+		public double[] genererCoordonneeAleaDansCercle(double D){
+			boolean isOk = false;
+			double[] res = new double[2];
+			double xcor = 0;
+			double ycor = 0;
+			
+			while(!isOk)
+			{
+				xcor = Math.random() * ( D );
+				ycor = Math.random() * ( D );
+				
+				if ((xcor - D/2)*(xcor - D/2) + (ycor - D/2)*(ycor - D/2) <= D * D / 4)
+					isOk = true;
+			}
+			res[0] = xcor;
+			res[1] = ycor;
+			return res;
+		}
 	
 	
 	

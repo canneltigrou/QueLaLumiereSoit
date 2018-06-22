@@ -20,13 +20,22 @@ public class Immaginaire extends BlobAgent{
     protected void onUpdateRender() {
     	switch(currentAction){
     	case SE_DEPLACER :
-    		controller.move_blobImmaginaire(this);
+    		synchronized (this)
+            {
+        		controller.move_blobImmaginaire(this);
+            }
     		break;
     	case CREER :
-    		controller.add_blobImmaginaire(newFils);
+    		synchronized (this)
+            {
+    			controller.add_blobImmaginaire(newFils);
+            }
     		break;
     	case SE_SUICIDER :
-			controller.remove_blobImmaginaire(this);
+    		synchronized (this)
+            {
+    			controller.remove_blobImmaginaire(this);
+            }
 			break;
 		default:
 			break;
@@ -34,6 +43,15 @@ public class Immaginaire extends BlobAgent{
 
     }
 	
+	@Override
+	protected void action_se_deplacer(){
+		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, Math.random() * 0.7, pastDirection);
+		blob.setCoordonnee(tmp);
+		currentAction = Action.SE_DEPLACER;
+		
+		directGeneral[0] = 0.6 * pastDirection[0] + 0.4 * directGeneral[0];
+		directGeneral[1] = 0.6 * pastDirection[1] + 0.4 * directGeneral[1];
+	}
 	
 	
 	@Override
