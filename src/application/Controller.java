@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.jfree.chart.block.BlockBorder;
+
 import amak.AmasThread;
 import amak.BlobAgent;
 import amak.Immaginaire;
@@ -23,6 +25,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import positionBluetooth.PositionSimulationThread;
 import javafx.fxml.Initializable;
 
 public class Controller implements Initializable{
@@ -31,6 +34,7 @@ public class Controller implements Initializable{
 	private ArrayList<Migrant> blobActifs;
 	private Migrant blobToMove;
 	private double[] valeurCurseurs = new double[4];
+	private PositionSimulationThread tSimuPosition;
 	
 	
     @FXML
@@ -82,6 +86,9 @@ public class Controller implements Initializable{
     
     @FXML
     private Pane paneAppercuBlob;
+    
+    @FXML
+    private Button buttonMouvementAleatoire;
     
     
 
@@ -152,6 +159,17 @@ public class Controller implements Initializable{
     }
 	
     @FXML
+    void onClicButtonMouvementAleatoire(MouseEvent event) {
+
+    	if(!tSimuPosition.is_interrupt)
+    		tSimuPosition.interruption();
+    		//tSimuPosition = null;
+    	else
+    		tSimuPosition.demarrer();
+    	   	
+    }
+    
+    @FXML
     void onClicButtonModifierBlob(MouseEvent event) {
     	if(labelAide.isVisible())
     	{
@@ -165,6 +183,8 @@ public class Controller implements Initializable{
     	}
     	   	
     }
+    
+    
     
     
     @FXML
@@ -203,12 +223,15 @@ public class Controller implements Initializable{
     		else
     			coo[0] -= 1;
     		
+    		if(!isValideInTi(coo))
+    			return;
     		moveBlob(blobToMove, coo);
     	}
     	else if (kcode.isLetterKey())
     	{
+    		Migrant tmp = blobToMove;
     		deleteSelection();
-    		rentrerBlob(blobToMove);
+    		rentrerBlob(tmp);
     	}
     	else if (kcode.equals(KeyCode.ESCAPE))
     		deleteSelection();
@@ -294,6 +317,9 @@ public class Controller implements Initializable{
 		tAmas.start();
 		 
 		buttonOKNbBlobs.setDisable(true);
+		
+		tSimuPosition = new PositionSimulationThread(tAmas, blobActifs);
+		tSimuPosition.start();
     }
     
     
@@ -325,11 +351,14 @@ public class Controller implements Initializable{
 		sStabilitePosition.setValue(75);
 		sRadiusVoisins.setValue(7);
 		blobActifs = new ArrayList<>();
+		blobHibernants = new ArrayList<>();
 		
 		valeurCurseurs[0] = Sdiso.getValue();
 		valeurCurseurs[1] = sRadiusVoisins.getValue();
 		valeurCurseurs[2] = sStabilitePosition.getValue();
 		valeurCurseurs[3] = sHeterogeneite.getValue();
+		
+		
 		
 	}
 	
@@ -340,10 +369,12 @@ public class Controller implements Initializable{
 	public void add_blobMigrant(Migrant b){
 		tideal.add_blob(b.getBlob());
 		treel.add_blob(b.getBlob());
+		blobActifs.add(b);
 	}
 	
 	public void add_blobHibernant(Migrant b){
 		toriginel.add_blob(b.getBlob(), false);
+		blobHibernants.add(b);
 	}
 	
 	public void remove_blobImmaginaire(Immaginaire b){
@@ -351,16 +382,18 @@ public class Controller implements Initializable{
 	}
 	
 	public void remove_blobMigrant(Migrant b){
-		tideal.remove_blob(b.getBlob());
-		treel.remove_blob(b.getBlob());
 		if (b == blobToMove)
 			deleteSelection();
+		tideal.remove_blob(b.getBlob());
+		treel.remove_blob(b.getBlob());
+		blobActifs.remove(b);
+
 	}
 	
-	
+	// ce remove est appelé par Amak seulement.
 	public void remove_blobHibernant(BlobAgent b){
 		toriginel.remove_blob(b.getBlob());
-
+		blobHibernants.remove(b);
 	}
 	
 	public void move_blobImmaginaire(Immaginaire b){
@@ -406,7 +439,7 @@ public class Controller implements Initializable{
 	private void showSelection(){
 		treel.showSelection(blobToMove.getBlob());
 		appercuBlob.add_blob(blobToMove);
-		
+		tSimuPosition.remove_blob(blobToMove);
 	}
 	
 	private void deleteSelection(){
@@ -414,6 +447,7 @@ public class Controller implements Initializable{
 		{
 			treel.deleteSelection(blobToMove.getBlob());
 			appercuBlob.remove_blob(blobToMove);
+			tSimuPosition.add_blob(blobToMove);
 		}
 		
 		blobToMove = null;
@@ -423,6 +457,17 @@ public class Controller implements Initializable{
 	/* ***************************************************************************** *
 	 *  ******** 		METHODES DE POSITION_THREAD			************************ *
 	 *	**************************************************************************** */
+	
+	// indique si la coordonnée entrée en paramètre est valide, ie si elle n'est pas hors terrain.
+	// returne true if ok. 
+	//Ici il s'agit de Tr ou Ti : valide si compris dans un cercle de rayon RayonTerrain et de centre (RayonTerrain;RayonTerrain)
+	private boolean isValideInTi(double[] coo){
+		if ((coo[0] - treel.getRayonSalle())*(coo[0] - treel.getRayonSalle()) + (coo[1] - treel.getRayonSalle()) * (coo[1] - treel.getRayonSalle()) <= treel.getRayonSalle() * treel.getRayonSalle())
+			return true;
+		return false;
+	}
+		
+
 	
 	public void sortirBlob(Migrant b){
 		Blob tmp = b.getBlob();
@@ -438,17 +483,18 @@ public class Controller implements Initializable{
 		tmp.setCoordonnee(coo);
 		b.setBlob(tmp);
 		tAmas.t0_to_tr(b);
-		blobHibernants.remove(b);
-		blobActifs.add(b);	
+		tSimuPosition.add_blob(b);
 	}
 	
 	
 	public void rentrerBlob(Migrant b){
+		System.out.println("je suis le 1 :" + b.getBlob().getCouleurLaPLusPresente().toString());
 		if (b == blobToMove)
 			deleteSelection();
+		System.out.println("je suis le blob :" + b.getBlob().getCouleurLaPLusPresente().toString());
 		tAmas.tr_to_t0(b);
-		blobHibernants.add(b);
-		blobActifs.remove(b);
+		tSimuPosition.remove_blob(b);
+
 		
 	}
 	

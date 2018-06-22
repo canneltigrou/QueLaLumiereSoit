@@ -127,6 +127,7 @@ public class BlobForm extends Parent{
         ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
 		ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
 		globules.clear();
+		
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 

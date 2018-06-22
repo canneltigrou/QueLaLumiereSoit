@@ -13,7 +13,7 @@ public class MyAMAS extends Amas<MyEnvironment>{
 	
 	private Controller controller;
 	
-	// genere des coordonnées cartésiennes aleatoires dans un cercle de diametre 100
+	// genere des coordonnées cartésiennes aleatoires dans un cercle de diametre 100 et de centre 50;50
 	private double[] genererCoordonneeCercle(){
 		boolean isOk = false;
 		double[] res = new double[2];
