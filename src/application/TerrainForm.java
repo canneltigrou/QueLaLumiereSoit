@@ -85,8 +85,10 @@ public class TerrainForm extends Parent {
 		Platform.runLater(new Runnable() {
 			public void run() {
 				BlobForm bf = blobList.get(b);
+				assert bf!=null;
 				bf.changeBlob(b, metreToPxl(b.getCoordonnee()), tailleBlob);
 			}
+
 		});
 	}
 	

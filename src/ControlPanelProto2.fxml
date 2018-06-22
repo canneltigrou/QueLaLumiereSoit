@@ -48,7 +48,7 @@
                                                 <Font size="9.0" />
                                              </font>
                                           </Label>
-                                          <Button fx:id="buttonMouvementAleatoire" defaultButton="true" layoutX="270.0" layoutY="289.0" mnemonicParsing="false" onMouseReleased="#onClicButtonMouvementAleatoire" prefHeight="61.0" prefWidth="130.0" text="Mouvement&#10;Aléatoire" textFill="#151fdd">
+                                          <Button fx:id="buttonMouvementAleatoire" defaultButton="true" layoutX="266.0" layoutY="311.0" mnemonicParsing="false" onMouseReleased="#onClicButtonMouvementAleatoire" prefHeight="34.0" prefWidth="131.0" text="Mouvement" textFill="#151fdd">
                                              <font>
                                                 <Font size="13.0" />
                                              </font></Button>
@@ -164,7 +164,7 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <TabPane blendMode="SOFT_LIGHT" layoutX="2.0" layoutY="-6.0" pickOnBounds="false" prefHeight="350.0" prefWidth="638.0" tabClosingPolicy="UNAVAILABLE">
+                              <TabPane blendMode="SOFT_LIGHT" layoutX="3.0" layoutY="-5.0" pickOnBounds="false" prefHeight="350.0" prefWidth="638.0" tabClosingPolicy="UNAVAILABLE">
                                 <tabs>
                                   <Tab text="apperçu du BLob">
                                     <content>

@@ -153,16 +153,22 @@ public class Migrant extends BlobAgent{
 	
 	public void t0_to_tr(){
 		isHome = false;
+		blob.setCoordonnee(blob.genererCoordonneeAleaDansCercle(getAmas().getEnvironment().rayonTerrain * 2));
 		getAmas().getEnvironment().t0_to_tr(this);
 		controller.add_blobMigrant(this);
 		controller.remove_blobHibernant(this);
 	}
 
 	public void tr_to_t0(){
+		System.out.println("1");
 		isHome = true;
+		blob.setCoordonnee(blob.genererCoordonneeAleaDansCercle(100));
 		getAmas().getEnvironment().tr_to_t0(this);
+		System.out.println("2");
 		controller.add_blobHibernant(this);
 		controller.remove_blobMigrant(this);
+		System.out.println("3");
+
 	}
 	
 	

@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import amak.AmasThread;
 import amak.Migrant;
+import javafx.application.Platform;
 
 public class PositionSimulationThread extends Thread{
 
@@ -18,8 +19,8 @@ public class PositionSimulationThread extends Thread{
 		super();
 		
 		this.tAmas = tAmas;
-		blobActifs = migrants;
-		
+		blobActifs = new ArrayList<>();
+		blobActifs = (ArrayList) migrants.clone();		
 	}
 	
 	public void moveBlob(Migrant b, double[] coo){
@@ -43,8 +44,8 @@ public class PositionSimulationThread extends Thread{
     }
 	
 	//@Override
-	public void demarrer(ArrayList<Migrant> migrants) {
-		blobActifs = migrants;
+	public void demarrer() {
+		
 		timer = new Timer();
 		
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -78,8 +79,21 @@ public class PositionSimulationThread extends Thread{
 	
 	
 
+	public void add_blob(Migrant blob) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				blobActifs.add(blob);
+			}
+		});	
+	}
 	
-	
+	public void remove_blob(Migrant blob) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				blobActifs.remove(blob);
+			}
+		});	
+	}
 	
 	
 	
