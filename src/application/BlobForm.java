@@ -5,7 +5,6 @@ import business.Blob;
 import business.Couleur;
 import javafx.scene.Parent;
 import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;

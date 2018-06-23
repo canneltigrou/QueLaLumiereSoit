@@ -1,7 +1,6 @@
 package application;
 
 import amak.BlobAgent;
-import business.Blob;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 

@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import application.BlobForm;
 import application.Controller;
 import business.Blob;
 import business.Couleur;
 import business.Critere;
-import business.CriticalityFunction;
+//import business.CriticalityFunction;
 import fr.irit.smac.amak.Agent;
-import javafx.application.Platform;
 
 
 enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER, CHANGER_COULEUR, CHANGER_FORME, MURIR };
@@ -39,7 +37,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected double nbChangements;
 	protected double moyenneChangements;
 	
-	static private CriticalityFunction fctCriticalityStabiliteEtat = new CriticalityFunction(new Double(-10), new Double(10), new Double(2), new Double(2));
+	//static private CriticalityFunction fctCriticalityStabiliteEtat = new CriticalityFunction(new Double(-10), new Double(10), new Double(2), new Double(2));
 
 	protected Controller controller;
 	
@@ -290,7 +288,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		return(0);
 	}
 	
-	protected double computeCriticalityStabiliteEtat(){
+	/*protected double computeCriticalityStabiliteEtat(){
 		// calcule de la moyenne des changements effectués alentour:
 		double moyenne = 0;
 		for (int i = 0; i< voisins.size(); i++){
@@ -298,11 +296,11 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		}
 		moyenne /= voisins.size();
 		
-		double res = fctCriticalityStabiliteEtat.compute(moyenneChangements - moyenne);
+		//double res = fctCriticalityStabiliteEtat.compute(moyenneChangements - moyenne);
 		moyenneChangements = moyenne;
 		return(res);
 			
-	}
+	}*/
 	
     protected double computeCriticalityInTideal() {
 		criticite[Critere.Isolement.getValue()]= computeCriticalityIsolement();

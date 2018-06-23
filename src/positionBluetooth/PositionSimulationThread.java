@@ -15,12 +15,13 @@ public class PositionSimulationThread extends Thread{
 	private Timer timer;
 	public boolean is_interrupt;
 	
+	@SuppressWarnings("unchecked")
 	public PositionSimulationThread(AmasThread tAmas, ArrayList<Migrant> migrants){
 		super();
 		
 		this.tAmas = tAmas;
 		blobActifs = new ArrayList<>();
-		blobActifs = (ArrayList) migrants.clone();		
+		blobActifs = (ArrayList<Migrant>) migrants.clone();		
 	}
 	
 	public void moveBlob(Migrant b, double[] coo){

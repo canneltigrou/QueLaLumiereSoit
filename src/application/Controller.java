@@ -4,9 +4,6 @@ package application;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import org.jfree.chart.block.BlockBorder;
-
 import amak.AmasThread;
 import amak.BlobAgent;
 import amak.Immaginaire;
