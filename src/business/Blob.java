@@ -285,6 +285,12 @@ public class Blob {
 		
 		// j'ai à ce stade, créé un blob, mais non centré.
 		// centrons-le : (translation des deux axes par (Max - Min)/2
+		centrerBlob(res);
+		
+		return res;
+	}
+
+	private void centrerBlob(ArrayList<double[]> res) {
 		double[] minMaxcor = minMaxXYcor(res);
 		// nouveau centre = min + (max - min)/2
 		double xNouveauCentre = minMaxcor[0] + (minMaxcor[1] - minMaxcor[0]) /2;
@@ -296,7 +302,92 @@ public class Blob {
 			res.get(i)[1] += 50 - yNouveauCentre;
 		}
 		
-		return res;
+	}
+	
+	
+	// retourne l'indice du plus grand nombre dans le tableau en parametre
+	private int argMax(Integer[] valeurs) {
+		int valMax = valeurs[0];
+		int indiceMax = 0;
+		for (int i = 1; i < valeurs.length; i++)
+			if(valMax < valeurs[i])
+			{
+				valMax = valeurs[i];
+				indiceMax = i;
+			}
+		
+		return indiceMax;		
+	}
+	
+	
+	
+	public void changeForme(Integer[] positionVoisins) {
+		
+		ArrayList<double[]> res = new ArrayList<>();
+		
+		double[] tmp = new double[2];
+		tmp[0] = 50;
+		tmp[1] = 50;
+		res.add(tmp.clone());
+		
+		Random rn = new Random();
+		int nbGlobules = rn.nextInt(4) + 1;
+		
+		int pos;
+		int tmp2;
+		ArrayList<double[]> positionSuivante = new ArrayList<>();
+		
+		for (int i = 1; i < nbGlobules ; i++)
+		{
+			tmp = res.get(i - 1).clone();
+			pos = argMax(positionVoisins);
+			
+			switch(pos) {
+				case 0: // il me faut me diriger vers le nord. sinon au sud.
+					tmp[1]-= 25;
+					if (contenir(res, tmp))
+						tmp[1]+=50;
+					break;
+				case 1 : // il me faut me dirigier vers l'est, sinon l'west
+					tmp[0]+= 25;
+					if (contenir(res, tmp))
+						tmp[0]-=50;
+					break; 
+				case 2 : // il me faut me diriger vers le sud, sinon le nord
+					tmp[1]+= 25;
+					if (contenir(res, tmp))
+						tmp[1]-=50;
+					break; 
+				case 3 : // il me faut me diriger vers l'ouest, sinon l'est
+					tmp[0]-= 25;
+					if (contenir(res, tmp))
+						tmp[0]+=50;
+					break;
+				default :
+					break;
+			}
+			res.add(tmp);
+			
+			tmp2 = positionVoisins[pos];
+			positionVoisins[pos] = 0;
+			positionVoisins[pos] -= tmp2 - positionVoisins[argMax(positionVoisins)];
+			
+		}
+		
+		
+		
+		// j'ai à ce stade, créé un blob, mais non centré.
+		// centrons-le : (translation des deux axes par (Max - Min)/2
+		centrerBlob(res);
+		
+		globules_position = res;
+	
+		// remettre les couleurs 
+		Couleur couleur = globules_couleurs.get(0);
+		globules_couleurs.clear();
+		for (int i = 0; i < globules_position.size(); i++){ //TODO : il ne dois pas perdre toutes ses couleurs !
+			globules_couleurs.add(couleur);
+		}
 	}
 	
 	
