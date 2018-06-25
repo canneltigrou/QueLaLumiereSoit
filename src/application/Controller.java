@@ -12,21 +12,31 @@ import business.Blob;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import positionBluetooth.PositionSimulationThread;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 public class Controller implements Initializable{
 	
+	private boolean experience;
 	private ArrayList<Migrant> blobHibernants;
 	private ArrayList<Migrant> blobActifs;
 	private Migrant blobToMove;
@@ -89,9 +99,11 @@ public class Controller implements Initializable{
     
     
 
-    private TerrainForm tideal;  
-    private TerrainForm treel;    
+    private TerrainForm tideal;
+    private TerrainForm tideal_exp;
+    private TerrainForm treel;
     private ToForm toriginel;
+    private ToForm toriginel_exp;
     private AppercuBlob appercuBlob;
     
     private AmasThread tAmas;
@@ -355,33 +367,64 @@ public class Controller implements Initializable{
 		valeurCurseurs[2] = sStabilitePosition.getValue();
 		valeurCurseurs[3] = sHeterogeneite.getValue();
 		
+	}
+	
+	public void initTO()
+	{	
+		Stage towindow = new Stage();
 		
+		toriginel_exp = new ToForm();
+		towindow.setTitle("Territoire Originel");
+		towindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon.png")));
+		towindow.setScene(new Scene(toriginel_exp));
+		towindow.show();
+	}
+	
+	public void initTI()
+	{
+		Stage tiwindow = new Stage();
 		
+		tideal_exp = new TerrainForm();
+		tiwindow.setTitle("Territoire Idéal");
+		tiwindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon.png")));
+		tiwindow.setScene(new Scene(tideal_exp));
+		tiwindow.show();
 	}
 	
 	public void add_blobImmaginaire(Immaginaire b){
 		tideal.add_blob(b.getBlob());
+		if (experience)
+			tideal_exp.add_blob(b.getBlob());
+
 	}
 	
 	public void add_blobMigrant(Migrant b){
 		tideal.add_blob(b.getBlob());
+		if (experience)
+			tideal_exp.add_blob(b.getBlob());
 		treel.add_blob(b.getBlob());
 		blobActifs.add(b);
 	}
 	
 	public void add_blobHibernant(Migrant b){
 		toriginel.add_blob(b.getBlob(), false);
+		if (experience)
+			toriginel_exp.add_blob(b.getBlob(), false);
 		blobHibernants.add(b);
 	}
 	
 	public void remove_blobImmaginaire(Immaginaire b){
 		tideal.remove_blob(b.getBlob());
+		if (experience)
+			tideal_exp.remove_blob(b.getBlob());
 	}
 	
 	public void remove_blobMigrant(Migrant b){
 		if (b == blobToMove)
 			deleteSelection();
 		tideal.remove_blob(b.getBlob());
+		if (experience)
+			tideal_exp.remove_blob(b.getBlob());
 		treel.remove_blob(b.getBlob());
 		blobActifs.remove(b);
 
@@ -390,15 +433,21 @@ public class Controller implements Initializable{
 	// ce remove est appelé par Amak seulement.
 	public void remove_blobHibernant(BlobAgent b){
 		toriginel.remove_blob(b.getBlob());
+		if (experience)
+			toriginel_exp.remove_blob(b.getBlob());
 		blobHibernants.remove(b);
 	}
 	
 	public void move_blobImmaginaire(Immaginaire b){
 		tideal.move_blob(b.getBlob());
+		if (experience)
+			tideal_exp.move_blob(b.getBlob());
 	}
 	
 	public void move_blobMigrant(Migrant b){
 		tideal.move_blob(b.getBlob());
+		if (experience)
+			tideal_exp.move_blob(b.getBlob());
 		treel.move_blob(b.getBlob());
 		if (b == blobToMove)
 			appercuBlob.move_blob(b);
@@ -406,6 +455,8 @@ public class Controller implements Initializable{
 	
 	public void move_blobHibernant(Migrant b){
 		toriginel.move_blob(b.getBlob(), b.isRiped());
+		if (experience)
+			toriginel_exp.move_blob(b.getBlob(), b.isRiped());
 	}
 	
 	public int getIsolement(){
@@ -427,7 +478,10 @@ public class Controller implements Initializable{
 		return tAmas;
 	}
 
-
+	public void setexperience(boolean experience) {
+		this.experience = experience;
+	}
+	
 	public void settAmas(AmasThread tAmas) {
 		this.tAmas = tAmas;
 	}
