@@ -162,15 +162,16 @@ public class Blob {
 	}
 	
 	// permet de changer de forme en choisissant une forme aléatoire.
+	/*
 	public void changeForme() {
 		
 		 generateFormRandom();
+		 Couleur couleur = globules_couleurs.get(0);
+		 globules_couleurs.clear();
 		 for (int i = 0; i < globules_position.size(); i++){ //TODO : il ne dois pas perdre toutes ses couleurs !
-			Couleur couleur = globules_couleurs.get(0);
-			globules_couleurs.clear();
 			globules_couleurs.add(couleur);
 		}
-	}
+	}*/
 	
 	public Couleur getCouleurLaPLusPresente(){
 		int indice = 0;
@@ -335,7 +336,6 @@ public class Blob {
 		
 		int pos;
 		int tmp2;
-		ArrayList<double[]> positionSuivante = new ArrayList<>();
 		
 		for (int i = 1; i < nbGlobules ; i++)
 		{
@@ -381,12 +381,17 @@ public class Blob {
 		centrerBlob(res);
 		
 		globules_position = res;
-	
+		Couleur couleur;
 		// remettre les couleurs 
-		Couleur couleur = globules_couleurs.get(0);
-		globules_couleurs.clear();
-		for (int i = 0; i < globules_position.size(); i++){ //TODO : il ne dois pas perdre toutes ses couleurs !
-			globules_couleurs.add(couleur);
+		if(globules_position.size() >= globules_couleurs.size()) {
+			couleur = getCouleurLaPLusPresente();
+			for(int i = globules_couleurs.size() ; i < globules_position.size() ; i++ )
+				globules_couleurs.add(couleur);
+		}
+		else
+		{
+			for(int i = globules_couleurs.size(); i > globules_position.size(); i--)
+				globules_couleurs.remove(i-1);
 		}
 	}
 	
