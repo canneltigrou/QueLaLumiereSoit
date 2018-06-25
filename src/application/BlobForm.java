@@ -1,11 +1,11 @@
 package application;
 
 import java.util.ArrayList;
+
 import business.Blob;
 import business.Couleur;
 import javafx.scene.Parent;
 import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -127,7 +127,7 @@ public class BlobForm extends Parent{
         ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
 		ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
 		globules.clear();
-		
+				
 		for(int i = 0 ; i < positionGlobule.size(); i++)
 		{
 			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 

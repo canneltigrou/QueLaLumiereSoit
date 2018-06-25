@@ -8,7 +8,7 @@ import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
+//import javafx.scene.shape.Rectangle;
 
 
 // l'ensemble des coordonnées des blobs seront données en poucentage pour les absisses et ordonnées.

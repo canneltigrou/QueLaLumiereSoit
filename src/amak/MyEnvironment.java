@@ -19,7 +19,7 @@ public class MyEnvironment extends Environment {
 	//private double tauxMurissemnt;
 	public double rayonTerrain = 12.5; // exprimé en metres
 	//private CriticalityFunction fctCriticalityStabiliteEtat;
-	private int nbInitialBlob;
+	//private int nbInitialBlob;
 	
 	/* communication avec l'interface graphique */
 	private Controller controller;

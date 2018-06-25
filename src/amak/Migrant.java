@@ -11,7 +11,7 @@ public class Migrant extends BlobAgent{
 	private boolean isRiped;
 	private int cptRiped;
 	//private int cpt_hibernation;
-	private int nbRipedIdeal = 1;
+	//private int nbRipedIdeal = 1;
 	private double tauxMurissement = 5;
 	
 	
@@ -38,7 +38,7 @@ public class Migrant extends BlobAgent{
 	}
 	
 	
-	
+	/*
 	private double computeCriticalityMurissement(){
 		// je compte le nombre de voisins murs autour de moi.
 		double cpt = 0;
@@ -64,7 +64,7 @@ public class Migrant extends BlobAgent{
 		
 		return(getAmas().getEnvironment().getIsolement() - voisins.size());
 	}
-	
+	*/
 	
 	
 	private void action_murir(){
@@ -182,13 +182,13 @@ public class Migrant extends BlobAgent{
 	}
 	
 	
-	private double computeCriticalityInTo(){
+	/*private double computeCriticalityInTo(){
 		criticite[Critere.Murissement.getValue()] =	computeCriticalityMurissement();
 		criticite[Critere.Isolement.getValue()] = computeCriticalityIsolementTo();
 		criticite[Critere.Stabilite_position.getValue()] = computeCriticalityPositionTo();
 
 		return criticite[Critere.Murissement.getValue()]; // TODO
-	}
+	}*/
 	
 	@Override
     protected double computeCriticality() {

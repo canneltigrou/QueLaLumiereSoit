@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import application.BlobForm;
 import application.Controller;
 import business.Blob;
 import business.Couleur;
 import business.Critere;
-import business.CriticalityFunction;
+//import business.CriticalityFunction;
 import fr.irit.smac.amak.Agent;
-import javafx.application.Platform;
 
 
 enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER, CHANGER_COULEUR, CHANGER_FORME, MURIR };
@@ -38,15 +36,12 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected double degreChangement;
 	protected double nbChangements;
 	protected double moyenneChangements;
-	
-	static private CriticalityFunction fctCriticalityStabiliteEtat = new CriticalityFunction(new Double(-10), new Double(10), new Double(2), new Double(2));
-
 	protected Controller controller;
 	
 	// lie aux decisions 'passives' : en fonction de l'etat du voisinage
-	private int nbExperience; // le nombre d'expï¿½riences coopï¿½ratives. Agit sur la forme
+	private int nbExperience; // le nombre d'experiences cooperatives. Agit sur la forme
 	private HashMap<BlobAgent, Integer> connaissance; // repertorie le temps passe avec un agent
-	private int nbExperiencesRequises = 3;
+	private int nbExperiencesRequises = 7;
 	private int tpsConnaissanceRequise = 2;
 	
 	@Override
@@ -63,6 +58,8 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		directGeneral[0] = 0;
 		directGeneral[1] = 0;
 		degreChangement = 0;
+		actionPassive = Action.SE_DEPLACER;
+		currentAction = Action.SE_DEPLACER;
 		super.onInitialization();
 	}
 	
@@ -113,15 +110,48 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			}
 		}
 
-		// on modifie la couleur de ce globule en la couleur la plus prï¿½sente de notre voisin
+		// on modifie la couleur de ce globule en la couleur la plus presente de notre voisin
 		listeMesCouleurs.set(indiceMin, voisin.blob.getCouleurLaPLusPresente());
 		blob.setGlobules_couleurs(listeMesCouleurs);
 		nbChangements++;
 	}
+	
+	
+	// determine le nombre de blobs dans les 4 zones respectivement Nord(N) - Est(E) - Sud(S) - Ouest(W)
+	private Integer[] determinerPositionVoisins() {
+		Integer[] res = new Integer[4];
+		// Nous pouvons définir 2 droites (considérons notre blob (x;y) et le voisin (X;Y) ):
+		// (d1) separant W-N de S-W :  Y = X + (y-x)
+		// (d2) separant N-E de W-S :  Y = -X + (y+x)
 		
-	// Le changement de forme se fait en choisissant une forme aleatoire.
+		for(int i = 0; i<4; i++) res[i] = Integer.valueOf(0);
+		
+		double ordonnee1 = blob.getCoordonnee()[1] - blob.getCoordonnee()[0]; // ordonnee1 = (y-x)
+		double ordonnee2 = blob.getCoordonnee()[1]  + blob.getCoordonnee()[0]; // ordonnee2 = (y+x)
+		
+		double[] coo;
+		for(BlobAgent voisin : voisins)
+		{
+			coo = voisin.getBlob().getCoordonnee();
+			if(coo[1] > coo[0] + ordonnee1)
+				if(coo[1] > -coo[0] + ordonnee2)
+					res[0]++; //appartient à la zone Nord
+				else
+					res[3]++; // appartient à la zone West
+			else
+				if(coo[1] < -coo[0] + ordonnee2)
+					res[2]++;  // appartient à la zone Sud
+				else
+					res[1]++;	//appartient à la zone Est			
+		}
+		return res;
+	}
+	
+	
+	// Le changement de forme se fait en fonction de l'emplacement de voisins
 	protected void changer_de_forme(){
-		blob.changeForme();
+		System.out.println("Je change de formes");
+		blob.changeForme(determinerPositionVoisins());
 		nbExperience = 0;
 	}
 	
@@ -146,8 +176,10 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 				it.remove();
 		}
 		// ITERATION
-		if (actionPassive == (Action.CHANGER_COULEUR) || actionPassive == (Action.CHANGER_FORME ))
+		//if (actionPassive.equals(Action.CHANGER_COULEUR) || currentAction.equals(Action.CHANGER_COULEUR))
+		{
 			nbExperience++;
+		}
 		
 		// maj des connaissances:
 		
@@ -290,7 +322,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		return(0);
 	}
 	
-	protected double computeCriticalityStabiliteEtat(){
+	/*protected double computeCriticalityStabiliteEtat(){
 		// calcule de la moyenne des changements effectués alentour:
 		double moyenne = 0;
 		for (int i = 0; i< voisins.size(); i++){
@@ -298,11 +330,11 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		}
 		moyenne /= voisins.size();
 		
-		double res = fctCriticalityStabiliteEtat.compute(moyenneChangements - moyenne);
+		//double res = fctCriticalityStabiliteEtat.compute(moyenneChangements - moyenne);
 		moyenneChangements = moyenne;
 		return(res);
 			
-	}
+	}*/
 	
     protected double computeCriticalityInTideal() {
 		criticite[Critere.Isolement.getValue()]= computeCriticalityIsolement();
