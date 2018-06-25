@@ -38,6 +38,11 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected double moyenneChangements;
 	protected Controller controller;
 	
+	@Override
+	protected void onAgentCycleEnd() {
+		// TODO Auto-generated method stub
+	}
+	
 	// lie aux decisions 'passives' : en fonction de l'etat du voisinage
 	private int nbExperience; // le nombre d'experiences cooperatives. Agit sur la forme
 	private HashMap<BlobAgent, Integer> connaissance; // repertorie le temps passe avec un agent
@@ -120,7 +125,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	// determine le nombre de blobs dans les 4 zones respectivement Nord(N) - Est(E) - Sud(S) - Ouest(W)
 	private Integer[] determinerPositionVoisins() {
 		Integer[] res = new Integer[4];
-		// Nous pouvons définir 2 droites (considérons notre blob (x;y) et le voisin (X;Y) ):
+		// Nous pouvons dï¿½finir 2 droites (considï¿½rons notre blob (x;y) et le voisin (X;Y) ):
 		// (d1) separant W-N de S-W :  Y = X + (y-x)
 		// (d2) separant N-E de W-S :  Y = -X + (y+x)
 		
@@ -135,14 +140,14 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			coo = voisin.getBlob().getCoordonnee();
 			if(coo[1] > coo[0] + ordonnee1)
 				if(coo[1] > -coo[0] + ordonnee2)
-					res[0]++; //appartient à la zone Nord
+					res[0]++; //appartient ï¿½ la zone Nord
 				else
-					res[3]++; // appartient à la zone West
+					res[3]++; // appartient ï¿½ la zone West
 			else
 				if(coo[1] < -coo[0] + ordonnee2)
-					res[2]++;  // appartient à la zone Sud
+					res[2]++;  // appartient ï¿½ la zone Sud
 				else
-					res[1]++;	//appartient à la zone Est			
+					res[1]++;	//appartient ï¿½ la zone Est			
 		}
 		return res;
 	}
@@ -318,12 +323,12 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		if(nbBougent < nbOptimal)
 			return(nbOptimal - nbBougent); 
 
-		// le problème, si trop de blobs bougent autour, je ne veux pas lever la criticité, afin d'espérer agir pour une autre criticité.
+		// le problï¿½me, si trop de blobs bougent autour, je ne veux pas lever la criticitï¿½, afin d'espï¿½rer agir pour une autre criticitï¿½.
 		return(0);
 	}
 	
 	/*protected double computeCriticalityStabiliteEtat(){
-		// calcule de la moyenne des changements effectués alentour:
+		// calcule de la moyenne des changements effectuï¿½s alentour:
 		double moyenne = 0;
 		for (int i = 0; i< voisins.size(); i++){
 			moyenne += voisins.get(i).getNbChangements();
