@@ -150,7 +150,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	// Le changement de forme se fait en fonction de l'emplacement de voisins
 	protected void changer_de_forme(){
-		System.out.println("Je change de formes");
 		blob.changeForme(determinerPositionVoisins());
 		nbExperience = 0;
 	}
