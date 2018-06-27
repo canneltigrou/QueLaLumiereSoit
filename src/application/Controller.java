@@ -27,7 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import positionBluetooth.PositionSimulationThread;
+import position.PositionSimulationThread;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 
@@ -375,7 +375,7 @@ public class Controller implements Initializable{
 		
 		toriginel_exp = new ToForm();
 		towindow.setTitle("Territoire Originel");
-		towindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon.png")));
+		towindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
 		towindow.setScene(new Scene(toriginel_exp));
 		towindow.show();
 	}
@@ -386,7 +386,7 @@ public class Controller implements Initializable{
 		
 		tideal_exp = new TerrainForm();
 		tiwindow.setTitle("Territoire Idéal");
-		tiwindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon.png")));
+		tiwindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
 		tiwindow.setScene(new Scene(tideal_exp));
 		tiwindow.show();
 	}

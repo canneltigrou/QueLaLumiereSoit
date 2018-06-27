@@ -56,46 +56,48 @@ public class Immaginaire extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
-		 nbChangements = 0;
-		 majAspectAgent();		 
-		 currentAction = Action.RESTER; // to initialise
-	     BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
-		 Critere most_critic = Most_critical_critere(agentNeedingHelp.getCriticite());
-		 //System.out.println("criticite de stabilité de position = " + criticite[Critere.Stabilite_position.getValue()]);
-		 //System.out.println("le plus critique est : " + most_critic.toString());
-		 
-		 switch (most_critic){
-		 case Isolement:
-			 // too many neighboors -> criticite.ISOLEMENT<0 -> I have to kill myself
-			 if(criticite[Critere.Isolement.getValue()] < 0)
-				 action_se_suicider();
-			 else
-				 action_creer();
-			 break;
+		synchronized(blob.lock){ 
+			nbChangements = 0;
+			 majAspectAgent();		 
+			 currentAction = Action.RESTER; // to initialise
+		     BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
+			 Critere most_critic = Most_critical_critere(agentNeedingHelp.getCriticite());
+			 //System.out.println("criticite de stabilité de position = " + criticite[Critere.Stabilite_position.getValue()]);
+			 //System.out.println("le plus critique est : " + most_critic.toString());
+			 
+			 switch (most_critic){
+			 case Isolement:
+				 // too many neighboors -> criticite.ISOLEMENT<0 -> I have to kill myself
+				 if(criticite[Critere.Isolement.getValue()] < 0)
+					 action_se_suicider();
+				 else
+					 action_creer();
+				 break;
+					 
+			 case Stabilite_etat:
 				 
-		 case Stabilite_etat:
+				 
+				 
+				 break;
+				 
+			 case Stabilite_position:
+				 action_se_deplacer();
+				 break;
+				 
+			 case Heterogeneite:
+				 //System.out.println(" \t avec : " + criticite[Critere.Heterogeneite.getValue()]);
+				// if >0 then it's too homogeneous. --> I change the color in a random one.
+				 // else it's too heterogeneous.  -> I change my color to the most present color
+				 if(criticite[Critere.Heterogeneite.getValue()] > 0)
+					 action_changerCouleur();
+				 else
+					 action_changerCouleur(couleurEnvironnante);
+				 break;
 			 
-			 
-			 
-			 break;
-			 
-		 case Stabilite_position:
-			 action_se_deplacer();
-			 break;
-			 
-		 case Heterogeneite:
-			 //System.out.println(" \t avec : " + criticite[Critere.Heterogeneite.getValue()]);
-			// if >0 then it's too homogeneous. --> I change the color in a random one.
-			 // else it's too heterogeneous.  -> I change my color to the most present color
-			 if(criticite[Critere.Heterogeneite.getValue()] > 0)
-				 action_changerCouleur();
-			 else
-				 action_changerCouleur(couleurEnvironnante);
-			 break;
-		 
-		 default:
-			break;		 
-		 }
+			 default:
+				break;		 
+			 }
+		}
 		super.onDecideAndAct();
 	}
 	

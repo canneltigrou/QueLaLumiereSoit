@@ -1,19 +1,19 @@
 package amak;
 import application.Controller;
 import javafx.application.Platform;
-import positionBluetooth.PositionThread;
+import position.ServerThread;
 
 public class AmasThread extends Thread{
 	Controller controller;
 	MyAMAS myAmas;
-	PositionThread tposition;
+	ServerThread tposition;
 	int nbBlobs;
 	
-	public PositionThread getTposition() {
+	public ServerThread getTposition() {
 		return tposition;
 	}
 
-	public void setTposition(PositionThread tposition) {
+	public void setTposition(ServerThread tposition) {
 		this.tposition = tposition;
 	}
 

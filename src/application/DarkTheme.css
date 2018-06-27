@@ -1,5 +1,5 @@
 .background {
-    -fx-background-color: #1d1d1d;
+    -fx-background-color: #808080;
 }
 
 
@@ -62,8 +62,8 @@
 }
 
 .split-pane:horizontal > .split-pane-divider {
-    -fx-border-color: transparent #1d1d1d transparent #1d1d1d;
-    -fx-background-color: transparent, derive(#1d1d1d,20%);
+    -fx-border-color: transparent #808080 transparent #808080;
+    -fx-background-color: transparent, derive(#808080,20%);
 }
 
 .split-pane {
