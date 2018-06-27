@@ -1,4 +1,7 @@
 package amak;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import application.Controller;
 import javafx.application.Platform;
 import position.ServerThread;
@@ -8,6 +11,7 @@ public class AmasThread extends Thread{
 	MyAMAS myAmas;
 	ServerThread tposition;
 	int nbBlobs;
+	private final Lock lock = new ReentrantLock(true);
 	
 	public ServerThread getTposition() {
 		return tposition;
@@ -44,11 +48,29 @@ public class AmasThread extends Thread{
 		controller.move_blobMigrant(b);
 	}
 	
+	
+	public Migrant adopter() {
+		
+		//P
+		lock.lock(); //Prendre
+		Migrant migrant = myAmas.getEnvironment().adopter();
+		if(migrant==null)
+		{
+			lock.unlock();
+			return null;
+		}
+		t0_to_tr(migrant);
+		return migrant;
+	}
+	
+	
 	public void t0_to_tr(Migrant blob){
-
+		
+		
 		Platform.runLater(new Runnable() {
 			public void run() {
 				blob.t0_to_tr();
+				lock.unlock();//V Laisser
 			}
 		});
 		
