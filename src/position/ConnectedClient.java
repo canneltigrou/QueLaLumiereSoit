@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import amak.Migrant;
+import business.Couleur;
 
 public class ConnectedClient implements Runnable {
 
@@ -24,8 +26,8 @@ public class ConnectedClient implements Runnable {
 					clientSocket.getInputStream()));
 			new Thread(this).start();
 			out = new PrintWriter(clientSocket.getOutputStream());
-	        out.println("Vous êtes connecté zéro !");
-	        out.flush();
+	        //out.println("Vous êtes connecté zéro !");
+	        //out.flush();
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
@@ -44,7 +46,7 @@ public class ConnectedClient implements Runnable {
 					double[] coo = new double[2];
 					coo[0] = Double.parseDouble(res[1]);
 					coo[1] = Double.parseDouble(res[2]);
-					System.out.println("Je demande de sortir le blob à " + coo[0] + ";" + coo[1]);
+					System.out.println("Je demande de mettre le blob à " + coo[0] + ";" + coo[1]);
 					
 					if (agent ==  null) {
 						System.out.println("Je n'ai pas encore de blobs. Je vais donc en prendre un");
@@ -55,7 +57,20 @@ public class ConnectedClient implements Runnable {
 						server.moveBlob(agent, server.cooGeolocToMetre(coo));
 					
 					
+					
 				}
+				
+				ArrayList<double[]> listePos = agent.getBlob().getGlobules_position();
+				ArrayList<Couleur> listeCouleur = agent.getBlob().getGlobules_couleurs();
+				String str = "" + listePos.get(0)[0] + ";" + listePos.get(0)[1] + ";" + listeCouleur.get(0).toString();
+							
+				for (int i = 1; i < listePos.size(); i++) {
+					str += ";" + listePos.get(i)[0] + ";" + listePos.get(i)[1] + ";" + listeCouleur.get(i).toString();
+				}
+				out.println(str);
+		        out.flush();
+				
+				
 				
 				
 				
