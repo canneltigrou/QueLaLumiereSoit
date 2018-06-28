@@ -1,19 +1,14 @@
 package position;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
-import java.io.IOException;
+//import java.util.Map;
+//import java.util.TreeMap;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import amak.AmasThread;
-import amak.BlobAgent;
+//import amak.BlobAgent;
 import amak.Migrant;
-import business.Blob;
-import business.Couleur;
 
 //https://openclassrooms.com/courses/java-et-la-programmation-reseau/les-sockets-cote-serveur
 // https://gfx.developpez.com/tutoriel/java/network/
@@ -43,7 +38,7 @@ public class ServerThread extends Thread{
 	
 	private ServerSocket socket;
 	private boolean running = false;
-	private final Map<String, BlobAgent> agent = new TreeMap<String, BlobAgent>();
+	//private final Map<String, BlobAgent> agent = new TreeMap<String, BlobAgent>();
 	//private boolean uniqueWindow;
 	
 	//private ServerSocket server;
@@ -86,7 +81,8 @@ public class ServerThread extends Thread{
 		System.out.println("calculons les coo du cercle");
 		calculCooCercle(checkpoints);
 		System.out.println("j'ai trouvé pour centre : " + cooCercleCentre[0] + " ; " + cooCercleCentre[1]);
-		
+		System.out.println("pour rayon : " + cooCercleRayon);
+		System.out.println("j'ai pour coin en haut à gauche : " + cooCercleOrigine[0] + " ; " + cooCercleOrigine[1]);
 		
 	}
 
@@ -131,7 +127,7 @@ public class ServerThread extends Thread{
 	private double[] calculMediatrice(double[] cooA, double[] cooB) {
 		// trouvons l'equation Ax + B = y de la mediatrice 
 		double A = -(cooA[0] - cooB[0])/(cooA[1] - cooB[1]); // perpandiculaire à (AB)
-		double B = (cooA[1] + cooB[1])/2 + A * (cooA[0] + cooB[0])/2; // par coo du point au milieu de [AB]
+		double B = (cooA[1] + cooB[1])/2 - A * (cooA[0] + cooB[0])/2; // par coo du point au milieu de [AB]
 					
 		double[] res = new double[2];
 		res[0] = A;
@@ -176,8 +172,8 @@ public class ServerThread extends Thread{
 	
 	double[] cooGeolocToMetre(double[] coo) {
 		double[] res = new double[2];
-		res[0] = coo[0] - cooCercleOrigine[0] / cooCercleRayon * rayonSalle;
-		res[1] = coo[1] - cooCercleOrigine[1] / cooCercleRayon * rayonSalle;
+		res[0] = (coo[0] - cooCercleOrigine[0]) / cooCercleRayon * rayonSalle;
+		res[1] = (coo[1] - cooCercleOrigine[1]) / cooCercleRayon * rayonSalle;
 
 		//res[0] = coo[0]/cooCercleRayon * rayonSalle;
 		//res[1] = coo[1]/cooCercleRayon * rayonSalle;
@@ -227,8 +223,8 @@ public class ServerThread extends Thread{
 	
 	
 	
-	public Migrant adopterBlob() {
-		return(tAmas.adopter());		
+	public Migrant adopterBlob(double[] coo) {
+		return(tAmas.adopter(coo));		
 	}
 	
 	

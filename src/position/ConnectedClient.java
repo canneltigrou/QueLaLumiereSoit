@@ -3,6 +3,7 @@ package position;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 import amak.Migrant;
@@ -10,6 +11,7 @@ import amak.Migrant;
 public class ConnectedClient implements Runnable {
 
 	private BufferedReader in;
+	private PrintWriter out;
 	private ServerThread server;
 	private Migrant agent;
 
@@ -21,6 +23,9 @@ public class ConnectedClient implements Runnable {
 			in = new BufferedReader(new InputStreamReader(
 					clientSocket.getInputStream()));
 			new Thread(this).start();
+			out = new PrintWriter(clientSocket.getOutputStream());
+	        out.println("Vous êtes connecté zéro !");
+	        out.flush();
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
@@ -36,16 +41,18 @@ public class ConnectedClient implements Runnable {
 				final String[] res = line.split(";");
 				
 				if(res[0].equals("move")) {
-					if (agent ==  null) {
-						System.out.println("Je n'ai pas encore de blobs. Je vais donc en prendre un");
-						agent = server.adopterBlob();
-					}
-					
 					double[] coo = new double[2];
 					coo[0] = Double.parseDouble(res[1]);
 					coo[1] = Double.parseDouble(res[2]);
 					System.out.println("Je demande de sortir le blob à " + coo[0] + ";" + coo[1]);
-					server.moveBlob(agent, server.cooGeolocToMetre(coo));
+					
+					if (agent ==  null) {
+						System.out.println("Je n'ai pas encore de blobs. Je vais donc en prendre un");
+						System.out.println("Que je place en " + server.cooGeolocToMetre(coo)[0] + ";" + server.cooGeolocToMetre(coo)[1]);
+						agent = server.adopterBlob(server.cooGeolocToMetre(coo));
+					}
+					else
+						server.moveBlob(agent, server.cooGeolocToMetre(coo));
 					
 					
 				}

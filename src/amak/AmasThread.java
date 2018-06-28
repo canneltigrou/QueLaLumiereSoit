@@ -44,36 +44,38 @@ public class AmasThread extends Thread{
 	public void move_blob(Migrant b, double[] coo){
 		
 		b.getBlob().setCoordonnee(coo);
-		
-		controller.move_blobMigrant(b);
+		controller.move_blobMigrant(b);  // TODO : à voir si je peux supprimer. grace a onUpdateRender
 	}
 	
-	
-	public Migrant adopter() {
-		
+	// de la part du thread ConnectedClient
+	public Migrant adopter(double[] coo) {
 		//P
-		lock.lock(); //Prendre
+		//lock.lock(); //Prendre
 		Migrant migrant = myAmas.getEnvironment().adopter();
 		if(migrant==null)
 		{
-			lock.unlock();
+			//lock.unlock();
 			return null;
 		}
-		t0_to_tr(migrant);
+		t0_to_tr(migrant, coo);
 		return migrant;
 	}
 	
 	
+	public void t0_to_tr(Migrant blob, double[] coo){
+		Platform.runLater(new Runnable() {
+			public void run() {
+				blob.t0_to_tr(coo);
+				//lock.unlock();//V Laisser
+			}
+		});
+	}
 	public void t0_to_tr(Migrant blob){
-		
-		
 		Platform.runLater(new Runnable() {
 			public void run() {
 				blob.t0_to_tr();
-				lock.unlock();//V Laisser
 			}
 		});
-		
 	}
 	
 	public void tr_to_t0(Migrant blob){

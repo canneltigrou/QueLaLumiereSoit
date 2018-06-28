@@ -171,18 +171,31 @@ public class Migrant extends BlobAgent{
 		controller.add_blobMigrant(this);
 		controller.remove_blobHibernant(this);
 	}
+	
+	public void t0_to_tr(double[] coo){
+		isHome = false;
+		blob.setCoordonnee(coo);
+		getAmas().getEnvironment().t0_to_tr(this);
+		controller.add_blobMigrant(this);
+		controller.remove_blobHibernant(this);
+	}
 
 	public void tr_to_t0(){
-		System.out.println("1");
 		isHome = true;
 		blob.setCoordonnee(blob.genererCoordonneeAleaDansCercle(100));
 		getAmas().getEnvironment().tr_to_t0(this);
-		System.out.println("2");
 		controller.add_blobHibernant(this);
 		controller.remove_blobMigrant(this);
-		System.out.println("3");
-
 	}
+	
+	public void tr_to_t0(double[] coo){
+		isHome = true;
+		blob.setCoordonnee(coo);
+		getAmas().getEnvironment().tr_to_t0(this);
+		controller.add_blobHibernant(this);
+		controller.remove_blobMigrant(this);
+	}
+
 	
 	
 	/*private double computeCriticalityInTo(){
