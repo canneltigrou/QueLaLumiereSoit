@@ -23,16 +23,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import positionBluetooth.PositionSimulationThread;
+import position.PositionSimulationThread;
+import position.ServerThread;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-
-import java.awt.Dimension;
-import java.awt.Toolkit;
 
 public class Controller implements Initializable{
 	
@@ -42,6 +37,7 @@ public class Controller implements Initializable{
 	private Migrant blobToMove;
 	private double[] valeurCurseurs = new double[4];
 	private PositionSimulationThread tSimuPosition;
+	
 	
 	
     @FXML
@@ -214,7 +210,7 @@ public class Controller implements Initializable{
     	
     	
     	
-    	if(blobToMove == null)
+    	if(blobToMove == null || experience)
     		return;
     	if(!blobActifs.contains(blobToMove))
     		return;
@@ -327,8 +323,23 @@ public class Controller implements Initializable{
 		 
 		buttonOKNbBlobs.setDisable(true);
 		
-		tSimuPosition = new PositionSimulationThread(tAmas, blobActifs);
-		tSimuPosition.start();
+		if(!experience)
+		{
+			tSimuPosition = new PositionSimulationThread(tAmas, blobActifs);
+			tSimuPosition.start();
+		}
+		else
+		{
+			buttonMouvementAleatoire.setDisable(true);
+			buttonSortirBlob.setDisable(true);
+			//buttonChangerBlob.setDisable(true);
+			System.out.println("Je crée le serveur");
+			ServerThread server = new ServerThread(tAmas, blobHibernants);
+			System.out.println("Je le run");
+			server.start();
+			System.out.println("j'ai fini de traiter ce bouton");
+
+		}
     }
     
     
@@ -375,7 +386,7 @@ public class Controller implements Initializable{
 		
 		toriginel_exp = new ToForm();
 		towindow.setTitle("Territoire Originel");
-		towindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon.png")));
+		towindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
 		towindow.setScene(new Scene(toriginel_exp));
 		towindow.show();
 	}
@@ -386,7 +397,7 @@ public class Controller implements Initializable{
 		
 		tideal_exp = new TerrainForm();
 		tiwindow.setTitle("Territoire Idéal");
-		tiwindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon.png")));
+		tiwindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
 		tiwindow.setScene(new Scene(tideal_exp));
 		tiwindow.show();
 	}
@@ -399,6 +410,7 @@ public class Controller implements Initializable{
 	}
 	
 	public void add_blobMigrant(Migrant b){
+		System.out.println("J'ajoute un migrant Tr");
 		tideal.add_blob(b.getBlob());
 		if (experience)
 			tideal_exp.add_blob(b.getBlob());
@@ -407,6 +419,7 @@ public class Controller implements Initializable{
 	}
 	
 	public void add_blobHibernant(Migrant b){
+		System.out.println("j'ajoute un hibernant tO");
 		toriginel.add_blob(b.getBlob(), false);
 		if (experience)
 			toriginel_exp.add_blob(b.getBlob(), false);
@@ -490,7 +503,8 @@ public class Controller implements Initializable{
 	private void showSelection(){
 		treel.showSelection(blobToMove.getBlob());
 		appercuBlob.add_blob(blobToMove);
-		tSimuPosition.remove_blob(blobToMove);
+		if(!experience)
+			tSimuPosition.remove_blob(blobToMove);
 	}
 	
 	private void deleteSelection(){
@@ -498,7 +512,8 @@ public class Controller implements Initializable{
 		{
 			treel.deleteSelection(blobToMove.getBlob());
 			appercuBlob.remove_blob(blobToMove);
-			tSimuPosition.add_blob(blobToMove);
+			if(!experience)
+				tSimuPosition.add_blob(blobToMove);
 		}
 		
 		blobToMove = null;
@@ -519,7 +534,7 @@ public class Controller implements Initializable{
 	}
 		
 
-	
+	// cette fonction n'est appelée que si nous sommes en mode test
 	public void sortirBlob(Migrant b){
 		Blob tmp = b.getBlob();
 		double[] coo = new double[2];
@@ -537,7 +552,7 @@ public class Controller implements Initializable{
 		tSimuPosition.add_blob(b);
 	}
 	
-	
+	// cette fonction n'est appelée que si nous sommes en mode test
 	public void rentrerBlob(Migrant b){
 		System.out.println("je suis le 1 :" + b.getBlob().getCouleurLaPLusPresente().toString());
 		if (b == blobToMove)
@@ -549,6 +564,7 @@ public class Controller implements Initializable{
 		
 	}
 	
+	// cette fonction n'est appelée que si nous sommes en mode test
 	public void moveBlob(Migrant b, double[] coo){
 		tAmas.move_blob(b, coo);
 		if (b == blobToMove)

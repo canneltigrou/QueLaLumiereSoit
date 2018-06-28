@@ -1,19 +1,23 @@
 package amak;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import application.Controller;
 import javafx.application.Platform;
-import positionBluetooth.PositionThread;
+import position.ServerThread;
 
 public class AmasThread extends Thread{
 	Controller controller;
 	MyAMAS myAmas;
-	PositionThread tposition;
+	ServerThread tposition;
 	int nbBlobs;
+	private final Lock lock = new ReentrantLock(true);
 	
-	public PositionThread getTposition() {
+	public ServerThread getTposition() {
 		return tposition;
 	}
 
-	public void setTposition(PositionThread tposition) {
+	public void setTposition(ServerThread tposition) {
 		this.tposition = tposition;
 	}
 
@@ -40,18 +44,38 @@ public class AmasThread extends Thread{
 	public void move_blob(Migrant b, double[] coo){
 		
 		b.getBlob().setCoordonnee(coo);
-		
-		controller.move_blobMigrant(b);
+		controller.move_blobMigrant(b);  // TODO : à voir si je peux supprimer. grace a onUpdateRender
 	}
 	
+	// de la part du thread ConnectedClient
+	public Migrant adopter(double[] coo) {
+		//P
+		//lock.lock(); //Prendre
+		Migrant migrant = myAmas.getEnvironment().adopter();
+		if(migrant==null)
+		{
+			//lock.unlock();
+			return null;
+		}
+		t0_to_tr(migrant, coo);
+		return migrant;
+	}
+	
+	
+	public void t0_to_tr(Migrant blob, double[] coo){
+		Platform.runLater(new Runnable() {
+			public void run() {
+				blob.t0_to_tr(coo);
+				//lock.unlock();//V Laisser
+			}
+		});
+	}
 	public void t0_to_tr(Migrant blob){
-
 		Platform.runLater(new Runnable() {
 			public void run() {
 				blob.t0_to_tr();
 			}
 		});
-		
 	}
 	
 	public void tr_to_t0(Migrant blob){
