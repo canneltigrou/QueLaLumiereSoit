@@ -67,10 +67,6 @@ public class MyAMAS extends Amas<MyEnvironment>{
 	}
 
 	
-	@Override
-    protected void onInitialAgentsCreation() {
-	}
-	
 	
 	
 	protected void addAgent(Blob b){

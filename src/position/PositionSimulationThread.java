@@ -1,4 +1,4 @@
-package positionBluetooth;
+package position;
 
 import java.util.ArrayList;
 import java.util.Timer;

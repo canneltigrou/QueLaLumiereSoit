@@ -155,7 +155,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	// Le changement de forme se fait en fonction de l'emplacement de voisins
 	protected void changer_de_forme(){
-		System.out.println("Je change de formes");
 		blob.changeForme(determinerPositionVoisins());
 		nbExperience = 0;
 	}
@@ -163,10 +162,14 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected void majAspectAgent(){
 		// La forme s'acquiert a partir d'un nombre d'exp�rience atteint.
 		if (nbExperience >= nbExperiencesRequises)
-			changer_de_forme();
+		{
+			synchronized (getBlob().lock) {
+				changer_de_forme();
+			}
+		}
 		
 		// la pulsation depend du nombre de voisins alentour
-		blob.setPulsation(voisins.size());
+		//blob.setPulsation(voisins.size());
 		
 		// la couleur s'acquiert si un voisin est present depuis un temps defini.
 		Iterator<BlobAgent> it = connaissance.keySet().iterator();
@@ -174,7 +177,9 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		{
 			BlobAgent blobConnu = (BlobAgent)it.next();
 			if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
-				changer_de_couleur_passif(blobConnu);
+				synchronized (blobConnu.getBlob().lock) {
+					changer_de_couleur_passif(blobConnu);
+				}
 				connaissance.put(blobConnu, 0);
 			}
 			if (!voisins.contains(blobConnu))

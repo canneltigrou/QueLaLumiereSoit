@@ -276,6 +276,15 @@ public class MyEnvironment extends Environment {
 		this.radius = (int)radiusVoisins;
 	}
 
-
+	public Migrant adopter() {
+		for (int i = 0; i < hibernants.size(); i++) {
+			if(hibernants.get(i).isRiped())
+				return hibernants.get(i);
+		}
+		return null;
+		
+	}
+	
+	
 	
 }

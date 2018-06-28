@@ -12,7 +12,9 @@ public class Blob {
 	
 	private ArrayList<Couleur> globules_couleurs;
 	private ArrayList<double[]> globules_position;
-
+	
+	public final Object lock = new Object();
+	
 	public Blob()
 	{
 		coordonnee = new double[2];

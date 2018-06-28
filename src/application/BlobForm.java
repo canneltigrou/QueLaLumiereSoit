@@ -33,28 +33,31 @@ public class BlobForm extends Parent{
 	
 	public BlobForm(Blob b, double[] coo, int tailleBlob){
 		//blobList = new HashMap<Blob, BlobForm>();
-		this.tailleBlob = tailleBlob;
-		globules = new ArrayList<Circle>();
-		generateBoxBlur();		
-		selection = new Rectangle(tailleBlob, tailleBlob);
-		selection.setFill(Color.TRANSPARENT);
-		selection.setStrokeType(StrokeType.CENTERED);
-		selection.setStroke(Color.TRANSPARENT);
-		this.getChildren().add(selection);
+		synchronized(b.lock) {
 		
-		this.setTranslateX(coo[0]);// on positionne le groupe 
-		this.setTranslateY(coo[1]);
-		
-		ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
-		ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
-		globules.clear();
-		for(int i = 0 ; i < positionGlobule.size(); i++)
-		{
+			this.tailleBlob = tailleBlob;
+			globules = new ArrayList<Circle>();
+			generateBoxBlur();		
+			selection = new Rectangle(tailleBlob, tailleBlob);
+			selection.setFill(Color.TRANSPARENT);
+			selection.setStrokeType(StrokeType.CENTERED);
+			selection.setStroke(Color.TRANSPARENT);
+			this.getChildren().add(selection);
 			
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-			fond_blob.setEffect(boxBlur);
-			globules.add(fond_blob);
-	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
+			this.setTranslateX(coo[0]);// on positionne le groupe 
+			this.setTranslateY(coo[1]);
+			
+			ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
+			ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
+			globules.clear();
+			for(int i = 0 ; i < positionGlobule.size(); i++)
+			{
+				
+				fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/6, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
+				fond_blob.setEffect(boxBlur);
+				globules.add(fond_blob);
+		        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
+			}
 		}
     }
 	
@@ -77,16 +80,20 @@ public class BlobForm extends Parent{
 		generateBoxBlur();
 		this.setTranslateX(coo[0]);// on positionne le groupe 
 		this.setTranslateY(coo[1]);
-		ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
-		globules.clear();
-		for(int i = 0 ; i < positionGlobule.size(); i++)
-		{
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleur ); 
-			fond_blob.setEffect(boxBlur);
-			globules.add(fond_blob);
-	        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
-		}
 		
+		synchronized(b.lock)
+		{
+		
+			ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
+			globules.clear();
+			for(int i = 0 ; i < positionGlobule.size(); i++)
+			{
+				fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/6, couleur ); 
+				fond_blob.setEffect(boxBlur);
+				globules.add(fond_blob);
+		        this.getChildren().add(fond_blob);//ajout du rectangle de fond			
+			}
+		}
 		selection = new Rectangle(tailleBlob, tailleBlob);
 		selection.setFill(Color.TRANSPARENT);
 		selection.setStrokeType(StrokeType.CENTERED);
@@ -96,69 +103,82 @@ public class BlobForm extends Parent{
 	
 	
 	public void changeBlob(Blob b, int tailleBlob){
-		this.tailleBlob = tailleBlob;
-		this.blob = b;
-		this.setTranslateX(blob.getCoordonnee()[0]);//positionnement du blob
-        this.setTranslateY(blob.getCoordonnee()[1]);
-		for(int i = 0 ; i < globules.size(); i++){
-			this.getChildren().remove(globules.get(i));
-		}
-        
-        ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
-		ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
-		globules.clear();
-		for(int i = 0 ; i < positionGlobule.size(); i++)
+		synchronized(b.lock)
 		{
 
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-			fond_blob.setEffect(boxBlur);
-			globules.add(fond_blob);
-	        this.getChildren().add(fond_blob);//ajout du globule	
+			this.tailleBlob = tailleBlob;
+			this.blob = b;
+			this.setTranslateX(blob.getCoordonnee()[0]);//positionnement du blob
+	        this.setTranslateY(blob.getCoordonnee()[1]);
+			for(int i = 0 ; i < globules.size(); i++){
+				this.getChildren().remove(globules.get(i));
+			}
+	        
+	        ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
+			ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
+			globules.clear();
+			for(int i = 0 ; i < positionGlobule.size(); i++)
+			{
+				fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/6, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
+				fond_blob.setEffect(boxBlur);
+				globules.add(fond_blob);
+		        this.getChildren().add(fond_blob);//ajout du globule	
+			}
+
 		}
 	}
+	
+	
 	public void changeBlob(Blob b, double[] coo, int tailleBlob){
-		this.tailleBlob = tailleBlob;
-		this.blob = b;
-		this.setTranslateX(coo[0]);//positionnement du blob
-        this.setTranslateY(coo[1]);
-		for(int i = 0 ; i < globules.size(); i++){
-			this.getChildren().remove(globules.get(i));
-		}
-        
-        ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
-		ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
-		globules.clear();
-				
-		for(int i = 0 ; i < positionGlobule.size(); i++)
+		
+		synchronized(b.lock)
 		{
 
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
-			fond_blob.setEffect(boxBlur);
-			globules.add(fond_blob);
-	        this.getChildren().add(fond_blob);//ajout du globule	
+			this.tailleBlob = tailleBlob;
+			this.blob = b;
+			this.setTranslateX(coo[0]);//positionnement du blob
+	        this.setTranslateY(coo[1]);
+			for(int i = 0 ; i < globules.size(); i++){
+				this.getChildren().remove(globules.get(i));
+			}
+	        
+	        ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
+			ArrayList<Couleur> couleurGlobule = b.getGlobules_couleurs();
+			globules.clear();
+					
+			for(int i = 0 ; i < positionGlobule.size(); i++)
+			{
+				fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/6, couleurGlobule.get(i).getColor(couleurGlobule.get(i)) ); 
+				fond_blob.setEffect(boxBlur);
+				globules.add(fond_blob);
+		        this.getChildren().add(fond_blob);//ajout du globule	
+			}
 		}
 	}
 	
 	// cette fonction est appel�e si le globule n'est pas m�r et doit �tre rep�sent� blanc.
 	// la couleur blanche est donc donn�e en param�tre.
 	public void changeBlob(Blob b, double[] coo, Color couleur, int tailleBlob){
-		this.tailleBlob = tailleBlob;
-		this.blob = b;
-		this.setTranslateX(coo[0]);//positionnement du blob
-        this.setTranslateY(coo[1]);
-		for(int i = 0 ; i < globules.size(); i++){
-			this.getChildren().remove(globules.get(i));
-		}
-        
-        ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
-		globules.clear();
-		for(int i = 0 ; i < positionGlobule.size(); i++)
+		
+		synchronized(b.lock)
 		{
-
-			fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/8, couleur ); 
-			fond_blob.setEffect(boxBlur);
-			globules.add(fond_blob);
-	        this.getChildren().add(fond_blob);//ajout du globule	
+			this.tailleBlob = tailleBlob;
+			this.blob = b;
+			this.setTranslateX(coo[0]);//positionnement du blob
+	        this.setTranslateY(coo[1]);
+			for(int i = 0 ; i < globules.size(); i++){
+				this.getChildren().remove(globules.get(i));
+			}
+	        
+	        ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
+			globules.clear();
+			for(int i = 0 ; i < positionGlobule.size(); i++)
+			{
+				fond_blob = new Circle(positionGlobule.get(i)[0] ,positionGlobule.get(i)[1] ,tailleBlob/6, couleur ); 
+				fond_blob.setEffect(boxBlur);
+				globules.add(fond_blob);
+		        this.getChildren().add(fond_blob);//ajout du globule	
+			}
 		}
 	}
 	
