@@ -24,6 +24,7 @@ import amak.Migrant;
 // les méthodes : addBlob, moveBlob et removeBlob doivent rester.
 
 
+
 public class ServerThread extends Thread{
 	private ArrayList<Migrant> blobHibernants;
 	private ArrayList<Migrant> blobActifs;
@@ -43,6 +44,9 @@ public class ServerThread extends Thread{
 	
 	//private ServerSocket server;
 	private static int serverPort = 8100;
+	
+	
+	
 	
 	
 	
@@ -78,6 +82,15 @@ public class ServerThread extends Thread{
 		tmp[1] = 1.46780492;
 		checkpoints.add(tmp.clone());
 		
+		/* test... mettre les coordonnées dans un repère en mètres */
+		for (int i = 0; i < checkpoints.size(); i++)
+		{
+			tmp[0] = latitudeToMetre(checkpoints.get(i)[0]);
+			tmp[1] = longitudeToMetre(checkpoints.get(i)[1], checkpoints.get(i)[0]);
+			checkpoints.set(i, tmp.clone());
+		}
+		
+		
 		System.out.println("calculons les coo du cercle");
 		calculCooCercle(checkpoints);
 		System.out.println("j'ai trouvé pour centre : " + cooCercleCentre[0] + " ; " + cooCercleCentre[1]);
@@ -111,6 +124,20 @@ public class ServerThread extends Thread{
 	/* **********************************************************************************************
 	 * ***************			Calculs coo du cercle selon	les checkpoints	************************
 	 * ********************************************************************************************* */
+	
+	/* Given you're looking for a simple formula, this is probably the simplest way to do it, assuming that the Earth is a sphere of perimeter 40075 km.
+	 * Length in meters of 1° of latitude = always 111.32 km
+	 * Length in meters of 1° of longitude = 40075 km * cos( latitude ) / 360
+	*/
+
+	private double latitudeToMetre(double latitude) {
+		return(111320 * latitude);
+	}
+	
+	private double longitudeToMetre(double longitude, double latitude) {
+		return(longitude * 40075000 * Math.cos(latitude) / 360);
+	}
+	
 	
 	// calcule l'intersection de 2 droites d1( a1 * X + b1) et d2( a2 * X + b2)
 	private double[] intersection(double a1, double b1, double a2, double b2)
@@ -172,11 +199,14 @@ public class ServerThread extends Thread{
 	
 	double[] cooGeolocToMetre(double[] coo) {
 		double[] res = new double[2];
-		res[0] = (coo[0] - cooCercleOrigine[0]) / cooCercleRayon * rayonSalle;
-		res[1] = (coo[1] - cooCercleOrigine[1]) / cooCercleRayon * rayonSalle;
+		res[0] = (latitudeToMetre(coo[0]) - cooCercleOrigine[0]) / cooCercleRayon * rayonSalle;
+		res[1] = (longitudeToMetre(coo[1], coo[0]) - cooCercleOrigine[1]) / cooCercleRayon * rayonSalle;
 
 		//res[0] = coo[0]/cooCercleRayon * rayonSalle;
 		//res[1] = coo[1]/cooCercleRayon * rayonSalle;
+		
+		
+		
 		return res;
 	}
 	
