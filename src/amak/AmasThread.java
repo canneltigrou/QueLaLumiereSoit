@@ -42,7 +42,8 @@ public class AmasThread extends Thread{
 	
 	
 	public void move_blob(Migrant b, double[] coo){
-		
+		if(!myAmas.getEnvironment().isValideInTi(coo))
+			return;
 		b.getBlob().setCoordonnee(coo);
 		controller.move_blobMigrant(b);  // TODO : à voir si je peux supprimer. grace a onUpdateRender
 	}
@@ -52,7 +53,7 @@ public class AmasThread extends Thread{
 		//P
 		//lock.lock(); //Prendre
 		Migrant migrant = myAmas.getEnvironment().adopter();
-		if(migrant==null)
+		if(migrant==null || !myAmas.getEnvironment().isValideInTi(coo))
 		{
 			//lock.unlock();
 			return null;
@@ -63,12 +64,24 @@ public class AmasThread extends Thread{
 	
 	
 	public void t0_to_tr(Migrant blob, double[] coo){
-		Platform.runLater(new Runnable() {
-			public void run() {
-				blob.t0_to_tr(coo);
-				//lock.unlock();//V Laisser
-			}
-		});
+		if(!myAmas.getEnvironment().isValideInTi(coo))
+		{// Les coordonnées fournies ne sont pas valides. Je lui affecte une valeur aléatoire dans la salle de diametre 25
+			Platform.runLater(new Runnable() {
+				public void run() {
+					blob.t0_to_tr(blob.getBlob().genererCoordonneeAleaDansCercle(25));
+					//lock.unlock();//V Laisser
+				}
+			});
+		}
+		else
+		{
+			Platform.runLater(new Runnable() {
+				public void run() {
+					blob.t0_to_tr(coo);
+					//lock.unlock();//V Laisser
+				}
+			});
+		}
 	}
 	public void t0_to_tr(Migrant blob){
 		Platform.runLater(new Runnable() {

@@ -147,7 +147,7 @@ public class MyEnvironment extends Environment {
 	// indique si la coordonnée entrée en paramètre est valide, ie si elle n'est pas hors terrain.
 	// returne true if ok. 
 	//Ici il s'agit de Tr ou Ti : valide si compris dans un cercle de rayon RayonTerrain et de centre (RayonTerrain;RayonTerrain)
-	private boolean isValideInTi(double[] coo){
+	public boolean isValideInTi(double[] coo){
 		if ((coo[0] - rayonTerrain)*(coo[0] - rayonTerrain) + (coo[1] - rayonTerrain) * (coo[1] - rayonTerrain) <= rayonTerrain * rayonTerrain)
 			return true;
 		return false;
