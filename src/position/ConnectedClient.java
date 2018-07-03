@@ -65,7 +65,7 @@ public class ConnectedClient implements Runnable {
 				String str = "" + listePos.get(0)[0] + ";" + listePos.get(0)[1] + ";" + listeCouleur.get(0).toString();
 							
 				for (int i = 1; i < listePos.size(); i++) {
-					str += ";" + listePos.get(i)[0] + ";" + listePos.get(i)[1] + ";" + listeCouleur.get(i).toString();
+					str += ":" + listePos.get(i)[0] + ";" + listePos.get(i)[1] + ";" + listeCouleur.get(i).toString();
 				}
 				out.println(str);
 		        out.flush();
