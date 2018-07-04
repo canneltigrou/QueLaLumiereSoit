@@ -14,12 +14,29 @@ import javafx.scene.shape.Circle;
 // l'ensemble des coordonnées des blobs seront données en poucentage pour les absisses et ordonnées.
 public class ToForm extends Parent{
 	private Map<Blob, BlobForm> blobList;
-	private double dimRepresentation = 350;	// rayon/coté de la représentation en pxl (il s'agit d'une sphère)
+	private double dimRepresentation;	// rayon/coté de la représentation en pxl (il s'agit d'une sphère)
 	private int tailleBlob = 16;
 
-	public ToForm() {
+	
+	public ToForm(int tailleRepresentation) {
+		dimRepresentation = tailleRepresentation;
+		tailleBlob = tailleBlob * tailleRepresentation / 350 ;
 		blobList = new HashMap<Blob, BlobForm>();
 
+		Circle fond_Terrain = new Circle (dimRepresentation/2, dimRepresentation/2, dimRepresentation/2);
+		fond_Terrain.setFill(Color.BLACK);
+
+		this.setTranslateX(0);// on positionne le groupe plutôt que le rectangle
+		this.setTranslateY(0);
+
+		this.getChildren().add(fond_Terrain);// on ajoute le rectangle au groupe
+	}
+	
+	
+	
+	public ToForm() {
+		blobList = new HashMap<Blob, BlobForm>();
+		dimRepresentation = 350;
 		Circle fond_Terrain = new Circle (dimRepresentation/2, dimRepresentation/2, dimRepresentation/2);
 		/*
 		Rectangle fond_Terrain = new Rectangle ();
@@ -42,6 +59,7 @@ public class ToForm extends Parent{
 		double[] res = new double[2];
 		res[0] = coo[0]/100 * (dimRepresentation - tailleBlob);
 		res[1] = coo[1]/100 * (dimRepresentation - tailleBlob);
+		System.out.println(res);
 		return res;
 	}
 	
