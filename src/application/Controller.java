@@ -11,7 +11,9 @@ import amak.Migrant;
 import business.Blob;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import position.PositionSimulationThread;
 import position.ServerThread;
 import javafx.fxml.Initializable;
@@ -109,7 +112,10 @@ public class Controller implements Initializable{
     DoubleProperty stabPos = new SimpleDoubleProperty(0);
     DoubleProperty radiusVoisins = new SimpleDoubleProperty(0);
 
-
+	//décalage fenêtre pour déplacer To et Ti
+    private double xOffset = 0;
+    private double yOffset = 0;
+    
 	@FXML
     void clicIso(MouseEvent event) {
     	
@@ -379,25 +385,52 @@ public class Controller implements Initializable{
 		valeurCurseurs[3] = sHeterogeneite.getValue();
 		
 	}
+    
+	public void configTerrain(Stage stage, Parent root)
+	{
+		root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+		
+		root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+            	stage.setX(event.getScreenX() - xOffset);
+            	stage.setY(event.getScreenY() - yOffset);
+            }
+        });
+	}
 	
 	public void initTO()
 	{	
 		Stage towindow = new Stage();
-		
+		towindow.initStyle(StageStyle.UNDECORATED);
 		toriginel_exp = new ToForm();
 		towindow.setTitle("Territoire Originel");
 		towindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
-		towindow.setScene(new Scene(toriginel_exp));
+		
+		
+		configTerrain(towindow, toriginel_exp);
+		
+		Scene scene = new Scene(toriginel_exp);
+		
+		towindow.setScene(scene);
 		towindow.show();
 	}
 	
 	public void initTI()
 	{
 		Stage tiwindow = new Stage();
-		
+		tiwindow.initStyle(StageStyle.UNDECORATED);
 		tideal_exp = new TerrainForm();
 		tiwindow.setTitle("Territoire Idéal");
 		tiwindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
+		configTerrain(tiwindow, tideal_exp);
+
 		tiwindow.setScene(new Scene(tideal_exp));
 		tiwindow.show();
 	}
