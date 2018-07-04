@@ -384,7 +384,7 @@ public class Controller implements Initializable{
 	{	
 		Stage towindow = new Stage();
 		
-		toriginel_exp = new ToForm();
+		toriginel_exp = new ToForm(1075);
 		towindow.setTitle("Territoire Originel");
 		towindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
 		towindow.setScene(new Scene(toriginel_exp));
@@ -395,7 +395,7 @@ public class Controller implements Initializable{
 	{
 		Stage tiwindow = new Stage();
 		
-		tideal_exp = new TerrainForm();
+		tideal_exp = new TerrainForm(1075/2);
 		tiwindow.setTitle("Territoire Idéal");
 		tiwindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
 		tiwindow.setScene(new Scene(tideal_exp));
