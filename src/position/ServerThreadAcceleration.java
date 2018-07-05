@@ -24,8 +24,8 @@ import amak.Migrant;
 
 
 public class ServerThreadAcceleration extends Thread{
-	private ArrayList<Migrant> blobHibernants;
-	private ArrayList<Migrant> blobActifs;
+	//private ArrayList<Migrant> blobHibernants;
+	//private ArrayList<Migrant> blobActifs;
 	private AmasThread tAmas;
 			
 	private ServerSocket socket;
@@ -47,8 +47,8 @@ public class ServerThreadAcceleration extends Thread{
 		}
 		
 		this.tAmas = tAmas;
-		blobHibernants = migrants;
-		blobActifs = new ArrayList<>();
+		//blobHibernants = migrants;
+	//	blobActifs = new ArrayList<>();
 		
 	}
 
@@ -100,8 +100,8 @@ public class ServerThreadAcceleration extends Thread{
 	
 	public void rentrerBlob(Migrant b){
 		tAmas.tr_to_t0(b);
-		blobHibernants.add(b);
-		blobActifs.remove(b);
+//		blobHibernants.add(b);
+//		blobActifs.remove(b);
 	}
 	
 	public void moveBlob(Migrant b, double[] coo){

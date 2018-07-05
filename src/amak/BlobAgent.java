@@ -109,7 +109,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			// trouvons quel est le globule le plus proche du voisin.
 			ArrayList<double[]> listePosGlob = blob.getGlobules_position();
 			// les position des globules sont relative a la position du blob.
-			// on va donc enlever la position du blob a celle du voisin, pour ne pas calculer la position exacte des globules ï¿½ chaque fois.
+			// on va donc enlever la position du blob a celle du voisin, pour ne pas calculer la position exacte des globules Ã¯Â¿Â½ chaque fois.
 			centreVoisin[0] -= blob.getCoordonnee()[0];
 			centreVoisin[1] -= blob.getCoordonnee()[1];
 			double distance;
@@ -139,7 +139,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	// determine le nombre de blobs dans les 4 zones respectivement Nord(N) - Est(E) - Sud(S) - Ouest(W)
 	private Integer[] determinerPositionVoisins() {
 		Integer[] res = new Integer[4];
-		// Nous pouvons définir 2 droites (considérons notre blob (x;y) et le voisin (X;Y) ):
+		// Nous pouvons dÃ©finir 2 droites (considÃ©rons notre blob (x;y) et le voisin (X;Y) ):
 		// (d1) separant W-N de S-W :  Y = X + (y-x)
 		// (d2) separant N-E de W-S :  Y = -X + (y+x)
 		try {
@@ -154,14 +154,14 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 				coo = voisin.getBlob().getCoordonnee();
 				if(coo[1] > coo[0] + ordonnee1)
 					if(coo[1] > -coo[0] + ordonnee2)
-						res[0]++; //appartient à la zone Nord
+						res[0]++; //appartient Ã  la zone Nord
 					else
-						res[3]++; // appartient à la zone West
+						res[3]++; // appartient Ã  la zone West
 				else
 					if(coo[1] < -coo[0] + ordonnee2)
-						res[2]++;  // appartient à la zone Sud
+						res[2]++;  // appartient Ã  la zone Sud
 					else
-						res[1]++;	//appartient à la zone Est			
+						res[1]++;	//appartient Ã  la zone Est			
 			}
 		}  catch(Exception e)
 		{
@@ -186,7 +186,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	protected void majAspectAgent(){
 		try {
-			// La forme s'acquiert a partir d'un nombre d'expï¿½rience atteint.
+			// La forme s'acquiert a partir d'un nombre d'expÃ¯Â¿Â½rience atteint.
 			if (nbExperience >= nbExperiencesRequises)
 			{
 				synchronized (getBlob().lock) {
@@ -405,12 +405,12 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		if(nbBougent < nbOptimal)
 			return(nbOptimal - nbBougent); 
 
-		// le problème, si trop de blobs bougent autour, je ne veux pas lever la criticité, afin d'espérer agir pour une autre criticité.
+		// le problÃ¨me, si trop de blobs bougent autour, je ne veux pas lever la criticitÃ©, afin d'espÃ©rer agir pour une autre criticitÃ©.
 		return(0);
 	}
 	
 	/*protected double computeCriticalityStabiliteEtat(){
-		// calcule de la moyenne des changements effectués alentour:
+		// calcule de la moyenne des changements effectuÃ©s alentour:
 		double moyenne = 0;
 		for (int i = 0; i< voisins.size(); i++){
 			moyenne += voisins.get(i).getNbChangements();
