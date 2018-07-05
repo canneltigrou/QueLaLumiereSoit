@@ -42,8 +42,11 @@ public class AmasThread extends Thread{
 	
 	
 	public void move_blob(Migrant b, double[] coo){
-		if(!myAmas.getEnvironment().isValideInTi(coo)) 
+		if(!myAmas.getEnvironment().isValideInTi(coo))
+		{
+			System.out.println("hors map");
 		      return; 
+		}
 		b.getBlob().setCoordonnee(coo);
 		controller.move_blobMigrant(b);  // TODO : à voir si je peux supprimer. grace a onUpdateRender
 	}

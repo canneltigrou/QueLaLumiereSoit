@@ -64,7 +64,6 @@ public class TerrainForm extends Parent {
 		double[] res = new double[2];
 		res[0] = coo[0]/rayonSalle * (rayonRepresentation - tailleBlob/2);
 		res[1] = coo[1]/rayonSalle * (rayonRepresentation - tailleBlob/2);
-		System.out.println(res);
 		return res;
 	}
 	

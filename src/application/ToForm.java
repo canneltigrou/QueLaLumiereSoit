@@ -59,7 +59,6 @@ public class ToForm extends Parent{
 		double[] res = new double[2];
 		res[0] = coo[0]/100 * (dimRepresentation - tailleBlob);
 		res[1] = coo[1]/100 * (dimRepresentation - tailleBlob);
-		System.out.println(res);
 		return res;
 	}
 	
