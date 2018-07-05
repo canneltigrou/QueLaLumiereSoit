@@ -29,7 +29,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import position.PositionSimulationThread;
-import position.ServerThread;
+import position.ServerThreadAcceleration;
 import javafx.fxml.Initializable;
 
 public class Controller implements Initializable{
@@ -339,8 +339,8 @@ public class Controller implements Initializable{
 			buttonMouvementAleatoire.setDisable(true);
 			buttonSortirBlob.setDisable(true);
 			//buttonChangerBlob.setDisable(true);
-			System.out.println("Je crée le serveur");
-			ServerThread server = new ServerThread(tAmas, blobHibernants);
+			System.out.println("Je cree le serveur");
+			ServerThreadAcceleration server = new ServerThreadAcceleration(tAmas, blobHibernants);
 			System.out.println("Je le run");
 			server.start();
 			System.out.println("j'ai fini de traiter ce bouton");
