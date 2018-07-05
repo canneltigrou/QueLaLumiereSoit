@@ -26,6 +26,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import position.PositionSimulationThread;
@@ -418,7 +420,7 @@ public class Controller implements Initializable{
 		
 		configTerrain(towindow, toriginel_exp);
 		
-		Scene scene = new Scene(toriginel_exp);
+		Scene scene = new Scene(toriginel_exp, Color.rgb(42, 42, 42));
 		
 		towindow.setScene(scene);
 		towindow.show();
@@ -429,13 +431,13 @@ public class Controller implements Initializable{
 		Stage tiwindow = new Stage();
 
 		tiwindow.initStyle(StageStyle.UNDECORATED);
-		tideal_exp = new TerrainForm(1075/2);
+		tideal_exp = new TerrainForm(1000/2);
 
-		tiwindow.setTitle("Territoire Idéal");
+		tiwindow.setTitle("Territoire Ideal");
 		tiwindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
 		configTerrain(tiwindow, tideal_exp);
 
-		tiwindow.setScene(new Scene(tideal_exp));
+		tiwindow.setScene(new Scene(tideal_exp, Color.rgb(42, 42, 42)));
 		tiwindow.show();
 	}
 	
