@@ -75,23 +75,23 @@ public class MyAMAS extends Amas<MyEnvironment>{
 	}
 	
 	protected void moveAgent(Blob b, BlobAgent agent){
-		Platform.runLater(new Runnable() {
-			public void run() {
+//		Platform.runLater(new Runnable() {
+//			public void run() {
 				agent.setBlob(b);
 				
 				// normalement, prévient donc l'environnement
-			}
-		});
+//			}
+//		});
 	}
 	
 	protected void removeAgent(Blob b, BlobAgent agent){
-		Platform.runLater(new Runnable() {
-			public void run() {
+//		Platform.runLater(new Runnable() {
+//			public void run() {
 				getEnvironment().getAgents().remove(agent);
 				//agents.remove(agent);
 				// normalement, prévient donc l'environnement
-			}
-		});
+//			}
+//		});
 		
 	}
 	
