@@ -47,7 +47,9 @@ public class AmasThread extends Thread{
 			System.out.println("hors map");
 		      return; 
 		}
-		b.getBlob().setCoordonnee(coo);
+		synchronized(b.getBlob().lock) {
+			b.getBlob().setCoordonnee(coo);
+		}
 		controller.move_blobMigrant(b);  // TODO : à voir si je peux supprimer. grace a onUpdateRender
 	}
 	

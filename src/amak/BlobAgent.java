@@ -273,7 +273,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			Blob newBlob = blob.copy_blob();
 			newBlob.setCoordonnee(getAmas().getEnvironment().nouvellesCoordonnees(this, 2));
 			newFils = new Immaginaire(getAmas(), newBlob, controller);
-			getAmas().getEnvironment().addAgent(newFils);
+			//getAmas().getEnvironment().addAgent(newFils);
 		}  catch(Exception e)
 		{
 			ExceptionHandler eh = new ExceptionHandler();
@@ -366,11 +366,13 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		HashMap<Couleur, Integer> couleurs = new HashMap<>();
 		Couleur couleur;
 		for(int i = 0; i < voisins.size() ; i++){
-			couleur = voisins.get(i).getBlob().getCouleurLaPLusPresente();
-			if (couleurs.containsKey(couleur))
-				couleurs.put(couleur, 1 + couleurs.get(couleur));
-			else
-				couleurs.put(couleur, 1);
+			synchronized(voisins.get(i).getBlob().lock) {
+				couleur = voisins.get(i).getBlob().getCouleurLaPLusPresente();
+				if (couleurs.containsKey(couleur))
+					couleurs.put(couleur, 1 + couleurs.get(couleur));
+				else
+					couleurs.put(couleur, 1);
+			}
 		}
 		
 		// recuperation de la couleur la plus presente.

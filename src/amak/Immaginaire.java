@@ -119,7 +119,12 @@ public class Immaginaire extends BlobAgent{
 		}
 	}
 	
-	
+protected void onAgentCycleEnd() {
+		
+		if(currentAction.equals(Action.CREER))
+			getAmas().getEnvironment().addAgent(newFils);
+		super.onAgentCycleEnd();
+	}
 	
 
 }
