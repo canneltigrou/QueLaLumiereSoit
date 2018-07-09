@@ -27,8 +27,8 @@ public class AmasThread extends Thread{
 			this.nbBlobs = nbBlobs;
 	}
 	
-	// le thread PositionBluetooth transmet le mouvement d'un blob reel, lequel est associ� ici � un blob agent
-	// il nous faut trouver le bon blobAgent et pr�venir l'environnemnt et MyAmas.
+	// le thread PositionBluetooth transmet le mouvement d'un blob reel, lequel est associé ici à un blob agent
+	// il nous faut trouver le bon blobAgent et prévenir l'environnemnt et MyAmas.
 	/*
 	public void add_blob(Blob b){
 		Blob blob = b.copy_blob();
@@ -47,8 +47,11 @@ public class AmasThread extends Thread{
 			System.out.println("hors map");
 		      return; 
 		}
-		b.getBlob().setCoordonnee(coo);
-	//	controller.move_blobMigrant(b);  // TODO : � voir si je peux supprimer. grace a onUpdateRender
+
+		synchronized(b.getBlob().lock) {
+			b.getBlob().setCoordonnee(coo);
+		}
+		controller.move_blobMigrant(b);  // TODO : à voir si je peux supprimer. grace a onUpdateRender
 	}
 	
 	// de la part du thread ConnectedClient
@@ -68,7 +71,7 @@ public class AmasThread extends Thread{
 	
 	public void t0_to_tr(Migrant blob, double[] coo){
 		if(!myAmas.getEnvironment().isValideInTi(coo)) 
-	    {// Les coordonn�es fournies ne sont pas valides. Je lui affecte une valeur al�atoire dans la salle de diametre
+	    {// Les coordonnées fournies ne sont pas valides. Je lui affecte une valeur aléatoire dans la salle de diametre
 	 
 	          blob.t0_to_tr(blob.getBlob().genererCoordonneeAleaDansCercle(25)); 
 	          //lock.unlock();//V Laisser 
@@ -132,14 +135,14 @@ public class AmasThread extends Thread{
 	public void setIsolement(int isolement){
 	
 				myAmas.getEnvironment().setIsolement(isolement);
-				System.out.println("tAmas : changement Taux d'isolement � " + isolement);
+				System.out.println("tAmas : changement Taux d'isolement à " + isolement);
 
 	}
 
 	public void setHeterogeneite(int heterogeneite) {
 	
 				myAmas.getEnvironment().setHeterogeneite(heterogeneite);
-				System.out.println("tAmas : changement Taux d'h�t�rog�n�it� " + heterogeneite);
+				System.out.println("tAmas : changement Taux d'hétérogénéité " + heterogeneite);
 			
 	}
 
@@ -147,7 +150,7 @@ public class AmasThread extends Thread{
 	public void setStabilitePosition(int stabilite_position) {
 
 				myAmas.getEnvironment().setStabilite_position(stabilite_position);
-				System.out.println("tAmas : changement de la Stabilit� des positions � " + stabilite_position);
+				System.out.println("tAmas : changement de la Stabilité des positions à " + stabilite_position);
 	
 		
 	}
@@ -155,7 +158,7 @@ public class AmasThread extends Thread{
 	public void setRadiusVoisinage(double radiusVoisins) {
 
 				myAmas.getEnvironment().setRadiusVoisins(radiusVoisins);
-				System.out.println("tAmas : changement du radius � " + radiusVoisins);
+				System.out.println("tAmas : changement du radius à " + radiusVoisins);
 
 		
 	}

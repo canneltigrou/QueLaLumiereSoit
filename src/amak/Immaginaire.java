@@ -128,7 +128,12 @@ public class Immaginaire extends BlobAgent{
 		Log.debug("quela", "end da immag");
 	}
 	
-	
+protected void onAgentCycleEnd() {
+		
+		if(currentAction.equals(Action.CREER))
+			getAmas().getEnvironment().addAgent(newFils);
+		super.onAgentCycleEnd();
+	}
 	
 
 }

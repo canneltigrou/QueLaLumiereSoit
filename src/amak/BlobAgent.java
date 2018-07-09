@@ -285,8 +285,10 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			newBlob.setCoordonnee((getAmas().getEnvironment().nouvellesCoordonneesTT(this, 2, newBlob.getCoordonnee())));
 			Log.debug("quela", "imag decide newfils");
 			newFils = new Immaginaire(getAmas(), newBlob, controller);
-			Log.debug("quela", "imag decide addagent");
-			getAmas().getEnvironment().addAgent(newFils);
+
+			//getAmas().getEnvironment().addAgent(newFils);
+			//Log.debug("quela", "imag decide addagent");
+
 		}  catch(Exception e)
 		{
 			ExceptionHandler eh = new ExceptionHandler();
@@ -395,11 +397,13 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		HashMap<Couleur, Integer> couleurs = new HashMap<>();
 		Couleur couleur;
 		for(int i = 0; i < voisins.size() ; i++){
-			couleur = voisins.get(i).getBlob().getCouleurLaPLusPresente();
-			if (couleurs.containsKey(couleur))
-				couleurs.put(couleur, 1 + couleurs.get(couleur));
-			else
-				couleurs.put(couleur, 1);
+			synchronized(voisins.get(i).getBlob().lock) {
+				couleur = voisins.get(i).getBlob().getCouleurLaPLusPresente();
+				if (couleurs.containsKey(couleur))
+					couleurs.put(couleur, 1 + couleurs.get(couleur));
+				else
+					couleurs.put(couleur, 1);
+			}
 		}
 		
 		// recuperation de la couleur la plus presente.
