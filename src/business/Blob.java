@@ -20,8 +20,7 @@ public class Blob {
 		coordonnee = new double[2];
 	}
 	
-	public Blob(double xcor, double ycor, Couleur couleur, int pulsation, ArrayList<double[]> forme , boolean reel)
-	{
+	public Blob(double xcor, double ycor, Couleur couleur, int pulsation, ArrayList<double[]> forme, boolean reel) {
 		coordonnee = new double[2];
 		coordonnee[0] = xcor;
 		coordonnee[1] = ycor;
@@ -35,8 +34,7 @@ public class Blob {
 		}
 	}
 	
-	// on crée un blob à la position (xcor, ycor) de couleur et de forme aléatoire.
-	public Blob(double xcor, double ycor, boolean reel)
+	// on crï¿½e un blob ï¿½ la position (xcor, ycor) de couleur et de forme alï¿½at	public Blob(double xcor, double ycor, boolean reel)
 	{
 		coordonnee = new double[2];
 		coordonnee[0] = xcor;
@@ -62,24 +60,20 @@ public class Blob {
 	
 	
 	/*
-	// fonction qui à partir de coordonnées initiales, propose de nouvelles coordonnées à un certain rayon (le pas).
-	public double[] nouvellesCoordonnees(){
+	// fonction qui ï¿½ partir de coordonnï¿½es initiales, propose de nouvelles coordonnï¿½es ï¿½ un certain rayon (l	public double[] nouvellesCoordonnees(){
 		double[] res = new double[2];
 		// coo[0] - pas < res[0] < coo[0] + pas
 		res[0] = (Math.random() * 2 * pas) - pas + coordonnee[0];
 		
 		// j'utilise l'equation d'un cercle de rayon pas.
-		// (res[0] - coo[0])² + (res[1] - coo[1])² = pas²
-		// à partir de res[0], j'ai 2 solutions possible pour res[1]. 1 positive, une négative. choisissons aléatoirement.
-		double sign = 1;
+		// (res[0] - coo[0])ï¿½ + (res[1] - coo[1])ï¿½ = p		// ï¿½ partir de res[0], j'ai 2 solutions possible pour res[1]. 1 positive, une nï¿½gative. choisissons alï¿½atoire		double sign = 1;
 		if (Math.random() < 0.5)
 			sign = -1;
 		res[1] =  coordonnee[1] + (sign * Math.sqrt(pas * pas + (res[0] - coordonnee[0]) * (res[0] - coordonnee[0]) ));
 		return res;
 	}*/
 	
-	// genere des coordonnées cartésiennes aleatoires dans un cercle de diametre D et de centre D/2;D/2
-		public double[] genererCoordonneeAleaDansCercle(double D){
+	// genere des coordonnï¿½es cartï¿½siennes aleatoires dans un cercle de diametre D et de centre D/2;		public double[] genererCoordonneeAleaDansCercle(double D){
 			boolean isOk = false;
 			double[] res = new double[2];
 			double xcor = 0;
@@ -163,7 +157,7 @@ public class Blob {
 		this.globules_couleurs = globules_couleurs;
 	}
 	
-	// permet de changer de forme en choisissant une forme aléatoire.
+	// permet de changer de forme en choisissant une forme alï¿½atoire.
 	/*
 	public void changeForme() {
 		
@@ -234,7 +228,7 @@ public class Blob {
 	}
 	
 	
-	// je considère un blob dans un carré de 100*100. les positions sont donc en %
+	// je considï¿½re un blob dans un carrï¿½ de 100*100. les positions sont donc en %
 	public ArrayList<double[]> generateFormRandom(){
 		ArrayList<double[]> res = new ArrayList<>();
 		
@@ -251,16 +245,16 @@ public class Blob {
 		
 		for (int i = 1; i < nbGlobules ; i++)
 		{
-			// je génère les positions possibles de prendre autour du dernier globule créé.
+			// je gï¿½nï¿½re les positions possibles de prendre autour du dernier globule crï¿½ï¿½.
 			listePossible.clear();
 			
 			tmp = res.get(i - 1).clone();
-			// à droite
+			// ï¿½ droite
 			tmp[0] += 25;
 			if (!contenir(res, tmp))
 				listePossible.add(tmp.clone());
 			
-			// à gauche
+			// ï¿½ gauche
 			tmp[0] -= 50;
 			if (!contenir(res, tmp))
 				listePossible.add(tmp.clone());
@@ -286,7 +280,7 @@ public class Blob {
 			res.add(listePossible.get(pos));
 		}
 		
-		// j'ai à ce stade, créé un blob, mais non centré.
+		// j'ai ï¿½ ce stade, crï¿½ï¿½ un blob, mais non centrï¿½.
 		// centrons-le : (translation des deux axes par (Max - Min)/2
 		centrerBlob(res);
 		
@@ -299,7 +293,7 @@ public class Blob {
 		double xNouveauCentre = minMaxcor[0] + (minMaxcor[1] - minMaxcor[0]) /2;
 		double yNouveauCentre = minMaxcor[2] + (minMaxcor[3] - minMaxcor[2]) /2;
 		
-		// à chaque position, j'ajoute le vecteur (ancien centre (50,50) - nouveau Centre )
+		// ï¿½ chaque position, j'ajoute le vecteur (ancien centre (50,50) - nouveau Centre )
 		for (int i = 0; i < res.size(); i++){
 			res.get(i)[0] += 50 - xNouveauCentre;
 			res.get(i)[1] += 50 - yNouveauCentre;
@@ -378,7 +372,7 @@ public class Blob {
 		
 		
 		
-		// j'ai à ce stade, créé un blob, mais non centré.
+		// j'ai ï¿½ ce stade, crï¿½ï¿½ un blob, mais non centrï¿½.
 		// centrons-le : (translation des deux axes par (Max - Min)/2
 		centrerBlob(res);
 		
