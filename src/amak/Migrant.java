@@ -212,17 +212,22 @@ public class Migrant extends BlobAgent{
 		}
 	}
 
-	public void tr_to_t0(){
+	 public void tr_to_t0(){
+
+		{
 		try {
 			isHome = true;
 			blob.setCoordonnee(blob.genererCoordonneeAleaDansCercle(100));
 			getAmas().getEnvironment().tr_to_t0(this);
-			controller.add_blobHibernant(this);
-			controller.remove_blobMigrant(this);
+			final Migrant m = this;
+
+			controller.add_blobHibernant(m);
+			controller.remove_blobMigrant(m);
 		}catch(Exception e)
 		{
 			ExceptionHandler eh = new ExceptionHandler();
 			eh.showError(e);
+		}
 		}
 	}
 	
