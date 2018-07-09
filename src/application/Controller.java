@@ -152,7 +152,7 @@ public class Controller implements Initializable{
     @FXML
     void onClicButtonSortirBlob(MouseEvent event) {
     	// va sortir un Blob mur, pris au hasard dans To
-    	if (blobHibernants != null)
+    	if (blobHibernants != null && !blobHibernants.isEmpty())
     	{
     		// trouvons un blob mur :
     		boolean found = false;

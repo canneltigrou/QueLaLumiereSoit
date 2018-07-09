@@ -16,8 +16,8 @@ import amak.Migrant;
 // https://gfx.developpez.com/tutoriel/java/network/#L4
 
 
-// permet de lancer un thread pour établir la connexion
-// et récolter les données en temps réel
+// permet de lancer un thread pour ï¿½tablir la connexion
+// et rï¿½colter les donnï¿½es en temps rï¿½el
 // pour les transmettres aux environnements correspondants
 
 
@@ -38,15 +38,9 @@ public class ServerThreadAcceleration extends Thread{
 
 	public ServerThreadAcceleration(AmasThread tAmas, ArrayList<Migrant> migrants) {
 		//this(" - localhost:" + serverPort);
-		try {
-			socket = new ServerSocket(serverPort);
-			running = true;
-			//new Thread(this).start();
-		} catch (final IOException e) {
-			e.printStackTrace();
-		}
-		
 		this.tAmas = tAmas;
+			//
+		
 		//blobHibernants = migrants;
 	//	blobActifs = new ArrayList<>();
 		
@@ -57,9 +51,13 @@ public class ServerThreadAcceleration extends Thread{
 	
 	@Override
 	public void run() {
+
+		try {
+			socket = new ServerSocket(serverPort);
+		running = true;
 		while (running) {
 			try {
-				System.out.println("j'écoute");
+				System.out.println("j'ï¿½coute");
 				final Socket clientSocket = socket.accept();
 				System.out.println("Je viens d'entendre qqn");
 				new ConnectedClientAcceleration(clientSocket, this);
@@ -67,6 +65,10 @@ public class ServerThreadAcceleration extends Thread{
 				e.printStackTrace();
 			}
 
+		}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 	

@@ -14,6 +14,7 @@ import business.Couleur;
 import business.Critere;
 //import business.CriticalityFunction;
 import fr.irit.smac.amak.Agent;
+import fr.irit.smac.amak.tools.Log;
 
 
 enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER, CHANGER_COULEUR, CHANGER_FORME, MURIR };
@@ -109,7 +110,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			// trouvons quel est le globule le plus proche du voisin.
 			ArrayList<double[]> listePosGlob = blob.getGlobules_position();
 			// les position des globules sont relative a la position du blob.
-			// on va donc enlever la position du blob a celle du voisin, pour ne pas calculer la position exacte des globules ï¿½ chaque fois.
+			// on va donc enlever la position du blob a celle du voisin, pour ne pas calculer la position exacte des globules � chaque fois.
 			centreVoisin[0] -= blob.getCoordonnee()[0];
 			centreVoisin[1] -= blob.getCoordonnee()[1];
 			double distance;
@@ -256,6 +257,8 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	 * **************************************************************** */
 	
 	protected void action_se_suicider(){
+
+		Log.debug("quela", "imag decide suicide");
 		try {
 			currentAction = Action.SE_SUICIDER;
 			getAmas().getEnvironment().removeAgent(this);
@@ -268,12 +271,24 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	}
 
 	protected void action_creer(){
+
+		Log.debug("quela", "imag decide creer");
 		try {
 			currentAction = Action.CREER;
+			Log.debug("quela", "imag decide copy");
 			Blob newBlob = blob.copy_blob();
-			newBlob.setCoordonnee(getAmas().getEnvironment().nouvellesCoordonnees(this, 2));
+			//newBlob.setCoordonnee(convert(newBlob.getCoordonnee()));
+			Log.debug("quela", "imag decide setcoord");
+			Log.debug("coord", "coord "+newBlob.getCoordonnee());
+			
+			
+			newBlob.setCoordonnee((getAmas().getEnvironment().nouvellesCoordonneesTT(this, 2, newBlob.getCoordonnee())));
+			Log.debug("quela", "imag decide newfils");
 			newFils = new Immaginaire(getAmas(), newBlob, controller);
+
 			//getAmas().getEnvironment().addAgent(newFils);
+			//Log.debug("quela", "imag decide addagent");
+
 		}  catch(Exception e)
 		{
 			ExceptionHandler eh = new ExceptionHandler();
@@ -282,6 +297,14 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		
 	}
 	
+	private double[] convert(double[] nouvellesCoordonnees) {
+		return new double[] {
+				nouvellesCoordonnees[0]*12.5/50.0,
+				nouvellesCoordonnees[1]*12.5/50.0
+		};
+	}
+
+
 	protected void action_se_deplacer(){
 		try {
 			double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, Math.random() * 1.2, pastDirection);
@@ -312,7 +335,10 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			Couleur MostPresentCouleur = blob.getCouleurLaPLusPresente();
 			ArrayList<Couleur> listeGlobulesCouleur = blob.getGlobules_couleurs();
 			for (int i = 0; i < listeGlobulesCouleur.size(); i++){
-				if (listeGlobulesCouleur.get(i).equals(MostPresentCouleur))
+				Couleur couleur = listeGlobulesCouleur.get(i);
+				if (couleur == null)
+					couleur = Couleur.BLUE;
+				if (couleur.equals(MostPresentCouleur))
 					listeGlobulesCouleur.set(i, nvlleCouleur);
 			}
 			nbChangements++;
@@ -331,7 +357,12 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			Couleur MostPresentCouleur = blob.getCouleurLaPLusPresente();
 			ArrayList<Couleur> listeGlobulesCouleur = blob.getGlobules_couleurs();
 			for (int i = 0; i < listeGlobulesCouleur.size(); i++){
-				if (listeGlobulesCouleur.get(i).equals(MostPresentCouleur))
+				System.out.println(listeGlobulesCouleur);
+				Couleur couleur2 = listeGlobulesCouleur.get(i);
+				if (couleur2 == null)
+					couleur2 = Couleur.BLUE;
+				
+				if (couleur2.equals(MostPresentCouleur))
 					listeGlobulesCouleur.set(i, couleur);
 			}
 			nbChangements++;
@@ -383,7 +414,13 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			if (( tmp = couleurs.get(clr)) > maxNbCouleur)
 			{
 				maxNbCouleur = tmp;
+				
 				couleurEnvironnante = clr;
+				
+				if (couleurEnvironnante == null) {
+					System.err.println("couleur environnante null");
+					System.exit(-1);
+				}
 			}
 		}
 		

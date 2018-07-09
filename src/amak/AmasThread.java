@@ -27,8 +27,8 @@ public class AmasThread extends Thread{
 			this.nbBlobs = nbBlobs;
 	}
 	
-	// le thread PositionBluetooth transmet le mouvement d'un blob reel, lequel est associé ici à un blob agent
-	// il nous faut trouver le bon blobAgent et prévenir l'environnemnt et MyAmas.
+	// le thread PositionBluetooth transmet le mouvement d'un blob reel, lequel est associÃ© ici Ã  un blob agent
+	// il nous faut trouver le bon blobAgent et prÃ©venir l'environnemnt et MyAmas.
 	/*
 	public void add_blob(Blob b){
 		Blob blob = b.copy_blob();
@@ -47,10 +47,11 @@ public class AmasThread extends Thread{
 			System.out.println("hors map");
 		      return; 
 		}
+
 		synchronized(b.getBlob().lock) {
 			b.getBlob().setCoordonnee(coo);
 		}
-		controller.move_blobMigrant(b);  // TODO : à voir si je peux supprimer. grace a onUpdateRender
+		controller.move_blobMigrant(b);  // TODO : Ã  voir si je peux supprimer. grace a onUpdateRender
 	}
 	
 	// de la part du thread ConnectedClient
@@ -70,38 +71,30 @@ public class AmasThread extends Thread{
 	
 	public void t0_to_tr(Migrant blob, double[] coo){
 		if(!myAmas.getEnvironment().isValideInTi(coo)) 
-	    {// Les coordonnées fournies ne sont pas valides. Je lui affecte une valeur aléatoire dans la salle de diametre
-	      Platform.runLater(new Runnable() { 
-	        public void run() { 
+	    {// Les coordonnÃ©es fournies ne sont pas valides. Je lui affecte une valeur alÃ©atoire dans la salle de diametre
+	 
 	          blob.t0_to_tr(blob.getBlob().genererCoordonneeAleaDansCercle(25)); 
 	          //lock.unlock();//V Laisser 
-	        } 
-	      }); 
+
 	    } 
 	    else 
 	    { 
-	      Platform.runLater(new Runnable() { 
-	        public void run() { 
+
 	          blob.t0_to_tr(coo); 
 	          //lock.unlock();//V Laisser 
-	        } 
-	      }); 
+
 	    } 
 	}
 	public void t0_to_tr(Migrant blob){
-		Platform.runLater(new Runnable() {
-			public void run() {
+
 				blob.t0_to_tr();
-			}
-		});
+
 	}
 	
 	public void tr_to_t0(Migrant blob){
-		Platform.runLater(new Runnable() {
-			public void run() {
+
 				blob.tr_to_t0();
-			}
-		});
+
 	}
 	
 	
@@ -140,41 +133,33 @@ public class AmasThread extends Thread{
 	}*/
 	
 	public void setIsolement(int isolement){
-		Platform.runLater(new Runnable() {
-			public void run() {
+	
 				myAmas.getEnvironment().setIsolement(isolement);
-				System.out.println("tAmas : changement Taux d'isolement à " + isolement);
-			}
-		});
+				System.out.println("tAmas : changement Taux d'isolement Ã  " + isolement);
+
 	}
 
 	public void setHeterogeneite(int heterogeneite) {
-		Platform.runLater(new Runnable() {
-			public void run() {
+	
 				myAmas.getEnvironment().setHeterogeneite(heterogeneite);
-				System.out.println("tAmas : changement Taux d'hétérogénéité " + heterogeneite);
-			}
-		});		
+				System.out.println("tAmas : changement Taux d'hÃ©tÃ©rogÃ©nÃ©itÃ© " + heterogeneite);
+			
 	}
 
 
 	public void setStabilitePosition(int stabilite_position) {
-		Platform.runLater(new Runnable() {
-			public void run() {
+
 				myAmas.getEnvironment().setStabilite_position(stabilite_position);
-				System.out.println("tAmas : changement de la Stabilité des positions à " + stabilite_position);
-			}
-		});		
+				System.out.println("tAmas : changement de la StabilitÃ© des positions Ã  " + stabilite_position);
+	
 		
 	}
 
 	public void setRadiusVoisinage(double radiusVoisins) {
-		Platform.runLater(new Runnable() {
-			public void run() {
+
 				myAmas.getEnvironment().setRadiusVoisins(radiusVoisins);
-				System.out.println("tAmas : changement du radius à " + radiusVoisins);
-			}
-		});	
+				System.out.println("tAmas : changement du radius Ã  " + radiusVoisins);
+
 		
 	}
 	
