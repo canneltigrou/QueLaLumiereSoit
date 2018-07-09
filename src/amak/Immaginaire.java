@@ -27,19 +27,19 @@ public class Immaginaire extends BlobAgent{
 		try {
 			switch(currentAction){
 	    	case SE_DEPLACER :
-	    		synchronized (this)
+	    		
 	            {
 	        		controller.move_blobImmaginaire(this);
 	            }
 	    		break;
 	    	case CREER :
-	    		synchronized (this)
+	    		
 	            {
 	    			controller.add_blobImmaginaire(newFils);
 	            }
 	    		break;
 	    	case SE_SUICIDER :
-	    		synchronized (this)
+	    		
 	            {
 	    			controller.remove_blobImmaginaire(this);
 	            }
@@ -68,18 +68,28 @@ public class Immaginaire extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
+
+		Log.debug("quela", "begin da immag");
 		try {
-			synchronized(blob.lock){ 
+			{ 
+				int debuguig = 0;
+				Log.debug("quela", "imag decide "+(debuguig++));
 				nbChangements = 0;
+				Log.debug("quela", "imag decide "+(debuguig++));
 				 majAspectAgent();		 
+					Log.debug("quela", "imag decide "+(debuguig++));
 				 currentAction = Action.RESTER; // to initialise
+					Log.debug("quela", "imag decide "+(debuguig++));
 			     BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
+					Log.debug("quela", "imag decide "+(debuguig++));
 				 Critere most_critic = Most_critical_critere(agentNeedingHelp.getCriticite());
+					Log.debug("quela", "imag decide "+(debuguig++));
 				 //System.out.println("criticite de stabilit� de position = " + criticite[Critere.Stabilite_position.getValue()]);
 				 //System.out.println("le plus critique est : " + most_critic.toString());
 				 
 				 switch (most_critic){
 				 case Isolement:
+						Log.debug("quela", "imag decide iso");
 					 // too many neighboors -> criticite.ISOLEMENT<0 -> I have to kill myself
 					 if(criticite[Critere.Isolement.getValue()] < 0)
 						 action_se_suicider();

@@ -4,6 +4,8 @@ import application.Controller;
 import application.ExceptionHandler;
 import business.Blob;
 import business.Critere;
+import fr.irit.smac.amak.tools.Log;
+import javafx.application.Platform;
 
 public class Migrant extends BlobAgent{
 	
@@ -33,7 +35,7 @@ public class Migrant extends BlobAgent{
 	}
 	
 	
-	// boolean renvoyant true avec une probabilité de 'tauxMurissement' géré dans l'IHM.
+	// boolean renvoyant true avec une probabilitï¿½ de 'tauxMurissement' gï¿½rï¿½ dans l'IHM.
 	private boolean mustRipe(){
 		return( Math.random() * 100 < tauxMurissement);
 	}
@@ -75,8 +77,10 @@ public class Migrant extends BlobAgent{
 	
 	@Override
 	protected void onDecideAndAct() {
+
+		Log.debug("quela", "begin da");
 		try {
-			synchronized(blob.lock)
+			
 			{
 				nbChangements = 0;
 				currentAction = Action.RESTER; // to initialise
@@ -98,8 +102,8 @@ public class Migrant extends BlobAgent{
 				BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();
 				Critere most_critic = Most_critical_critere(agentNeedingHelp.getCriticite());
 				
-				// Si je suis sans TR/TI ne peux pas me mouvoir. Je ne peux donc pas gérer la criticité de position
-				// Je vais aider le plus critique sur une autre de ses criticités.
+				// Si je suis sans TR/TI ne peux pas me mouvoir. Je ne peux donc pas gï¿½rer la criticitï¿½ de position
+				// Je vais aider le plus critique sur une autre de ses criticitï¿½s.
 				if (!isHome && most_critic == Critere.Stabilite_position){
 					double[] tmp = agentNeedingHelp.getCriticite();
 					tmp[Critere.Heterogeneite.getValue()] = 0;
@@ -140,6 +144,7 @@ public class Migrant extends BlobAgent{
 			ExceptionHandler eh = new ExceptionHandler();
 			eh.showError(e);
 		}	
+		Log.debug("quela", "end da");
 	}
 	
 	
@@ -153,7 +158,7 @@ public class Migrant extends BlobAgent{
 		try {
 	    	switch(currentAction){
 	    	case CREER :
-	    		synchronized (this)
+	    		
 	            {
 	    			super.controller.add_blobImmaginaire(newFils);
 	            }
@@ -161,12 +166,12 @@ public class Migrant extends BlobAgent{
 	    		
 			default:
 				if(isHome)
-					synchronized (this)
+					
 			        {
 						super.controller.move_blobHibernant(this);
 			        }
 	    		else
-	    			synchronized (this)
+	    			
 	    	        {
 	    				super.controller.move_blobMigrant(this);
 	    	        }
@@ -179,7 +184,7 @@ public class Migrant extends BlobAgent{
 		}
     }
 	
-	public void t0_to_tr(){
+	 public void t0_to_tr(){
 		try {
 			isHome = false;
 			blob.setCoordonnee(blob.genererCoordonneeAleaDansCercle(getAmas().getEnvironment().rayonTerrain * 2));
@@ -193,7 +198,7 @@ public class Migrant extends BlobAgent{
 		}
 	}
 	
-	public void t0_to_tr(double[] coo){
+	 public void t0_to_tr(double[] coo){
 		try {
 			isHome = false;
 			blob.setCoordonnee(coo);

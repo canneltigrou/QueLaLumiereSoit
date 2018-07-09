@@ -33,7 +33,7 @@ public class BlobForm extends Parent{
 	
 	public BlobForm(Blob b, double[] coo, int tailleBlob){
 		//blobList = new HashMap<Blob, BlobForm>();
-		synchronized(b.lock) {
+		 {
 		
 			this.tailleBlob = tailleBlob;
 			globules = new ArrayList<Circle>();
@@ -83,7 +83,7 @@ public class BlobForm extends Parent{
 		this.setTranslateX(coo[0]);// on positionne le groupe 
 		this.setTranslateY(coo[1]);
 		
-		synchronized(b.lock)
+		
 		{
 		
 			ArrayList<double[]> positionGlobule = proportionToVal(b.getGlobules_position());
@@ -105,7 +105,7 @@ public class BlobForm extends Parent{
 	
 	
 	public void changeBlob(Blob b, int tailleBlob){
-		synchronized(b.lock)
+		
 		{
 			this.tailleBlob = tailleBlob;
 			this.blob = b;
@@ -134,7 +134,7 @@ public class BlobForm extends Parent{
 	
 	public void changeBlob(Blob b, double[] coo, int tailleBlob){
 		
-		synchronized(b.lock)
+		
 		{
 			this.tailleBlob = tailleBlob;
 			this.blob = b;
@@ -165,7 +165,7 @@ public class BlobForm extends Parent{
 	// la couleur blanche est donc donn�e en param�tre.
 	public void changeBlob(Blob b, double[] coo, Color couleur, int tailleBlob){
 		
-		synchronized(b.lock)
+		
 		{
 			this.tailleBlob = tailleBlob;
 			this.blob = b;

@@ -187,10 +187,10 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	protected void majAspectAgent(){
 		try {
-			// La forme s'acquiert a partir d'un nombre d'expï¿½rience atteint.
+			// La forme s'acquiert a partir d'un nombre d'exp�rience atteint.
 			if (nbExperience >= nbExperiencesRequises)
 			{
-				synchronized (getBlob().lock) {
+				{
 					changer_de_forme();
 				}
 			}
@@ -204,7 +204,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 			{
 				BlobAgent blobConnu = (BlobAgent)it.next();
 				if(connaissance.get(blobConnu) > tpsConnaissanceRequise ){
-					synchronized (blobConnu.getBlob().lock) {
+					{
 						changer_de_couleur_passif(blobConnu);
 						actionPassive = Action.CHANGER_COULEUR;
 					}
