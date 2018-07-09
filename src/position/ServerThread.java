@@ -55,7 +55,7 @@ public class ServerThread extends Thread{
 		try {
 			socket = new ServerSocket(serverPort);
 			running = true;
-			new Thread(this).start();
+			//new Thread(this).start();
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
