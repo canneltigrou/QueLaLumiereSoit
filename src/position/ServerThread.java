@@ -16,14 +16,14 @@ import amak.Migrant;
 // https://gfx.developpez.com/tutoriel/java/network/#L4
 
 
-// permet de lancer un thread pour établir la connexion
-// et récolter les données en temps réel
+// permet de lancer un thread pour ï¿½tablir la connexion
+// et rï¿½colter les donnï¿½es en temps rï¿½el
 // pour les transmettres aux environnements correspondants
 
 
 /* Given you're looking for a simple formula, this is probably the simplest way to do it, assuming that the Earth is a sphere of perimeter 40075 km.
- * Length in meters of 1° of latitude = always 111.32 km
- * Length in meters of 1° of longitude = 40075 km * cos( latitude ) / 360
+ * Length in meters of 1ï¿½ of latitude = always 111.32 km
+ * Length in meters of 1ï¿½ of longitude = 40075 km * cos( latitude ) / 360
 */
 
 
@@ -33,7 +33,7 @@ public class ServerThread extends Thread{
 	private AmasThread tAmas;
 	private double cooCercleRayon;
 	private double[] cooCercleCentre;
-	private double[] cooCercleOrigine; // contient le point en haut à gauche du carré circonscrit
+	private double[] cooCercleOrigine; // contient le point en haut ï¿½ gauche du carrï¿½ circonscrit
 	
 	private double rayonSalle = 17.5 ; // en metres
 	
@@ -66,8 +66,8 @@ public class ServerThread extends Thread{
 		
 		ArrayList<double[]> checkpoints = new ArrayList<>();
 		double tmp[] = new double[2];
-		// coo suivants à remplacer par les vrais checkpoints
-		// à l'IRIT :
+		// coo suivants ï¿½ remplacer par les vrais checkpoints
+		// ï¿½ l'IRIT :
 		/*
 		tmp[0] = 43.56226037;
 		tmp[1] = 1.46760197;
@@ -105,9 +105,9 @@ public class ServerThread extends Thread{
 		
 		System.out.println("calculons les coo du cercle");
 		calculCooCercle(checkpoints);
-		System.out.println("j'ai trouvé pour centre : " + cooCercleCentre[0] + " ; " + cooCercleCentre[1]);
+		System.out.println("j'ai trouvï¿½ pour centre : " + cooCercleCentre[0] + " ; " + cooCercleCentre[1]);
 		System.out.println("pour rayon : " + cooCercleRayon);
-		System.out.println("j'ai pour coin en haut à gauche : " + cooCercleOrigine[0] + " ; " + cooCercleOrigine[1]);
+		System.out.println("j'ai pour coin en haut ï¿½ gauche : " + cooCercleOrigine[0] + " ; " + cooCercleOrigine[1]);
 		
 	}
 
@@ -119,7 +119,7 @@ public class ServerThread extends Thread{
 	public void run() {
 		while (running) {
 			try {
-				System.out.println("j'écoute");
+				System.out.println("j'ï¿½coute");
 				final Socket clientSocket = socket.accept();
 				System.out.println("Je viens d'entendre qqn");
 				new ConnectedClient(clientSocket, this);
@@ -147,11 +147,11 @@ public class ServerThread extends Thread{
 	}
 	
 	
-	// renvoie a et b de l'equation ax+b=y représentant la médiatrice du segment [AB] dont les coordonnees
+	// renvoie a et b de l'equation ax+b=y reprï¿½sentant la mï¿½diatrice du segment [AB] dont les coordonnees
 	// de A et B sont donnes en parametres
 	private double[] calculMediatrice(double[] cooA, double[] cooB) {
 		// trouvons l'equation Ax + B = y de la mediatrice 
-		double A = -(cooA[0] - cooB[0])/(cooA[1] - cooB[1]); // perpandiculaire à (AB)
+		double A = -(cooA[0] - cooB[0])/(cooA[1] - cooB[1]); // perpandiculaire ï¿½ (AB)
 		double B = (cooA[1] + cooB[1])/2 - A * (cooA[0] + cooB[0])/2; // par coo du point au milieu de [AB]
 					
 		double[] res = new double[2];

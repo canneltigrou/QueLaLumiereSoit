@@ -6,6 +6,7 @@ import business.Blob;
 import business.Critere;
 import fr.irit.smac.amak.tools.Log;
 import javafx.application.Platform;
+import position.ServerThreadAcceleration;
 
 public class Migrant extends BlobAgent{
 	
@@ -16,6 +17,7 @@ public class Migrant extends BlobAgent{
 	//private int cpt_hibernation;
 	//private int nbRipedIdeal = 1;
 	private double tauxMurissement = 5;
+	private ServerThreadAcceleration rentrerServer;
 	
 	
 	
@@ -276,8 +278,18 @@ public class Migrant extends BlobAgent{
 	public void setRiped(boolean isRiped) {
 		this.isRiped = isRiped;
 	}
+
+	public void rentrerBlob(ServerThreadAcceleration server) {
+		rentrerServer = server;
+	}
 	
 	
-	
+	@Override
+	protected void onAgentCycleEnd() {
+		if (rentrerServer != null) {
+			rentrerServer.rentrerBlob(this);
+			rentrerServer = null;
+		}
+	}
 	
 }
