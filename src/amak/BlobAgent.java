@@ -327,6 +327,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	protected void action_changerCouleur(){
 		try {
 			// choix d'une nouvelle couleur
+			System.out.println("je change de couleur en prenant une couleur aléatoire");
 			Couleur[] couleurListe = Couleur.values();
 			int indiceCouleur = (int) (Math.random() * ( couleurListe.length ));
 			Couleur nvlleCouleur = couleurListe[indiceCouleur];

@@ -13,6 +13,7 @@ public class Blob {
 	private ArrayList<double[]> globules_position;
 
 	public final Object lock = new Object();
+	public final Object colorLock = new Object();
 
 	public Blob() {
 		coordonnee = new double[2];
@@ -30,10 +31,13 @@ public class Blob {
 			System.err.println("couleur null");
 			System.exit(-1);
 		}
-		setGlobules_couleurs(new ArrayList<Couleur>());
-		for (int i = 0; i < globules_position.size(); i++) {
-			globules_couleurs.add(couleur);
+		synchronized (colorLock) {
+			setGlobules_couleurs(new ArrayList<Couleur>());
+			for (int i = 0; i < globules_position.size(); i++) {
+				globules_couleurs.add(couleur);
+			}
 		}
+		
 	}
 
 	// on cr�e un blob � la position (xcor, ycor) de couleur et de forme al�atoire.
@@ -44,13 +48,17 @@ public class Blob {
 		// this.pulsation = pulsation;
 		real = reel;
 		globules_position = generateFormRandom(); // forme.creerPosition(forme);
-		Couleur[] couleurListe = Couleur.values();
-		int indiceCouleur = (int) (Math.random() * (couleurListe.length));
-		Couleur couleur = couleurListe[indiceCouleur];
-		setGlobules_couleurs(new ArrayList<Couleur>());
-		for (int i = 0; i < globules_position.size(); i++) {
-			globules_couleurs.add(couleur);
+		
+		synchronized (colorLock) {
+			Couleur[] couleurListe = Couleur.values();
+			int indiceCouleur = (int) (Math.random() * (couleurListe.length));
+			Couleur couleur = couleurListe[indiceCouleur];
+			setGlobules_couleurs(new ArrayList<Couleur>());
+			for (int i = 0; i < globules_position.size(); i++) {
+				globules_couleurs.add(couleur);
+			}
 		}
+		
 	}
 
 	public Blob copy_blob() {
@@ -99,7 +107,9 @@ public class Blob {
 	}
 
 	public void setGlobules_position(ArrayList<double[]> globules_position) {
-		this.globules_position = globules_position;
+		synchronized (colorLock) {
+			this.globules_position = globules_position;
+		}
 	}
 
 	public int getPulsation() {
@@ -141,8 +151,13 @@ public class Blob {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Couleur> getGlobules_couleurs() {
-		return globules_couleurs;
+		ArrayList<Couleur> res;
+		synchronized (colorLock) {
+			res = (ArrayList<Couleur>) globules_couleurs.clone();
+		}
+		return res;
 		/*ArrayList<Couleur> tmp = (ArrayList<Couleur>) globules_couleurs.clone();
 		for (int i = 0; i < tmp.size(); i++) {
 			Couleur element = tmp.get(i);
@@ -156,7 +171,10 @@ public class Blob {
 	}
 
 	public void setGlobules_couleurs(ArrayList<Couleur> globules_couleurs) {
-		this.globules_couleurs = globules_couleurs;
+		synchronized (colorLock) {
+			this.globules_couleurs = globules_couleurs;
+		}
+		
 	}
 
 	// permet de changer de forme en choisissant une forme al�atoire.
