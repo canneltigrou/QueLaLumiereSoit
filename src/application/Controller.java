@@ -413,6 +413,7 @@ public class Controller implements Initializable{
 
 		towindow.initStyle(StageStyle.UNDECORATED);
 		toriginel_exp = new ToForm(1075);
+		toriginel_exp.putStroke();
 
 		towindow.setTitle("Territoire Originel");
 		towindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
@@ -420,7 +421,7 @@ public class Controller implements Initializable{
 		
 		configTerrain(towindow, toriginel_exp);
 		
-		Scene scene = new Scene(toriginel_exp, Color.rgb(42, 42, 42));
+		Scene scene = new Scene(toriginel_exp, Color.rgb(0, 0, 0));
 		
 		towindow.setScene(scene);
 		towindow.show();
@@ -432,12 +433,13 @@ public class Controller implements Initializable{
 
 		tiwindow.initStyle(StageStyle.UNDECORATED);
 		tideal_exp = new TerrainForm(1000/2);
-
+		tideal_exp.putStroke();
+		
 		tiwindow.setTitle("Territoire Ideal");
 		tiwindow.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));
 		configTerrain(tiwindow, tideal_exp);
 
-		tiwindow.setScene(new Scene(tideal_exp, Color.rgb(42, 42, 42)));
+		tiwindow.setScene(new Scene(tideal_exp, Color.rgb(0, 0, 0)));
 		tiwindow.show();
 	}
 	
