@@ -17,6 +17,7 @@ public class ToForm extends Parent{
 	private Map<Blob, BlobForm> blobList;
 	private double dimRepresentation;	// rayon/cot� de la repr�sentation en pxl (il s'agit d'une sph�re)
 	private int tailleBlob = 16;
+	Circle fond_Terrain;
 
 	
 	public ToForm(int tailleRepresentation) {
@@ -24,7 +25,7 @@ public class ToForm extends Parent{
 		tailleBlob = tailleBlob * tailleRepresentation / 350 ;
 		blobList = new ConcurrentHashMap<Blob, BlobForm>();
 
-		Circle fond_Terrain = new Circle (dimRepresentation/2, dimRepresentation/2, dimRepresentation/2);
+		fond_Terrain = new Circle (dimRepresentation/2, dimRepresentation/2, dimRepresentation/2);
 		fond_Terrain.setFill(Color.BLACK);
 
 		this.setTranslateX(0);// on positionne le groupe plut�t que le rectangle
@@ -38,7 +39,7 @@ public class ToForm extends Parent{
 	public ToForm() {
 		blobList = new HashMap<Blob, BlobForm>();
 		dimRepresentation = 350;
-		Circle fond_Terrain = new Circle (dimRepresentation/2, dimRepresentation/2, dimRepresentation/2);
+		fond_Terrain = new Circle (dimRepresentation/2, dimRepresentation/2, dimRepresentation/2);
 		/*
 		Rectangle fond_Terrain = new Rectangle ();
 		fond_Terrain.setWidth(dimRepresentation);
@@ -106,4 +107,12 @@ public class ToForm extends Parent{
 			}
 		});
 	}
+	
+	public void putStroke() {	
+		fond_Terrain.setStroke(Color.WHITE);	
+	}
+	
+	
+	
+	
 }
