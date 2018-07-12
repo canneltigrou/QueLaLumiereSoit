@@ -25,7 +25,7 @@ public class Main extends Application {
             Stage menu = new Stage();
             
             Button b_test = new Button("Test");
-            Button b_exp = new Button("Expï¿½rience");
+            Button b_exp = new Button("Expérience");
             
             primaryStage.setTitle("Comme un blob");
 			primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("icon_blob.png")));

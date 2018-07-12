@@ -86,9 +86,11 @@ public class ConnectedClientAcceleration implements Runnable {
 				ArrayList<double[]> listePos = agent.getBlob().getGlobules_position();
 				ArrayList<Couleur> listeCouleur = agent.getBlob().getGlobules_couleurs();
 				String str = "" + listePos.get(0)[0] + ";" + listePos.get(0)[1] + ";" + listeCouleur.get(0).toString();
-							
+				Couleur couleur;			
 				for (int i = 1; i < listePos.size(); i++) {
-					str += ":" + listePos.get(i)[0] + ";" + listePos.get(i)[1] + ";" + listeCouleur.get(i).toString();
+					if((couleur = listeCouleur.get(i)) == null)
+						couleur = Couleur.BLUE;			
+					str += ":" + listePos.get(i)[0] + ";" + listePos.get(i)[1] + ";" + couleur.toString();
 				}
 				out.println(str);
 		        out.flush();
