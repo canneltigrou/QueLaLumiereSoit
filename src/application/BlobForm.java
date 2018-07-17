@@ -27,7 +27,7 @@ public class BlobForm extends Parent{
 		if (tailleBlob > 100)
 			boxBlur = new BoxBlur(0.15 * tailleBlob, tailleBlob * 0.15, tailleBlob/200);
 		else
-			boxBlur = new BoxBlur(tailleBlob * 0.2, tailleBlob *0.2, tailleBlob/2);
+			boxBlur = new BoxBlur(tailleBlob * 0.2, tailleBlob *0.2, 2);
 	}
 	
 	
@@ -200,6 +200,59 @@ public class BlobForm extends Parent{
 	public void deleteSelection(){
 		selection.setStroke(Color.TRANSPARENT);
 		//selection.setFill(Color.TRANSPARENT);
+	}
+
+
+	// on rend net et on pulse un bref moment.
+	public void artifice() {
+		Color[] listeCouleur = new Color[4];
+		for(int i = 0 ; i < globules.size(); i++){
+			//globules.get(i).setEffect(null);
+			//globules.get(i) = new Circle();
+			listeCouleur[i] = (Color) globules.get(i).getFill();
+			System.out.println("Je prends la couleur : " + listeCouleur[i].toString());
+			//this.getChildren().remove(globules.get(i));
+			globules.get(i).setFill(Color.BLACK);
+			System.out.println("j'ai remove");
+		}
+		int i;
+		for(int j = 0; j < 7; j++) {
+			try {
+				System.out.println("je sleep");
+				Thread.sleep(200);
+				System.out.println("je me reveille");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			for(i = 0 ; i < globules.size(); i++){
+				//this.getChildren().remove(globules.get(i));
+				globules.get(i).setFill(listeCouleur[i]);
+
+			}
+			try {
+				System.out.println("je sleep");
+				Thread.sleep(200);
+				System.out.println("je me reveille");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			for(i = 0 ; i < globules.size(); i++){
+				//this.getChildren().add(globules.get(i));
+				globules.get(i).setFill(Color.BLACK);
+			}
+			
+		}
+		
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+        /*
+		for(int i = 0 ; i < globules.size(); i++){		
+			this.getChildren().remove(globules.get(i));
+		}*/
+		
 	}
 	
 	

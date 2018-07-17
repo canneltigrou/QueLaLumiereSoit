@@ -145,7 +145,7 @@ public class Migrant extends BlobAgent{
 	@Override
     protected void onUpdateRender() {
 		
-		if (tps + 1000 > System.currentTimeMillis() && !(currentAction.equals(Action.CREER) || currentAction.equals(Action.MURIR))) {
+		if (tps + 300 > System.currentTimeMillis() && !(currentAction.equals(Action.CREER) || currentAction.equals(Action.MURIR))) {
 			return;
 		}
 		tps = System.currentTimeMillis();

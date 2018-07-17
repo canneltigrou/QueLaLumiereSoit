@@ -71,7 +71,7 @@ public class AmasThread extends Thread{
 	
 	public void t0_to_tr(Migrant blob, double[] coo){
 		if(!myAmas.getEnvironment().isValideInTi(coo)) 
-	    {// Les coordonnées fournies ne sont pas valides. Je lui affecte une valeur aléatoire dans la salle de diametre
+	    {// Les coordonn�es fournies ne sont pas valides. Je lui affecte une valeur aléatoire dans la salle de diametre
 	 
 	          blob.t0_to_tr(blob.getBlob().genererCoordonneeAleaDansCercle(25)); 
 	          //lock.unlock();//V Laisser 

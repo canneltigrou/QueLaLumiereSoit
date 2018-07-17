@@ -17,7 +17,7 @@ public class MyEnvironment extends Environment {
 
 	
 	
-	private int radius = 4; // radius utilis� pour les diff�rents sliders
+	private int radius; // radius utilis� pour les diff�rents sliders
 	/* possede les valeurs des differents curseurs*/
 	private double isolement;
 	//private double stabilite_etat;
@@ -54,6 +54,7 @@ public class MyEnvironment extends Environment {
 		isolement = controller.getIsolement();
 		stabilite_position = controller.getStabilitePosition();
 		heterogeneite = controller.getHeterogenite();
+		radius = controller.getRadius();
 		//tauxMurissemnt = controller.getTauxMurissement();
 		//fctCriticalityStabiliteEtat = new CriticalityFunction(-1.2, 1.2, -0.05, 0.05);
 		//fctCriticalityStabiliteEtat = new CriticalityFunction(-(1 - stabilite_etat/100) * 0.05 - 1, (1 - stabilite_etat/100) * 0.05 + 1, -(1 - stabilite_etat/100) * 1.2 - 0.5, (1 - stabilite_etat/100) * 1.2 + 0.5);
