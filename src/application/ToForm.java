@@ -19,7 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 
-// l'ensemble des coordonn�es des blobs seront donn�es en poucentage pour les absisses et ordonn�es.
+// l'ensemble des coordonnees des blobs seront donnees en poucentage pour les absisses et ordonnees.
 public class ToForm extends Parent{
 	private Map<Blob, BlobForm> blobList;
 	private double dimRepresentation;	// rayon/cot� de la repr�sentation en pxl (il s'agit d'une sph�re)
