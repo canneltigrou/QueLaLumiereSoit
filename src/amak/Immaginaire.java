@@ -20,7 +20,7 @@ public class Immaginaire extends BlobAgent{
 	
 	@Override
     protected void onUpdateRender() {
-		if (tps + 300 < System.currentTimeMillis() && !(currentAction.equals(Action.CREER) || currentAction.equals(Action.SE_SUICIDER))) {
+		if (tps + 300 > System.currentTimeMillis() && !(currentAction.equals(Action.CREER) || currentAction.equals(Action.SE_SUICIDER))) {
 			return;
 		}
 		tps = System.currentTimeMillis();
