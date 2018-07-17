@@ -342,6 +342,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 				if (couleur.equals(MostPresentCouleur))
 					listeGlobulesCouleur.set(i, nvlleCouleur);
 			}
+			blob.setGlobules_couleurs(listeGlobulesCouleur);
 			nbChangements++;
 		}  catch(Exception e)
 		{
@@ -367,6 +368,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 					listeGlobulesCouleur.set(i, couleur);
 			}
 			nbChangements++;
+			blob.setGlobules_couleurs(listeGlobulesCouleur);
 		}  catch(Exception e)
 		{
 			ExceptionHandler eh = new ExceptionHandler();
