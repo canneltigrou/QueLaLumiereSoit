@@ -25,7 +25,7 @@ public class BlobForm extends Parent{
 	
 	private void generateBoxBlur(){
 		if (tailleBlob > 100)
-			boxBlur = new BoxBlur(0.15 * tailleBlob, tailleBlob * 0.15, tailleBlob/200);
+			boxBlur = new BoxBlur(0.15 * tailleBlob, tailleBlob * 0.15, 2);
 		else
 			boxBlur = new BoxBlur(tailleBlob * 0.2, tailleBlob *0.2, 2);
 	}
