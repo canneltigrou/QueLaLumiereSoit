@@ -17,7 +17,7 @@ public class TerrainForm extends Parent {
 	private Map<Blob, BlobForm> blobList;
 	private double rayonSalle = 12.5; // rayon de la salle d'exposition en m
 	private double rayonRepresentation = 175;	// rayon de la représentation en pxl
-	private int tailleBlob = 16; 
+	private int tailleBlob = 60; 
 	Circle fond_Terrain;
 	
 	

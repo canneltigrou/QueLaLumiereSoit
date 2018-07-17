@@ -374,10 +374,10 @@ public class Controller implements Initializable{
 		paneAppercuBlob.getChildren().add(appercuBlob);
 		
 		// J'initialise chaque sliders.
-		Sdiso.setValue(10);
-		sHeterogeneite.setValue(50);
-		sStabilitePosition.setValue(75);
-		sRadiusVoisins.setValue(7);
+		Sdiso.setValue(5);
+		sHeterogeneite.setValue(99);
+		sStabilitePosition.setValue(100);
+		sRadiusVoisins.setValue(11);
 		blobActifs = new ArrayList<>();
 		blobHibernants = new ArrayList<>();
 		
@@ -520,7 +520,9 @@ public class Controller implements Initializable{
 	public int getHeterogenite(){
 		return(sHeterogeneite.valueProperty().intValue());
 	}
-	
+	public int getRadius(){
+		return(sRadiusVoisins.valueProperty().intValue());
+	}
 	
 	public int getStabilitePosition(){
 		return(sStabilitePosition.valueProperty().intValue());
