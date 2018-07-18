@@ -1,5 +1,15 @@
 package business;
 
+/**
+ * <p>Permet de creer une fonction de criticité polynomiale.</p>
+ * <p> Classe laissée pour son utilité, mais non utilisée dans ce projet </p>
+ * <p>Son allure générale n'est pas de forme x^2 mais de forme x^3 
+ * <ul>
+ * <li> image négative si à gauche du point à criticité négative </li>
+ * <li> image positive si à droite de ce point </li>
+ * </ul>
+ * 
+ */
 public class CriticalityFunction {
 	private Double inf;
     private Double sup;
