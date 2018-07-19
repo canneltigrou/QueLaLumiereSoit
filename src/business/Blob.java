@@ -5,7 +5,7 @@ import java.util.Random;
 
 /**
  * Attribut essentiel des agents. 
- * @see amak.BlobAgent
+ * 
  * <p>Chacun de ses attributs n'est modifié QUE par le package amak </p>
  * (si par exemple l'IHM tente de modifier un blob, il demande à amak de la faire)
  * <p> ils peuvent être lus par d'aures packages :
@@ -13,6 +13,8 @@ import java.util.Random;
  *  - pkg position pour envoyer les infos au téléphone </p>
  * 
  * @author Claire MEVOLHON
+ * 
+ * @see amak.BlobAgent la classe BlobAgent
  *
  */
 public class Blob {

@@ -18,8 +18,6 @@ public class ConnectedClientAcceleration implements Runnable {
 	private Migrant agent;
 	private double[] cooInitiale;
 	private Socket socket;
-	private int tmp = 0;
-
 	public ConnectedClientAcceleration(final Socket clientSocket,
 			final ServerThreadAcceleration _server) {
 		System.out.println("j'initialise le socket");
@@ -48,7 +46,7 @@ public class ConnectedClientAcceleration implements Runnable {
 		String line;
 		try {
 			while ((line = in.readLine()) != null) {
-				if (true||tmp ++%10==0) {
+				
 				System.out.println("Hey ! je viens de recevoir quelque chose !");
 				final String[] res = line.split(";");
 				
@@ -94,7 +92,7 @@ public class ConnectedClientAcceleration implements Runnable {
 				}
 				out.println(str);
 		        out.flush();
-				}
+				
 			}
 			
 			System.out.println("sortie de la boucle while");

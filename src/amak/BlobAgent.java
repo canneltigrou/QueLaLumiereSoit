@@ -1,7 +1,5 @@
 package amak;
 
-import java.sql.Time;
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,11 +17,25 @@ import fr.irit.smac.amak.tools.Log;
 
 enum Action { CREER, SE_DEPLACER, SE_SUICIDER, RESTER, CHANGER_COULEUR, CHANGER_FORME, MURIR };
 
+/**
+ * Agent de AMAK. Lequel correspond à un blob
+ * <ul> 
+ * <li>L'agent possède un attribut blob.</li>
+ * <li>Calcule des criticités concernant les valeurs données par les curseurs de l'IHM </li>
+ * <li>Il suit les cycles de AMAK </li>
+ * </ul>
+ * <p> Cette classe comporte 2 classes filles : 
+ * <ul> <li> {@link amak.Immaginaire Immaginaire} : les blobs non réels, n'appartenant que à Ti </li>
+ * <li> {@link amak.Migrant Migrant} : les blobs "réels", de To ou Tr </li>
+ * </ul>
+ * 
+ * @author Claire MEVOLHON
+ *
+ */
 public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 	
 	protected Blob blob;
 	protected ArrayList<BlobAgent> voisins; 
-	
 	protected Action currentAction;
 	protected Immaginaire newFils;
 	protected Couleur couleurEnvironnante;
@@ -296,6 +308,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment>{
 		}
 		
 	}
+	
 	
 	private double[] convert(double[] nouvellesCoordonnees) {
 		return new double[] {

@@ -1,10 +1,7 @@
 package amak;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-
 import application.Controller;
-import fr.irit.smac.amak.Agent;
 //import business.CriticalityFunction;
 import fr.irit.smac.amak.Environment;
 import fr.irit.smac.amak.Scheduling;

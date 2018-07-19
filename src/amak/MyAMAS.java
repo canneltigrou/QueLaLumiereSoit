@@ -8,7 +8,6 @@ import business.Blob;
 import fr.irit.smac.amak.Amas;
 import fr.irit.smac.amak.Scheduling;
 import fr.irit.smac.amak.tools.Log;
-import javafx.application.Platform;
 
 public class MyAMAS extends Amas<MyEnvironment>{
 	
