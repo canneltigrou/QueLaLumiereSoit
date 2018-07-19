@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Attribut essentiel des agents. 
+ * Attribut essentiel des agents.
  * 
- * <p>Chacun de ses attributs n'est modifié QUE par le package amak </p>
- * (si par exemple l'IHM tente de modifier un blob, il demande à amak de la faire)
- * <p> ils peuvent être lus par d'aures packages :
- *  - pkg application pour l'affichage
- *  - pkg position pour envoyer les infos au téléphone </p>
+ * <p>
+ * Chacun de ses attributs n'est modifié QUE par le package amak
+ * </p>
+ * (si par exemple l'IHM tente de modifier un blob, il demande à amak de la
+ * faire)
+ * <p>
+ * ils peuvent être lus par d'aures packages : - pkg application pour
+ * l'affichage - pkg position pour envoyer les infos au téléphone
+ * </p>
  * 
  * @author Claire MEVOLHON
  * 
@@ -18,56 +22,60 @@ import java.util.Random;
  *
  */
 public class Blob {
-	/** il s'agira toujours d'un tableau à 2 doubles : 
-	 * [abscisse ; ordonnée]
+	/**
+	 * il s'agira toujours d'un tableau à 2 doubles : [abscisse ; ordonnée]
 	 */
 	private double[] coordonnee;
 
 	private boolean real;
 
-	/** donne une liste de @see Couleur 
-	 * de la taille du nombre de globules que possède le Blob
-	 * et dans le même ordre que les globules de globules_position
+	/**
+	 * donne une liste de {@link business.Couleur Couleur} de la taille du nombre de
+	 * globules que possède le Blob et dans le même ordre que les globules de
+	 * globules_position
 	 */
 	private ArrayList<Couleur> globules_couleurs;
-	
-	/** donne la position de chacun des globules [abscisse ; ordonnée]
-	 * en suposant le blob dans un carré de 100*100
-	 * avec la coordonnée 0;0 dans le coin en haut à gauche
-	 * et 4 globules max, d'où un diametre de 25 par globule
+
+	/**
+	 * donne la position de chacun des globules [abscisse ; ordonnée] en suposant le
+	 * blob dans un carré de 100*100 avec la coordonnée 0;0 dans le coin en haut à
+	 * gauche et 4 globules max, d'où un diametre de 25 par globule
 	 */
 	private ArrayList<double[]> globules_position;
 
-	/** verrou utilisé par les autres classes 
-	 * lors d'un changement ou d'une lecture d'un attribut de ce blob 
+	/**
+	 * verrou utilisé par les autres classes lors d'un changement ou d'une lecture
+	 * d'un attribut de ce blob
 	 */
 	public final Object lock = new Object();
-	
-	/** verrou utilisé spécifiquement pour ce qui concerne l'ArrayList globules_couleurs
+
+	/**
+	 * verrou utilisé spécifiquement pour ce qui concerne l'ArrayList
+	 * globules_couleurs
 	 */
 	public final Object colorLock = new Object();
 
-
-	/** 
+	/**
 	 * Constructeur
+	 * 
 	 * @param xcor
-	 * 				abscisse de sa coordonnée
+	 *            abscisse de sa coordonnée
 	 * @param ycor
-	 * 				ordonnée de sa coordonnée
+	 *            ordonnée de sa coordonnée
 	 * @param couleur
-	 * 				sa couleur de la classe @see Couleur
-	 * 				une seule couleur est donnée et servira à tous les globules
+	 *            sa couleur de la classe {@link business.Couleur Couleur} une seule
+	 *            couleur est donnée et servira à tous les globules
 	 * @param forme
-	 * 				liste des positions des globules
+	 *            liste des positions des globules
 	 * @param reel
-	 * 				est-ce un blob réel ou immaginaire ?
+	 *            est-ce un blob réel ou immaginaire ?
 	 */
 	public Blob(double xcor, double ycor, Couleur couleur, ArrayList<double[]> forme, boolean reel) {
 		coordonnee = new double[2];
 		coordonnee[0] = xcor;
 		coordonnee[1] = ycor;
 		real = reel;
-		globules_position = forme; 
+		globules_position = forme;
 		if (couleur == null) {
 			System.err.println("couleur null");
 			System.exit(-1);
@@ -78,28 +86,26 @@ public class Blob {
 				globules_couleurs.add(couleur);
 			}
 		}
-		
+
 	}
 
-	
-	
 	/**
-	 * on cree un blob a la position (xcor, ycor) 
-	 * de couleur et de forme aleatoire.
+	 * on cree un blob a la position (xcor, ycor) de couleur et de forme aleatoire.
+	 * 
 	 * @param xcor
-	 * 			abscisse de la position
+	 *            abscisse de la position
 	 * @param ycor
-	 * 			ordonnée de la position
+	 *            ordonnée de la position
 	 * @param reel
-	 * 			true si le blob est réel
+	 *            true si le blob est réel
 	 */
 	public Blob(double xcor, double ycor, boolean reel) {
 		coordonnee = new double[2];
 		coordonnee[0] = xcor;
 		coordonnee[1] = ycor;
 		real = reel;
-		globules_position = generateFormRandom(); 
-		
+		globules_position = generateFormRandom();
+
 		synchronized (colorLock) {
 			Couleur[] couleurListe = Couleur.values();
 			int indiceCouleur = (int) (Math.random() * (couleurListe.length));
@@ -109,12 +115,12 @@ public class Blob {
 				globules_couleurs.add(couleur);
 			}
 		}
-		
+
 	}
 
-	
 	/**
 	 * crée une copie de ce Blob
+	 * 
 	 * @return la copie du Blob
 	 */
 	public Blob copy_blob() {
@@ -123,15 +129,13 @@ public class Blob {
 		return (res);
 	}
 
-	
-
 	/**
-	 * genere des coordonnees cartesiennes aleatoires
-	 * dans un cercle de diametre D et de centre D/2;D/2
+	 * genere des coordonnees cartesiennes aleatoires dans un cercle de diametre D
+	 * et de centre D/2;D/2
+	 * 
 	 * @param D
-	 * 			diametre dans lequel doit se situer les nouvelles coordonnées
-	 * @return
-	 * 			la nouvelle coordonnée
+	 *            diametre dans lequel doit se situer les nouvelles coordonnées
+	 * @return la nouvelle coordonnée
 	 */
 	public double[] genererCoordonneeAleaDansCercle(double D) {
 		boolean isOk = false;
@@ -151,19 +155,20 @@ public class Blob {
 		return res;
 	}
 
-
 	/**
 	 * getter globules_position
+	 * 
 	 * @return globules_position
 	 */
 	public ArrayList<double[]> getGlobules_position() {
 		return globules_position;
 	}
-	
+
 	/**
 	 * setter globules_position
-	 * @param globules_position 
-	 * 			positions des globules
+	 * 
+	 * @param globules_position
+	 *            positions des globules
 	 */
 	public void setGlobules_position(ArrayList<double[]> globules_position) {
 		synchronized (colorLock) {
@@ -173,6 +178,7 @@ public class Blob {
 
 	/**
 	 * getter coordonnee
+	 * 
 	 * @return coordonnee
 	 */
 	public double[] getCoordonnee() {
@@ -181,8 +187,9 @@ public class Blob {
 
 	/**
 	 * setter coordonnee
+	 * 
 	 * @param coordonnee
-	 * 			coordonées du blob [abscisse;ordonnée]
+	 *            coordonées du blob [abscisse;ordonnée]
 	 */
 	public void setCoordonnee(double[] coordonnee) {
 		this.coordonnee = coordonnee;
@@ -190,6 +197,7 @@ public class Blob {
 
 	/**
 	 * getter real
+	 * 
 	 * @return real
 	 */
 	public boolean isReal() {
@@ -198,19 +206,21 @@ public class Blob {
 
 	/**
 	 * setter real
+	 * 
 	 * @param real
-	 * 		true si le blob est réel. (dans To ou lié à une personne réelle)
+	 *            true si le blob est réel. (dans To ou lié à une personne réelle)
 	 */
 	public void setReal(boolean real) {
 		this.real = real;
 	}
-	
+
 	/**
 	 * calcule la distance euclidienne entre 2 points A et B
-	 * @param cooA 
-	 * 			coordonnee du point A
+	 * 
+	 * @param cooA
+	 *            coordonnee du point A
 	 * @param cooB
-	 * 			coordonnée du point B
+	 *            coordonnée du point B
 	 * @return la distance euclidienne
 	 */
 	private double calculeDistance(double[] cooA, double[] cooB) {
@@ -223,14 +233,19 @@ public class Blob {
 
 	/**
 	 * retourne vrai si le blob donné en paramètre est voisin de ce blob.
-	 * <p>pour cela on utilise la distance euclidienne
-	 * et un rayon donné en paramètre concernant la prise en compte du voisinage </p>
-	 * <p>ie le blob b est notre voisin si la distance qui nous sépare est plus petite que le radius </p>
+	 * <p>
+	 * pour cela on utilise la distance euclidienne et un rayon donné en paramètre
+	 * concernant la prise en compte du voisinage
+	 * </p>
+	 * <p>
+	 * ie le blob b est notre voisin si la distance qui nous sépare est plus petite
+	 * que le radius
+	 * </p>
 	 * 
 	 * @param b
-	 * 			le blob dont on cherche à savoir s'il est voisin ou non
+	 *            le blob dont on cherche à savoir s'il est voisin ou non
 	 * @param radius
-	 * 			le radius concernant le voisinage pris en compte
+	 *            le radius concernant le voisinage pris en compte
 	 * @return vrai si le blob est notre voisin
 	 */
 	public boolean isVoisin(Blob b, int radius) {
@@ -240,8 +255,8 @@ public class Blob {
 	}
 
 	/**
-	 * getter de Globules_couleurs.
-	 * Cette méthode utilise le verrou colorLock
+	 * getter de Globules_couleurs. Cette méthode utilise le verrou colorLock
+	 * 
 	 * @return une COPIE de cette liste
 	 */
 	@SuppressWarnings("unchecked")
@@ -254,24 +269,24 @@ public class Blob {
 	}
 
 	/**
-	 * setter globules_couleurs.
-	 * Cette méthode utilise le verrou colorLock
+	 * setter globules_couleurs. Cette méthode utilise le verrou colorLock
+	 * 
 	 * @param globules_couleurs
-	 * 		liste des couleurs des globules dans l'ordre des positions
+	 *            liste des couleurs des globules dans l'ordre des positions
 	 */
 	public void setGlobules_couleurs(ArrayList<Couleur> globules_couleurs) {
 		synchronized (colorLock) {
 			this.globules_couleurs = globules_couleurs;
 		}
-		
+
 	}
-	
-	
+
 	/**
-	 * parcours la liste des couleurs globules_couleurs
-	 * et retourne la couleur qui est la plus présente dans ce blob
-	 * @return la couleur la plus présente dans ce blob
-	 * si une couleur est trouvée nulle, elle est mise par defaut à bleue
+	 * parcours la liste des couleurs globules_couleurs et retourne la couleur qui
+	 * est la plus présente dans ce blob
+	 * 
+	 * @return la couleur la plus présente dans ce blob si une couleur est trouvée
+	 *         nulle, elle est mise par defaut à bleue
 	 */
 	public Couleur getCouleurLaPLusPresente() {
 		int indice = 0;
@@ -296,18 +311,19 @@ public class Blob {
 	}
 
 	/*
-	 * ***************************************************
-	 * * ***************** FORMES ************************ *
+	 * *************************************************** * *****************
+	 * FORMES ************************ *
 	 * ***************************************************
 	 */
 
 	/**
-	 * méthode utilisée pour générer une forme 
-	 * renvoie vrai si la coordonnée coo est présente dans l'ArrayList liste
+	 * méthode utilisée pour générer une forme renvoie vrai si la coordonnée coo est
+	 * présente dans l'ArrayList liste
+	 * 
 	 * @param liste
-	 * 				liste de coordonées
+	 *            liste de coordonées
 	 * @param coo
-	 * 				une coordonnée
+	 *            une coordonnée
 	 * @return vrai si coo appartient à liste
 	 * @see #generateFormRandom()
 	 */
@@ -319,12 +335,12 @@ public class Blob {
 	}
 
 	/**
-	 * renvoie dans l'ordre : 
-	 * la plus petite abscisse; la plus grande abscisse; 
-	 * la plus petite ordonée; la plus grande ordonnee
-	 * Cette méthode est utilisée pour centrer le blob
+	 * renvoie dans l'ordre : la plus petite abscisse; la plus grande abscisse; la
+	 * plus petite ordonée; la plus grande ordonnee Cette méthode est utilisée pour
+	 * centrer le blob
+	 * 
 	 * @param liste
-	 * 				liste des coordonnees des globules avant leur centrage
+	 *            liste des coordonnees des globules avant leur centrage
 	 * @return [XcorMin ; XcorMax; YcorMin; YcorMax]
 	 */
 	private double[] minMaxXYcor(ArrayList<double[]> liste) {
@@ -351,16 +367,20 @@ public class Blob {
 		return res;
 	}
 
-	
 	/**
 	 * génère une forme totalement aléatoire (utilisé à la création d'un blob)
-	 * <p>rappel : un blob est dans un carré de 100*100. les positions sont donc en % </p>
-	 * <p> procédé : <ul>
-	 * <li>nombre de globules donné aléatoirement entre 1 et 4 </li>
-	 * <li> 1er globule posé au centre (50;50) </li>
-	 * <li> chaque globule supplémentaire est posé à la suite du précédent à une position possible
-	 * gauche/droite/haut/bas : choix aléatoire parmi les positions possibles </li>
-	 * <li> ensuite on recentre le tout </li>
+	 * <p>
+	 * rappel : un blob est dans un carré de 100*100. les positions sont donc en %
+	 * </p>
+	 * <p>
+	 * procédé :
+	 * <ul>
+	 * <li>nombre de globules donné aléatoirement entre 1 et 4</li>
+	 * <li>1er globule posé au centre (50;50)</li>
+	 * <li>chaque globule supplémentaire est posé à la suite du précédent à une
+	 * position possible gauche/droite/haut/bas : choix aléatoire parmi les
+	 * positions possibles</li>
+	 * <li>ensuite on recentre le tout</li>
 	 * </ul>
 	 *
 	 * @return les liste des positions des globules de la forme générée
@@ -422,16 +442,20 @@ public class Blob {
 	}
 
 	/**
-	 * À partir d'une liste des coordonnées de globules non centrés
-	 * donnée en référence en paramètre : 
-	 * modifie directement ces coordonnées pour les centrer.
-	 * <p>Cette méthode est appelée pour créer une nouvelle forme de Blob</p>
-	 * <p>rappel : le tout est dans un carré 100*100.
-	 * Le centre est donc en coordonnée 50;50 </p>
+	 * À partir d'une liste des coordonnées de globules non centrés donnée en
+	 * référence en paramètre : modifie directement ces coordonnées pour les
+	 * centrer.
+	 * <p>
+	 * Cette méthode est appelée pour créer une nouvelle forme de Blob
+	 * </p>
+	 * <p>
+	 * rappel : le tout est dans un carré 100*100. Le centre est donc en coordonnée
+	 * 50;50
+	 * </p>
 	 * 
 	 * 
 	 * @param res
-	 * 				liste des coordonnees des globules mais non centré
+	 *            liste des coordonnees des globules mais non centré
 	 */
 	private void centrerBlob(ArrayList<double[]> res) {
 		double[] minMaxcor = minMaxXYcor(res);
@@ -449,9 +473,11 @@ public class Blob {
 	}
 
 	/**
-	 * retourne l'indice du plus grand nombre dans le tableau d'entiers donné en parametre
+	 * retourne l'indice du plus grand nombre dans le tableau d'entiers donné en
+	 * parametre
+	 * 
 	 * @param valeurs
-	 * 			tableau d'entiers dont on cherche l'indice du plus grand nombre
+	 *            tableau d'entiers dont on cherche l'indice du plus grand nombre
 	 * @return l'indice
 	 */
 	private int argMax(Integer[] valeurs) {
@@ -466,23 +492,29 @@ public class Blob {
 		return indiceMax;
 	}
 
-	
 	/**
 	 * change la forme du Blob.
-	 * <p>ATTENTION : ceci affecte aussi la taille de globuleCouleurs</p>
-	 * <p>Ce changement ce fait en fonction de la répartition du voisinage.
-	 * donné en paramètre : le nombre de voisins respectivement dans les zones
-	 * Nord / Est / Sud / Ouest </p>
-	 * <p>Procédé : <ul>
-	 * 		<li>nombre de globules choisi aléatoirement entre 1 et 4.</li>
-	 * 		<li>1er globule placé au centre (50;50)</li>
-	 * 		<li>globule suivant placé dans la direction de la zone la plus peuplée</li>
-	 * 		<li>à chaque affectation d'un globule, 
-	 * 			on y soustrait dans cette zone le nombre de voisin max des autres zones</li>
-	 * 		<li>enfin on recentre le tout </li>
+	 * <p>
+	 * ATTENTION : ceci affecte aussi la taille de globuleCouleurs
+	 * </p>
+	 * <p>
+	 * Ce changement ce fait en fonction de la répartition du voisinage. donné en
+	 * paramètre : le nombre de voisins respectivement dans les zones Nord / Est /
+	 * Sud / Ouest
+	 * </p>
+	 * <p>
+	 * Procédé :
+	 * <ul>
+	 * <li>nombre de globules choisi aléatoirement entre 1 et 4.</li>
+	 * <li>1er globule placé au centre (50;50)</li>
+	 * <li>globule suivant placé dans la direction de la zone la plus peuplée</li>
+	 * <li>à chaque affectation d'un globule, on y soustrait dans cette zone le
+	 * nombre de voisin max des autres zones</li>
+	 * <li>enfin on recentre le tout</li>
 	 * </ul>
 	 * 
-	 * @param positionVoisins nombre de voisins dans les zones [Nord;Est;Sud;Ouest]
+	 * @param positionVoisins
+	 *            nombre de voisins dans les zones [Nord;Est;Sud;Ouest]
 	 */
 	public void changeForme(Integer[] positionVoisins) {
 
