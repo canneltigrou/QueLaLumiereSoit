@@ -81,7 +81,6 @@ public class Migrant extends BlobAgent{
 		try {
 			synchronized(blob.lock)
 			{
-				nbChangements = 0;
 				currentAction = Action.RESTER; // to initialise
 				if (isHome){
 					if(isRiped){

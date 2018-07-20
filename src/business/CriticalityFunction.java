@@ -1,8 +1,8 @@
 package business;
 
 /**
- * Permet de creer une fonction de criticité polynomiale.</br>
- * Classe laissée pour son utilité, mais non utilisée dans ce projet </br>
+ * Permet de creer une fonction de criticité polynomiale.<br>
+ * Classe laissée pour son utilité, mais non utilisée dans ce projet <br>
  * <p>
  * Son allure générale n'est pas de forme x^2 mais de forme x^3
  * <ul>

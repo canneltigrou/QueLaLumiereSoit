@@ -11,9 +11,6 @@ public class MyEnvironment extends Environment {
 	private ArrayList<BlobAgent> agents;
 	private ArrayList<Migrant> hibernants;
 	
-
-	
-	
 	private int radius; // radius utilisï¿½ pour les diffï¿½rents sliders
 	/* possede les valeurs des differents curseurs*/
 	private double isolement;
@@ -172,7 +169,7 @@ public class MyEnvironment extends Environment {
 	
 	
 	
-	// fonction qui ï¿½ partir de coordonnï¿½es initiales, propose de nouvelles coordonnï¿½es ï¿½ un certain rayon (le pas).
+	// fonction qui à partir de coordonnees initiales, propose de nouvelles coordonnees à un certain rayon (le pas).
 		public double[] nouvellesCoordonneesTT(BlobAgent agent, double pas, double[] coordonnee){
 			double[] res = new double[2];
 			
@@ -194,7 +191,7 @@ public class MyEnvironment extends Environment {
 				res[0] = (Math.random() * 2 * pas) - pas + coordonnee[0];
 			
 				// j'utilise l'equation d'un cercle de rayon pas.
-				// (res[0] - coo[0])ï¿½ + (res[1] - coo[1])ï¿½ = pasï¿½
+				// (res[0] - coo[0])^2 + (res[1] - coo[1])^2= pas^2
 				// ï¿½ partir de res[0], j'ai 2 solutions possible pour res[1]. 1 positive, une nï¿½gative. choisissons alï¿½atoirement.
 				double sign = 1;
 				if (Math.random() < 0.5)
@@ -214,7 +211,6 @@ public class MyEnvironment extends Environment {
 			boolean isOK = false;
 			// Je dois prendre en compte les bordures. Je dï¿½cide de ne pas compliquer les calculs : 
 			// Je mets le tout dans une boucle, et je relance l'alï¿½atoire si je suis en dehors du terrain.
-			
 			
 			
 			if ( pastDirection != null && Math.random()*100 < 90)
@@ -250,6 +246,19 @@ public class MyEnvironment extends Environment {
 	
 
 	
+		
+		public Migrant adopter() {
+			for (int i = 0; i < hibernants.size(); i++) {
+				if(hibernants.get(i).isRiped())
+					return hibernants.get(i);
+			}
+			return null;
+			
+		}
+		
+		
+		
+		
 	/* *****************************************************************************************
 	 * *********************   getter / setter			****************************************
 	 * ************************************************************************************* * */
@@ -296,15 +305,6 @@ public class MyEnvironment extends Environment {
 
 	public void setRadiusVoisins(double radiusVoisins) {
 		this.radius = (int)radiusVoisins;
-	}
-
-	public Migrant adopter() {
-		for (int i = 0; i < hibernants.size(); i++) {
-			if(hibernants.get(i).isRiped())
-				return hibernants.get(i);
-		}
-		return null;
-		
 	}
 	
 	

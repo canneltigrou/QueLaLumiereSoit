@@ -70,7 +70,6 @@ public class Immaginaire extends BlobAgent{
 	protected void onDecideAndAct() {
 		try {
 			synchronized(blob.lock){ 
-				nbChangements = 0;
 				 majAspectAgent();		 
 				 currentAction = Action.RESTER; // to initialise
 			     BlobAgent agentNeedingHelp = super.getMoreCriticalAgent();

@@ -40,31 +40,88 @@ enum Action {
 public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 
 	protected Blob blob;
+	/**
+	 * liste des voisins relatifs au cycle AMAK en cours. Initialisé par
+	 * l'environnement à chaque perception, en fonction du radius de l'IHM
+	 */
 	protected ArrayList<BlobAgent> voisins;
 	protected Action currentAction;
+
+	/**
+	 * Attribut utilisé lors de la décision de procréer. Null sinon
+	 */
 	protected Immaginaire newFils;
+
+	/** Couleur la plus présente dans le voisinage. Utilisé pour l'hétérogénéité */
 	protected Couleur couleurEnvironnante;
+
+	/**
+	 * Action passive : il s'agit d'un changement de couleur ou de forme dû à
+	 * l'environnement et non à la coopération
+	 */
 	protected Action actionPassive;
+
+	/**
+	 * vecteur [x;y] concernant la direction empruntée par le blob lors de son
+	 * dernier déplacement. Cet attribut est utilisé pour avoir une direction plus
+	 * générale lors du déplacement.
+	 */
 	protected double[] pastDirection;
 
-	// criticite : par convention : negative si en manque, positive si trop
-	// nombreux.
+	/**
+	 * Tableau des différentes criticites. Par convention : negative si en manque,
+	 * positive si trop nombreux. Utilise la classe {@link business.Critere Critere}
+	 * pour les indices.
+	 */
 	protected double[] criticite;
 
+	/**
+	 * Somme des différentes criticités. Utilisé pour déterminer quel agent
+	 * secourir.
+	 */
 	protected double criticite_globale;
+	/**
+	 * vecteur [x;y] comportant la direction globale des dernières directions
+	 * prises. Ce vecteur est utilisé pour la criticité stabilite_position.
+	 */
 	protected double[] directGeneral;
+	/**
+	 * valeur en dessous de laquelle on considerera des valeurs comme nulles. utlisé
+	 * par exemple pour le seuil de déplacement en dessous duquel on considère
+	 * l'agent comme immobile.
+	 */
 	protected double epsilon = 0.05;
-	protected double degreChangement;
-	protected double nbChangements;
-	protected double moyenneChangements;
+
+	/** IHM */
 	protected Controller controller;
 
 	// lie aux decisions 'passives' : en fonction de l'etat du voisinage
-	private int nbExperience; // le nombre d'experiences cooperatives. Agit sur la forme
-	private HashMap<BlobAgent, Integer> connaissance; // repertorie le temps passe avec un agent
+
+	/**
+	 * Compteur d'expériences coopératives (ici seuelement changement de couleur).
+	 * Agit sur le changement de forme passive. Réinitialisé à 0 après chaque
+	 * changement de forme.
+	 */
+	private int nbExperience;
+
+	/** Nombre d'expériences requises avant un changement de forme passive */
 	private int nbExperiencesRequises = 7;
+
+	/**
+	 * repertorie le temps (en nombre de cycles) passé avec un agent voisin. Agit
+	 * sur le changement de couleur passive
+	 */
+	private HashMap<BlobAgent, Integer> connaissance; // repertorie le temps passe avec un agent
+
+	/**
+	 * Durée de connaissance requise entre 2 agents avant un échange de couleur
+	 * passif entre eux.
+	 */
 	private int tpsConnaissanceRequise = 2;
 
+	/**
+	 * temps système, utilisé pour la fréquence de mise à jour de l'affichage IHM
+	 */
 	protected long tps;
 
 	@Override
@@ -80,7 +137,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		directGeneral = new double[2];
 		directGeneral[0] = 0;
 		directGeneral[1] = 0;
-		degreChangement = 0;
 		actionPassive = Action.SE_DEPLACER;
 		currentAction = Action.SE_DEPLACER;
 		super.onInitialization();
@@ -91,7 +147,14 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		super(amas, b, controller);
 	}
 
-	// renvoie la moyenne des positions (dim2)
+	/**
+	 * renvoie la moyenne des positions. Utilisé pour estimer le centre du blob
+	 * considérant les positions de ses globules
+	 * 
+	 * @param maListe
+	 *            liste des différentes positions (des globules du blob)
+	 * @return la moyenne
+	 */
 	private double[] calcule_moyenne(ArrayList<double[]> maListe) {
 		double[] res = new double[2];
 		res[0] = 0;
@@ -111,6 +174,16 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		return res;
 	}
 
+	/**
+	 * Changement passive de Couleur quand 2 blobs sont voisins pour une durée
+	 * suffisemment longue. <br>
+	 * 
+	 * C'est alors le globule de plus proche du voisin qui va prendre la couleur
+	 * prédominante de ce voisin.
+	 * 
+	 * @param voisin
+	 *            voisin avec lequel cet agent va échanger de couleur.
+	 */
 	protected void changer_de_couleur_passif(BlobAgent voisin) {
 		try {
 			ArrayList<Couleur> listeMesCouleurs = blob.getGlobules_couleurs();
@@ -146,15 +219,18 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 			// voisin
 			listeMesCouleurs.set(indiceMin, voisin.blob.getCouleurLaPLusPresente());
 			blob.setGlobules_couleurs(listeMesCouleurs);
-			nbChangements++;
 		} catch (Exception e) {
 			ExceptionHandler eh = new ExceptionHandler();
 			eh.showError(e);
 		}
 	}
 
-	// determine le nombre de blobs dans les 4 zones respectivement Nord(N) - Est(E)
-	// - Sud(S) - Ouest(W)
+	/**
+	 * renvoie le nombre de blobs dans les 4 zones autour de l'agent respectivement
+	 * Nord(N) - Est(E) - Sud(S) - Ouest(W)
+	 * 
+	 * @return [N ; E ; S ; W]
+	 */
 	private Integer[] determinerPositionVoisins() {
 		Integer[] res = new Integer[4];
 		// Nous pouvons définir 2 droites (considérons notre blob (x;y) et le voisin
@@ -188,7 +264,10 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		return res;
 	}
 
-	// Le changement de forme se fait en fonction de l'emplacement de voisins
+	/**
+	 * Changement de forme. Utilise la répartition des voisins autour. Fait appel à
+	 * la méthode {@link business.Blob#changeForme(Integer[]) Blob.changeForm}
+	 */
 	protected void changer_de_forme() {
 		try {
 			blob.changeForme(determinerPositionVoisins());
@@ -199,17 +278,18 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		}
 	}
 
+	/**
+	 * mise à jour de l'aspect du Blob : Méthode qui s'occupe des changements
+	 * PASSIFS
+	 */
 	protected void majAspectAgent() {
 		try {
-			// La forme s'acquiert a partir d'un nombre d'expï¿½rience atteint.
+			// La forme s'acquiert a partir d'un nombre d'expérience atteint.
 			if (nbExperience >= nbExperiencesRequises) {
 				synchronized (getBlob().lock) {
 					changer_de_forme();
 				}
 			}
-
-			// la pulsation depend du nombre de voisins alentour
-			// blob.setPulsation(voisins.size());
 
 			// la couleur s'acquiert si un voisin est present depuis un temps defini.
 			Iterator<BlobAgent> it = connaissance.keySet().iterator();
@@ -256,13 +336,12 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 	}
 
 	/*
-	 * **************************************************************** * **********
-	 * ACTION ******************* *
-	 * ****************************************************************
+	 * ********************************************************************
+	 * **************** ACTION **********************************************
+	 * *********************************************************************
 	 */
 
 	protected void action_se_suicider() {
-
 		Log.debug("quela", "imag decide suicide");
 		try {
 			currentAction = Action.SE_SUICIDER;
@@ -274,14 +353,18 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		}
 	}
 
+	/**
+	 * action de créer (décidé si trop isolé) Notre blob va créé un blob totalement
+	 * semblable à lui-même (même forme, même couleur) et va le positionner
+	 * aléatoirement autour de lui à une certaine distance. L'environnement (qui
+	 * possède la liste des agents) ne sera mis à jour qu'à la fin du cycle.
+	 */
 	protected void action_creer() {
-
 		Log.debug("quela", "imag decide creer");
 		try {
 			currentAction = Action.CREER;
 			Log.debug("quela", "imag decide copy");
 			Blob newBlob = blob.copy_blob();
-			// newBlob.setCoordonnee(convert(newBlob.getCoordonnee()));
 			Log.debug("quela", "imag decide setcoord");
 			Log.debug("coord", "coord " + newBlob.getCoordonnee());
 
@@ -300,10 +383,13 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 
 	}
 
-	private double[] convert(double[] nouvellesCoordonnees) {
-		return new double[] { nouvellesCoordonnees[0] * 12.5 / 50.0, nouvellesCoordonnees[1] * 12.5 / 50.0 };
-	}
-
+	/**
+	 * Action de se déplacer (décidé si criticité de la position est trop faible).
+	 * L'agent prend une nouvelle position à une certaine distance autour de lui en
+	 * favorisant la dernière direction prise. On remet à jour la variable
+	 * {@link #directGeneral directGeneral} utilisée pour la criticité de
+	 * Déplacement.
+	 */
 	protected void action_se_deplacer() {
 		try {
 			double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, Math.random() * 1.2, pastDirection);
@@ -318,11 +404,15 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		}
 	}
 
-	// CHANGEMENT DE COULEUR .... Pour ne pas perdre les couleurs aquises par
-	// experience,
-	// je choisis de changer la couleur qui est la plus frequente parmi mes
-	// globules.
-	// action de changer de couleur en prenant une couleur aleatoire
+	/**
+	 * Changement de couleur ACTIF. (décidé en fonction de la criticité
+	 * heterogeneite).
+	 * <p>
+	 * Afin de ne pas perdre les couleurs acquises par expérience, on choisira pour
+	 * notre blob de ne changer que la couleur la plus fréquente parmi ses globules.
+	 * </p>
+	 * Ici la couleur de remplacement est prise aléatoirement.
+	 */
 	protected void action_changerCouleur() {
 		try {
 			// choix d'une nouvelle couleur
@@ -340,16 +430,23 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 					listeGlobulesCouleur.set(i, nvlleCouleur);
 			}
 			blob.setGlobules_couleurs(listeGlobulesCouleur);
-			nbChangements++;
 		} catch (Exception e) {
 			ExceptionHandler eh = new ExceptionHandler();
 			eh.showError(e);
 		}
 	}
 
-	// action de changer de couleur en prenant celle la plus presente dans
-	// l'environnement,
-	// laquelle est donnee en argument.
+	/**
+	 * Action de changer de couleur en prenant celle la plus presente dans
+	 * l'environnement, laquelle est donnee en argument.
+	 * <p>
+	 * Afin de ne pas perdre les couleurs acquises par expérience, on choisira pour
+	 * notre blob de ne changer que la couleur la plus fréquente parmi ses globules.
+	 * </p>
+	 * 
+	 * @param couleur
+	 *            couleur de remplacement
+	 */
 	protected void action_changerCouleur(Couleur couleur) {
 		try {
 
@@ -364,7 +461,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 				if (couleur2.equals(MostPresentCouleur))
 					listeGlobulesCouleur.set(i, couleur);
 			}
-			nbChangements++;
 			blob.setGlobules_couleurs(listeGlobulesCouleur);
 		} catch (Exception e) {
 			ExceptionHandler eh = new ExceptionHandler();
@@ -378,6 +474,12 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 	 * ************************************************************************
 	 */
 
+	/**
+	 * Calcul de la criticité d'Isolement : par différence entre le nombre de
+	 * voisins voulu (curseur sur IHM) et le nombre de voisins effectif.
+	 * 
+	 * @return criticité concernant l'isolement.
+	 */
 	protected double computeCriticalityIsolement() {
 		double res = 0;
 		try {
@@ -390,6 +492,19 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		return (res);
 	}
 
+	/**
+	 * Calcul de la criticité d'Heterogeneite. Utilise la couleur prédominante de
+	 * CHACUN des voisins (notre agent inclus) ainsi que la couleur (C) la plus
+	 * présente du voisinage.
+	 * <p>
+	 * Retourne la différence entre le nombre de voisins effectifs de couleur (C) et
+	 * le nombre de voisins de couleur (C) voulus. <br>
+	 * Le nombre de voisins de couleur (C) voulu utilise le pourcentage demandé par
+	 * le curseur (IHM) par rapport au nombre de voisins.
+	 * </p>
+	 * 
+	 * @return criticité concernant l'hétérogénéité.
+	 */
 	protected double computeCriticalityHeterogeneite() {
 
 		// recuperation des couleurs environnantes
@@ -427,6 +542,23 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		return (maxNbCouleur - nbVoisinsOptimal);
 	}
 
+	/**
+	 * Calcul de la criticité de stabilité de position : <br>
+	 * Retourne la différence entre le nombre de voisins mouvants voulu et le nombre
+	 * de voisins mouvants effectif.
+	 * 
+	 * <p>
+	 * Utilisation de la variable {@link #directGeneral directGeneral} des
+	 * différents voisins et de la variable {@link #epsilon epsilon} pour déterminer
+	 * le nombre de voisins mouvants.
+	 * </p>
+	 * <p>
+	 * Le nombre de voisins de mouvants voulu utilise le pourcentage demandé par le
+	 * curseur (IHM) par rapport au nombre de voisins.
+	 * </p>
+	 * 
+	 * @return criticité concernant la stabilité de position.
+	 */
 	protected double computeCriticalityStabilitePosition() {
 		// calcul du nombre de voisins qui "bougent".
 		// chaque voisin bouge ssi DirectGeneral > (eps,eps)
@@ -447,18 +579,11 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		return (0);
 	}
 
-	/*
-	 * protected double computeCriticalityStabiliteEtat(){ // calcule de la moyenne
-	 * des changements effectués alentour: double moyenne = 0; for (int i = 0; i<
-	 * voisins.size(); i++){ moyenne += voisins.get(i).getNbChangements(); } moyenne
-	 * /= voisins.size();
+	/**
+	 * Calcule les différentes criticités dans Tideal.
 	 * 
-	 * //double res = fctCriticalityStabiliteEtat.compute(moyenneChangements -
-	 * moyenne); moyenneChangements = moyenne; return(res);
-	 * 
-	 * }
+	 * @return la criticité globale.
 	 */
-
 	protected double computeCriticalityInTideal() {
 
 		try {
@@ -476,7 +601,13 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		return criticite_globale;
 	}
 
-	// retourne le critere qui a une plus grande criticite
+	/**
+	 * retourne le critere qui a une plus grande criticite
+	 * 
+	 * @param subjectCriticity
+	 *            tableau de criticités
+	 * @return le critère le plus critique
+	 */
 	public Critere Most_critical_critere(double[] subjectCriticity) {
 		// return (Collections.max(criticite.entrySet(),
 		// Map.Entry.comparingByValue()).getKey());
@@ -490,7 +621,11 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		return Critere.valueOf(max_critere);
 	}
 
-	/* renvoie l'agent le plus critique parmi ses voisins, incluant lui-meme */
+	/**
+	 * renvoie l'agent le plus critique parmi ses voisins, incluant lui-meme
+	 * 
+	 * @return l'agent le plus critique
+	 */
 	protected BlobAgent getMoreCriticalAgent() {
 		Iterator<BlobAgent> itr = voisins.iterator();
 		double criticiteMax = criticite_globale;
@@ -503,10 +638,6 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 			}
 		}
 		return (res);
-	}
-
-	public double[] getCriticite() {
-		return criticite;
 	}
 
 	/*
@@ -523,12 +654,8 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		this.blob = blob;
 	}
 
-	public void addVoisin(BlobAgent blobToAdd) {
-		this.voisins.add(blobToAdd);
-	}
-
-	public void clearVoisin() {
-		this.voisins.clear();
+	public double[] getCriticite() {
+		return criticite;
 	}
 
 	public ArrayList<BlobAgent> getVoisins() {
@@ -564,8 +691,12 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		this.directGeneral = directGeneral;
 	}
 
-	public double getNbChangements() {
-		return nbChangements;
+	public void addVoisin(BlobAgent blobToAdd) {
+		this.voisins.add(blobToAdd);
+	}
+
+	public void clearVoisin() {
+		this.voisins.clear();
 	}
 
 }
