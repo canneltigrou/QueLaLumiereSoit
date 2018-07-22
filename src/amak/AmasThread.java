@@ -35,16 +35,10 @@ public class AmasThread extends Thread {
 	/** nombre de Blobs réels à mettre : donnée par l'IHM application.Controller */
 	int nbBlobs;
 
-	/**
-	 * getter du ServerThread
-	 */
 	public ServerThread getTposition() {
 		return tposition;
 	}
 
-	/**
-	 * setter du ServerThread
-	 */
 	public void setTposition(ServerThread tposition) {
 		this.tposition = tposition;
 	}
@@ -171,9 +165,9 @@ public class AmasThread extends Thread {
 	/**
 	 * demande de passage d'un agent(Migrant) de Tr vers To
 	 * 
-	 * Cette méthode fait appel à la méthode {@link amak.Migrant#t0_to_tr()} </br>
-	 * Le changement ne sera effectif qu'à la fin du cycle de AMAK </br>
-	 * L'agent sera placé à une coordonnée aléatoire dans To </br>
+	 * Cette méthode fait appel à la méthode {@link amak.Migrant#t0_to_tr()} <br>
+	 * Le changement ne sera effectif qu'à la fin du cycle de AMAK <br>
+	 * L'agent sera placé à une coordonnée aléatoire dans To <br>
 	 * 
 	 * @param blob
 	 *            l'agent (Migrant) à déplacer de Tr à To.
@@ -198,6 +192,8 @@ public class AmasThread extends Thread {
 
 	/**
 	 * getter du Controller de l'IHM
+	 * 
+	 * @return le controller
 	 */
 	public Controller getController() {
 		return controller;
