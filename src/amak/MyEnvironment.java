@@ -7,6 +7,22 @@ import fr.irit.smac.amak.Environment;
 import fr.irit.smac.amak.Scheduling;
 import fr.irit.smac.amak.tools.Log;
 
+/**
+ * Environnement de l'AMAS : comportant les 3 terrains To, Tr et Ti.
+ * <p>
+ * Les terrains sont "modélisés" en utilisant 2 listes :
+ * <ul>
+ * <li>une liste {@link #hibernants hibernants} de Migrants qui sont dans
+ * To</li>
+ * <li>une liste {@link #agents agents} de BlobAgent "actifs" qui sont dans Ti.
+ * <br>
+ * On sait selon le type de l'agent s'il est également dans Tr (seuls les
+ * Migrants peuvent y être).</li>
+ * </ul>
+ * 
+ * @author Claire Mévolhon
+ *
+ */
 public class MyEnvironment extends Environment {
 	/**
 	 * Liste des agents actuellement dans Tidéal : les immaginaires ET les Migrants

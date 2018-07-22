@@ -7,7 +7,7 @@ import business.Critere;
 import fr.irit.smac.amak.tools.Log;
 
 /**
- * Classe fille de Blob Agent. Agent lié à un blob virtuel, présent uniquement
+ * Classe fille de {@link amak.BlobAgent BlobAgent}. Agent lié à un blob virtuel, présent uniquement
  * dans Tidel.
  * <p>
  * Il peut décider de Créer ; se suicider ; se déplacer ; changer de formes.
@@ -67,7 +67,7 @@ public class Immaginaire extends BlobAgent {
 
 	}
 
-	/** @see amak.BlobAgent#action_se_deplacer(); */
+	/** @see amak.BlobAgent#action_se_deplacer() */
 	@Override
 	protected void action_se_deplacer() {
 		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, Math.random() * 0.7, pastDirection);

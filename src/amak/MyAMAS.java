@@ -9,6 +9,12 @@ import fr.irit.smac.amak.Amas;
 import fr.irit.smac.amak.Scheduling;
 import fr.irit.smac.amak.tools.Log;
 
+/**
+ * MyAMAS de AMAK
+ * 
+ * @author claire
+ *
+ */
 public class MyAMAS extends Amas<MyEnvironment> {
 
 	private Controller controller;
@@ -16,6 +22,8 @@ public class MyAMAS extends Amas<MyEnvironment> {
 	/**
 	 * genere des coordonnees cartesiennes aleatoires dans un cercle de diametre 100
 	 * et de centre 50;50
+	 * 
+	 * @return la coordonnée
 	 */
 	private double[] genererCoordonneeCercle() {
 		boolean isOk = false;
@@ -79,23 +87,18 @@ public class MyAMAS extends Amas<MyEnvironment> {
 		super(env, Scheduling.DEFAULT, controller, nbBlobs);
 	}
 
-	
-	
 	/*
-	protected void addAgent(Blob b) {
-		BlobAgent agent = new BlobAgent(this, b, controller);
-		getEnvironment().addAgent(agent);
-	}
-	
-	
-	protected void moveAgent(Blob b, BlobAgent agent) {
-		agent.setBlob(b);
-	}
-
-	protected void removeAgent(Blob b, BlobAgent agent) {
-		getEnvironment().getAgents().remove(agent);
-
-	}*/
+	 * protected void addAgent(Blob b) { BlobAgent agent = new BlobAgent(this, b,
+	 * controller); getEnvironment().addAgent(agent); }
+	 * 
+	 * 
+	 * protected void moveAgent(Blob b, BlobAgent agent) { agent.setBlob(b); }
+	 * 
+	 * protected void removeAgent(Blob b, BlobAgent agent) {
+	 * getEnvironment().getAgents().remove(agent);
+	 * 
+	 * }
+	 */
 
 	@Override
 	protected void onSystemCycleEnd() {

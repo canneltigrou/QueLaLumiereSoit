@@ -51,7 +51,11 @@ public class Migrant extends BlobAgent {
 		this.isHome = isHome;
 	}
 
-	/** boolean renvoyant true avec une probabilité de 'tauxMurissement' */
+	/**
+	 * boolean renvoyant true avec une probabilité de 'tauxMurissement'
+	 * 
+	 * @return vrai s'il doit mûrir
+	 */
 	private boolean mustRipe() {
 		return (Math.random() * 100 < tauxMurissement);
 	}
