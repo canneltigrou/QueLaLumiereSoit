@@ -33,6 +33,12 @@ import position.PositionSimulationThread;
 import position.ServerThreadAcceleration;
 import javafx.fxml.Initializable;
 
+/**
+ * 
+ * 
+ * @author François Beuvin avec Claire et Michael
+ *
+ */
 public class Controller implements Initializable{
 	
 	private boolean experience;
