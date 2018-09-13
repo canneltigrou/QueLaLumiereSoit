@@ -1,6 +1,6 @@
 /**
- * Package concernant le serveur (réel ou simulation) en lien avec les portables.
- * Serveur ou simu, permettant de donner une nouvelle position du blob réel
- * renvoie également les données nécéssaire aux téléphones connectés
+ * Package concernant le serveur (rÃ©el ou simulation) en lien avec les portables.
+ * Serveur ou simu, permettant de donner une nouvelle position du blob rÃ©el
+ * renvoie Ã©galement les donnÃ©es nÃ©cÃ©ssaire aux tÃ©lÃ©phones connectÃ©s
  */
 package position;

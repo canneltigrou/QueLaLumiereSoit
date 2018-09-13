@@ -7,10 +7,10 @@ import business.Critere;
 import fr.irit.smac.amak.tools.Log;
 
 /**
- * Classe fille de {@link amak.BlobAgent BlobAgent}. Agent lié à un blob virtuel, présent uniquement
- * dans Tidel.
+ * Classe fille de {@link amak.BlobAgent BlobAgent}. Agent liï¿½ ï¿½ un blob
+ * virtuel, prï¿½sent uniquement dans Tidel.
  * <p>
- * Il peut décider de Créer ; se suicider ; se déplacer ; changer de formes.
+ * Il peut dï¿½cider de Crï¿½er ; se suicider ; se dï¿½placer ; changer de formes.
  * </p>
  * 
  * @author Claire MEVOLHON
@@ -29,9 +29,9 @@ public class Immaginaire extends BlobAgent {
 	}
 
 	/**
-	 * Fonction de mise à jour de l'affichage appelée à chaque cycle de AMAK : on ne
-	 * décide d'afficher qu'à une certaine fréquence. (sauf pour les actions
-	 * importantes : création et suicide)
+	 * Fonction de mise ï¿½ jour de l'affichage appelï¿½e ï¿½ chaque cycle de AMAK : on ne
+	 * dï¿½cide d'afficher qu'ï¿½ une certaine frï¿½quence. (sauf pour les actions
+	 * importantes : crï¿½ation et suicide)
 	 */
 	@Override
 	protected void onUpdateRender() {
@@ -67,7 +67,6 @@ public class Immaginaire extends BlobAgent {
 
 	}
 
-	/** @see amak.BlobAgent#action_se_deplacer() */
 	@Override
 	protected void action_se_deplacer() {
 		double[] tmp = getAmas().getEnvironment().nouvellesCoordonnees(this, Math.random() * 0.7, pastDirection);
@@ -78,6 +77,24 @@ public class Immaginaire extends BlobAgent {
 		directGeneral[1] = 0.6 * pastDirection[1] + 0.4 * directGeneral[1];
 	}
 
+	/**
+	 * Decide et agit en fonction du blob le plus critique parmi son voisinage,
+	 * incluant lui-mÃªme. <br>
+	 * 
+	 * <ul>
+	 * <li>En fonction du critÃ¨re le plus critique :
+	 * <li>ISOLEMENT : se suicide si voisinage trop dense, se reproduit sinon.</li>
+	 * <li>STABILITE ETAT : non pris en compte ni calculÃ©.</li>
+	 * <li>STABILITE POSITION : Si le voisinage est trop statique alors l'agent va
+	 * se dÃ©placer.</li>
+	 * <li>HETEROGENEITE : l'agent va changer de couleur. Si trop hÃ©tÃ©rogÃ¨ne, alors
+	 * il adoptera la couleur la plus prï¿½sente parmi le voisinage. Sinon un de ses
+	 * globules prendra une couleur autre.</li>
+	 * </ul>
+	 * 
+	 * 
+	 * 
+	 */
 	@Override
 	protected void onDecideAndAct() {
 		try {
@@ -137,11 +154,11 @@ public class Immaginaire extends BlobAgent {
 	}
 
 	/**
-	 * Actions exécutés en fin de cycle de Amak :
+	 * Actions exï¿½cutï¿½s en fin de cycle de Amak :
 	 * <ul>
-	 * <li>On met à jour la liste des agents de l'environnement en cas de création
+	 * <li>On met ï¿½ jour la liste des agents de l'environnement en cas de crï¿½ation
 	 * d'un blob.<br>
-	 * La raison est que la création ou la suppression d'un agent n'est effectif
+	 * La raison est que la crï¿½ation ou la suppression d'un agent n'est effectif
 	 * qu'au cycle suivant. On ne veut donc pas que l'environnement utilise ce
 	 * nouvel agent avant le cycle suivant.</li>
 	 * </ul>

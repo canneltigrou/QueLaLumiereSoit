@@ -325,6 +325,10 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 		}
 	}
 
+	/**
+	 * Perception de l'agent : on demande à l'environnement de mettre à jour la
+	 * liste de voisins.
+	 */
 	@Override
 	protected void onPerceive() {
 		try {
@@ -341,6 +345,13 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 	 * *********************************************************************
 	 */
 
+	/**
+	 * Action de se suicider, par la méthode destroy de amak.<br>
+	 * L'action de détruire l'agent n'est effectif qu'à la fin du cycle (Il n'ya a
+	 * donc pas de souci lors d'acces à ce blob par des voisins)<br>
+	 * Seuls les {@link amak.Immaginaire Immaginaire} peuvent se suicider, si
+	 * voisinage trop dense.
+	 */
 	protected void action_se_suicider() {
 		Log.debug("quela", "imag decide suicide");
 		try {
@@ -354,7 +365,7 @@ public class BlobAgent extends Agent<MyAMAS, MyEnvironment> {
 	}
 
 	/**
-	 * action de créer (décidé si trop isolé) Notre blob va créé un blob totalement
+	 * action de créer (décidé si trop isolé) Notre blob va créer un blob totalement
 	 * semblable à lui-même (même forme, même couleur) et va le positionner
 	 * aléatoirement autour de lui à une certaine distance. L'environnement (qui
 	 * possède la liste des agents) ne sera mis à jour qu'à la fin du cycle.

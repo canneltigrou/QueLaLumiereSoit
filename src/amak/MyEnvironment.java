@@ -10,22 +10,22 @@ import fr.irit.smac.amak.tools.Log;
 /**
  * Environnement de l'AMAS : comportant les 3 terrains To, Tr et Ti.
  * <p>
- * Les terrains sont "modélisés" en utilisant 2 listes :
+ * Les terrains sont "modÃ©lisÃ©s" en utilisant 2 listes :
  * <ul>
  * <li>une liste {@link #hibernants hibernants} de Migrants qui sont dans
  * To</li>
  * <li>une liste {@link #agents agents} de BlobAgent "actifs" qui sont dans Ti.
  * <br>
- * On sait selon le type de l'agent s'il est également dans Tr (seuls les
- * Migrants peuvent y être).</li>
+ * On sait selon le type de l'agent s'il est ï¿½galement dans Tr (seuls les
+ * Migrants peuvent y Ãªtre).</li>
  * </ul>
  * 
- * @author Claire Mévolhon
+ * @author Claire MÃ©volhon
  *
  */
 public class MyEnvironment extends Environment {
 	/**
-	 * Liste des agents actuellement dans Tidéal : les immaginaires ET les Migrants
+	 * Liste des agents actuellement dans Tidï¿½al : les immaginaires ET les Migrants
 	 * qui sont sortis
 	 */
 	private ArrayList<BlobAgent> agents;
@@ -33,28 +33,28 @@ public class MyEnvironment extends Environment {
 	/** Liste des Migrants qui sont actuellement dans To */
 	private ArrayList<Migrant> hibernants;
 
-	/** Radius pris en compte pour le voisinage. MàJ par un curseur de l'IHM. */
+	/** Radius pris en compte pour le voisinage. Mï¿½J par un curseur de l'IHM. */
 	private int radius;
 	/**
-	 * Degré d'isolement : il définit le nombre de voisins optimal à avoir. <br>
+	 * DegrÃ© d'isolement : il dÃ©finit le nombre de voisins optimal Ã  avoir. <br>
 	 * MaJ par un curseur de l'IHM.
 	 */
 	private double isolement;
 	/**
-	 * Pourcentage de déplacements : il définit le pourcentage optimal de voisins
-	 * devant se déplacer.<br>
+	 * Pourcentage de dÃ©placements : il dÃ©finit le pourcentage optimal de voisins
+	 * devant se dÃ©placer.<br>
 	 * MaJ par un curseur de l'IHM.
 	 */
 	private double stabilite_position;
 	/**
-	 * Pourcentage d'hétérogénéité : utilisé comme correspondant au pourcentage de
-	 * présence de la couleur prédominante du voisinage. <br>
+	 * Pourcentage d'hÃ©tÃ©rogÃ©nÃ©itÃ© : utilisÃ© comme correspondant au pourcentage de
+	 * prÃ©sence de la couleur prÃ©dominante du voisinage. <br>
 	 * MaJ par un curseur de l'IHM.
 	 */
 	private double heterogeneite;
 	/**
-	 * Rayon du Terrain Treel (en mètres).<br>
-	 * Utilisé pour connaître les limites de la map lors de déplacement ou création
+	 * Rayon du Terrain Treel (en mï¿½tres).<br>
+	 * UtilisÃ© pour connaitre les limites de la map lors de dÃ©placement ou crÃ©ation
 	 * d'agents.
 	 */
 	public double rayonTerrain = 12.5;
@@ -77,9 +77,9 @@ public class MyEnvironment extends Environment {
 	}
 
 	/**
-	 * Initialisation de l'environnement avec initialisation des différentes
-	 * ArrayLists et mise à jour des différentes valeurs des curseurs pour les
-	 * criticités.
+	 * Initialisation de l'environnement avec initialisation des diffÃ©rentes
+	 * ArrayLists et mise Ã  jour des diffï¿½rentes valeurs des curseurs pour les
+	 * criticitÃ©s.
 	 */
 	@Override
 	public void onInitialization() {
@@ -101,12 +101,12 @@ public class MyEnvironment extends Environment {
 	}
 
 	/**
-	 * Génération des voisins dans Tideal de l'agents donné en paramètre, en
+	 * GÃ©nÃ©ration des voisins dans Tideal de l'agents donnÃ© en paramÃ¨tre, en
 	 * utilisant le radius actuel.<br>
-	 * Méthode interne de {@link #generateNeighbours(BlobAgent) generateNeighbours}
+	 * MÃ©thode interne de {@link #generateNeighbours(BlobAgent) generateNeighbours}
 	 * 
 	 * @param subject
-	 *            agent qui demande de générer ses voisins
+	 *            agent qui demande de gÃ©nÃ©rer ses voisins
 	 */
 	private void generateNeighboursTideal(BlobAgent subject) {
 		for (int j = 0; j < agents.size(); j++) {
@@ -116,12 +116,12 @@ public class MyEnvironment extends Environment {
 	}
 
 	/**
-	 * Génération des voisins dans To de l'agents donné en paramètre, en utilisant
+	 * GÃ©nÃ©ration des voisins dans To de l'agents donnÃ© en paramÃ¨tre, en utilisant
 	 * le radius actuel.<br>
-	 * Méthode interne de {@link #generateNeighbours(BlobAgent) generateNeighbours}
+	 * MÃ©thode interne de {@link #generateNeighbours(BlobAgent) generateNeighbours}
 	 * 
 	 * @param subject
-	 *            agent qui demande de générer ses voisins
+	 *            agent qui demande de gÃ©nÃ©rer ses voisins
 	 */
 	private void generateNeighboursToriginel(BlobAgent subject) {
 		for (int j = 0; j < hibernants.size(); j++) {
@@ -131,12 +131,12 @@ public class MyEnvironment extends Environment {
 	}
 
 	/**
-	 * Génération des voisins de l'agents donné en paramètre, en utilisant le radius
+	 * Gï¿½nï¿½ration des voisins de l'agents donnï¿½ en paramï¿½tre, en utilisant le radius
 	 * actuel.<br>
-	 * Cette méthode est appelé par chaque agent à chaque perception.
+	 * Cette mï¿½thode est appelï¿½ par chaque agent ï¿½ chaque perception.
 	 * 
 	 * @param subject
-	 *            agent qui demande de générer ses voisins
+	 *            agent qui demande de gï¿½nï¿½rer ses voisins
 	 */
 	public void generateNeighbours(BlobAgent subject) {
 		subject.clearVoisin();
@@ -156,47 +156,47 @@ public class MyEnvironment extends Environment {
 
 	/**
 	 * Cette fonction est appelee par l'agent apres avoir fait le changement. il ne
-	 * reste donc ici qu'à mettre à jour les listes dans l'environnement
+	 * reste donc ici qu'Ã  mettre Ã  jour les listes dans l'environnement
 	 * 
 	 * @param agent
-	 *            agent actif à ajouter dans Ti
+	 *            agent actif Ã  ajouter dans Ti
 	 */
 	public void addAgent(BlobAgent agent) {
 		agents.add(agent);
 	}
 
 	/**
-	 * Enlève l'agent en paramètre de la liste des agents actifs (de Ti). Cette
+	 * EnlÃ¨ve l'agent en paramÃ¨tre de la liste des agents actifs (de Ti). Cette
 	 * fonction est appelee par l'agent apres avoir fait le changement. il ne reste
-	 * donc ici qu'à mettre à jour les listes dans l'environnement
+	 * donc ici qu'Ã  mettre Ã  jour les listes dans l'environnement
 	 * 
 	 * @param agent
-	 *            agent actif à supprimer de Ti
+	 *            agent actif Ã  supprimer de Ti
 	 */
 	public void removeAgent(BlobAgent agent) {
 		agents.remove(agent);
 	}
 
 	/**
-	 * Ajoute un Migrant à To. Cette fonction est appelee par l'agent apres avoir
-	 * fait le changement. il ne reste donc ici qu'à mettre à jour les listes dans
+	 * Ajoute un Migrant Ã  To. Cette fonction est appelee par l'agent apres avoir
+	 * fait le changement. il ne reste donc ici qu'Ã  mettre Ã  jour les listes dans
 	 * l'environnement
 	 * 
 	 * @param migrant
-	 *            migrant à ajouter dans To
+	 *            migrant Ã  ajouter dans To
 	 */
 	public void addMigrant(Migrant migrant) {
 		hibernants.add(migrant);
 	}
 
 	/**
-	 * Cette méthode met à jour les listes après avoir fait passer un migrant de
-	 * Toriginel à Treel. <br>
+	 * Cette mÃ©thode met Ã  jour les listes aprï¿½s avoir fait passer un migrant de
+	 * Toriginel Ã  Treel. <br>
 	 * Cette fonction est appelee par l'agent apres avoir fait le changement. Il ne
-	 * reste donc ici qu'à mettre à jour les listes dans l'environnement
+	 * reste donc ici qu'Ã  mettre Ã  jour les listes dans l'environnement
 	 * 
 	 * @param migrant
-	 *            migrant qui vient de passer de To à Tr.
+	 *            migrant qui vient de passer de To Ã  Tr.
 	 */
 	public void t0_to_tr(Migrant migrant) {
 		hibernants.remove(migrant);
@@ -204,13 +204,13 @@ public class MyEnvironment extends Environment {
 	}
 
 	/**
-	 * Cette méthode met à jour les listes après avoir fait passer un migrant de
-	 * Treel à Toriginel. <br>
+	 * Cette mÃ©thode met Ã  jour les listes aprÃ¨s avoir fait passer un migrant de
+	 * Treel Ã  Toriginel. <br>
 	 * Cette fonction est appelee par l'agent apres avoir fait le changement. Il ne
-	 * reste donc ici qu'à mettre à jour les listes dans l'environnement
+	 * reste donc ici qu'Ã  mettre Ã  jour les listes dans l'environnement
 	 * 
 	 * @param migrant
-	 *            migrant qui vient de passer de Tr à To.
+	 *            migrant qui vient de passer de Tr Ã  To.
 	 */
 	public void tr_to_t0(Migrant migrant) {
 		agents.remove(migrant);
@@ -224,7 +224,7 @@ public class MyEnvironment extends Environment {
 	 * (commenter / decommenter pour avoir un carre 100*100)
 	 * 
 	 * @param coo
-	 *            coordonnée à tester
+	 *            coordonnÃ©e Ã  tester
 	 * @return vrai si dans la map.
 	 */
 	private boolean isValideInTo(double[] coo) {
@@ -247,7 +247,7 @@ public class MyEnvironment extends Environment {
 	 * {@link #rayonTerrain rayonTerrain} et de centre (rayonTerrain;rayonTerrain)
 	 * 
 	 * @param coo
-	 *            coordonnée à tester
+	 *            coordonnÃ©e Ã  tester
 	 * @return vrai si dans la map
 	 */
 	public boolean isValideInTi(double[] coo) {
@@ -260,18 +260,18 @@ public class MyEnvironment extends Environment {
 	}
 
 	/**
-	 * fonction qui à partir de coordonnees initiales, propose de nouvelles
-	 * coordonnees à un certain rayon (le pas).<br>
-	 * Utilisé soit pour le déplacement d'un agent, soit lorsqu'un agent procrée.
+	 * fonction qui Ã  partir de coordonnees initiales, propose de nouvelles
+	 * coordonnees Ã  un certain rayon (le pas).<br>
+	 * UtilisÃ© soit pour le dÃ©placement d'un agent, soit lorsqu'un agent procrÃ©e.
 	 * 
 	 * @param agent
 	 *            l'agent qui demande
 	 * @param pas
-	 *            à quel distance de la coordonnee donnée en parametre doit se
-	 *            trouver la nouvelle coordonnée
+	 *            Ã  quel distance de la coordonnee donnï¿½e en parametre doit se
+	 *            trouver la nouvelle coordonnï¿½e
 	 * @param coordonnee
-	 *            coordonnée de départ (en général celle de l'agent)
-	 * @return nouvelle coordonnée
+	 *            coordonnÃ©e de dÃ©part (en gÃ©nÃ©ral celle de l'agent)
+	 * @return nouvelle coordonnÃ©e
 	 */
 	public double[] nouvellesCoordonneesTT(BlobAgent agent, double pas, double[] coordonnee) {
 		double[] res = new double[2];
@@ -313,30 +313,30 @@ public class MyEnvironment extends Environment {
 	}
 
 	/**
-	 * Fonction qui à partir des coordonnees de l'agent donné en paramètre, propose
-	 * de nouvelles coordonnees à un certain rayon (le pas), tout en favorisant
-	 * l'ancienne direction qui avait été prise précédement laquelle est founie en
-	 * paramètre. Cette direction sera enfin remise à jour.<br>
-	 * Utilisé pour le déplacement d'un agent.
+	 * Fonction qui Ã  partir des coordonnees de l'agent donnÃ© en paramÃ¨tre, propose
+	 * de nouvelles coordonnees Ã  un certain rayon (le pas), tout en favorisant
+	 * l'ancienne direction qui avait Ã©tÃ© prise prÃ©cÃ©dement laquelle est founie en
+	 * paramÃ¨tre. Cette direction sera enfin remise ï¿½ jour.<br>
+	 * UtilisÃ© pour le dÃ©placement d'un agent.
 	 * <p>
-	 * Procédé :
+	 * ProcÃ©dÃ© :
 	 * <ul>
-	 * <li>L'agent à 90% de chance de reprendre son ancienne direction</li>
-	 * <li>Soit car la coordonnée est hors map, soit car on est dans les 10% de
-	 * chance restant : on fait alors appel à la méthode
+	 * <li>L'agent a 90% de chance de reprendre son ancienne direction</li>
+	 * <li>Soit car la coordonnï¿½e est hors map, soit car on est dans les 10% de
+	 * chance restant : on fait alors appel Ã  la mÃ©thode
 	 * {@link #nouvellesCoordonneesTT(BlobAgent, double, double[])
 	 * nouvellesCoordonneesTT}</li>
-	 * <li>Enfin on remet à jour la variable pastDirection de l'agent qui a été
-	 * donnée en paramètre.</li>
+	 * <li>Enfin on remet ï¿½ jour la variable pastDirection de l'agent qui a Ã©tÃ©
+	 * donnÃ©e en paramÃ¨tre.</li>
 	 * </ul>
 	 * 
 	 * @param agent
 	 *            l'agent qui demande
 	 * @param pas
-	 *            à quelle distance doit se déplacer l'agent
+	 *            Ã  quelle distance doit se dï¿½placer l'agent
 	 * @param pastDirection
-	 *            direction prise précédemment.
-	 * @return nouvelle coordonnée
+	 *            direction prise prÃ©cÃ©demment.
+	 * @return nouvelle coordonnÃ©e
 	 */
 	public double[] nouvellesCoordonnees(BlobAgent agent, double pas, double[] pastDirection) {
 		double[] res = new double[2];
@@ -377,16 +377,16 @@ public class MyEnvironment extends Environment {
 	}
 
 	/**
-	 * Adoption d'un blob. Cette méthode retourne un migrannt mûr disponible dans
+	 * Adoption d'un blob. Cette mÃ©thode retourne un migrannt disponible dans
 	 * To.<br>
-	 * Elle est appelée par AmasThread de la part d'un thread position. C'est la
-	 * 1ere étape de l'adoption : l'agent n'est pas encore déplacé : la demande de
-	 * passage de To à Tr s'effectue après par AmasThread.
+	 * Elle est appelÃ©e par AmasThread de la part d'un thread position. C'est la
+	 * 1ere Ã©tape de l'adoption : l'agent n'est pas encore dÃ©placÃ© : la demande de
+	 * passage de To Ã  Tr s'effectue aprï¿½s par AmasThread.
 	 * <p>
-	 * Appelée par {@link amak.AmasThread#adopter(double[]) AmasThread.adopter}
+	 * AppelÃ©e par {@link amak.AmasThread#adopter(double[]) AmasThread.adopter}
 	 * </p>
 	 * 
-	 * @return un migrant mûr de To disponible
+	 * @return un migrant mï¿½r de To disponible
 	 */
 	public Migrant adopter() {
 		for (int i = 0; i < hibernants.size(); i++) {
@@ -398,11 +398,9 @@ public class MyEnvironment extends Environment {
 	}
 
 	/*
-	 * *****************************************************************************
-	 * ************ ********************* getter / setter
-	 * ****************************************
-	 * *****************************************************************************
-	 * ******** *
+	 * ********************************************************************
+	 * ************************* getter / setter *************************
+	 * ******************************************************************* *
 	 */
 
 	public double getIsolement() {
@@ -411,7 +409,7 @@ public class MyEnvironment extends Environment {
 
 	public void setIsolement(int isolement) {
 		this.isolement = isolement;
-		System.out.println("la nouvelle valeur d'isolement a ï¿½tï¿½ prise en compte");
+		System.out.println("la nouvelle valeur d'isolement a Ã©tÃ© prise en compte");
 		// majFctCriticalityStabiliteEtat();
 	}
 

@@ -1,5 +1,5 @@
 /**
- * Package contenant tout le système multi-agents.
+ * Package contenant tout le systÃ¨me multi-agents.
  * Utilise la framework AMAK.
  */
 package amak;
